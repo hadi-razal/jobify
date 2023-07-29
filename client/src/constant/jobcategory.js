@@ -1,0 +1,23 @@
+category: [
+    "Information Technology (IT)",
+    "Software Development",
+    "Data Science",
+    "Web Development",
+    "Mobile App Development",
+    "Artificial Intelligence (AI) and Machine Learning (ML)",
+    "Cybersecurity",
+    "Digital Marketing",
+    "Content Writing",
+    "Graphic Design",
+    "UX / UI Design",
+    "Sales and Marketing",
+    "Finance and Accounting",
+    "Human Resources (HR)",
+    "Customer Support",
+    "Project Management",
+    "Business Development",
+    "Healthcare and Medicine",
+    "Education and Teaching",
+    "Engineering (Mechanical, Electrical, Civil, etc.)",
+]
+export default category;
