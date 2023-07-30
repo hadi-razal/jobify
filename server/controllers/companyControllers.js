@@ -83,17 +83,3 @@ export const totalJobApplicantsController = async (req, res) => {
         res.status(500).send("Error saving job");
     }
 }
-
-
-// fetch data for single page
-export const singleJobPageController = async (req, res) => {
-    const { jobId } = req.params
-    try {
-        const sPage = await Job.findById({ _id: jobId })
-        res.send({ sPage, message: "page Fetched successfully" })
-    } catch (error) {
-        console.log(error)
-        res.status(500).send("Error fetching job for single page");
-    }
-}
-

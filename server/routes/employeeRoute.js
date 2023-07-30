@@ -1,5 +1,5 @@
 import express from "express"
-import { applyForJobController, getAllSavedJobs, getJobCategoryBasedController, saveJobController } from "../controllers/employeeControllers.js";
+import { applyForJobController, getAllSavedJobs, getJobCategoryBasedController, jobSearchController, saveJobController, singleJobPageController } from "../controllers/employeeControllers.js";
 import { requireSignIn } from "../middlewares/authMiddleware.js";
 
 const router = express.Router()
@@ -13,8 +13,14 @@ router.get("/get-saved-jobs", requireSignIn, getAllSavedJobs)
 //Apply for the job
 router.put("/apply-for-job/:jobId", requireSignIn, applyForJobController);
 
-// job serach api
+// single job page
+router.get("/single-page-job/:jobId", requireSignIn, singleJobPageController);
+
+// jobs based on category (pass the category as slug from the client)
 router.get("/get-category/:category", requireSignIn, getJobCategoryBasedController)
+
+//job serach
+router.get("/search-job", requireSignIn, jobSearchController)
 
 
 

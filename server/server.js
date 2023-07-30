@@ -6,6 +6,7 @@ import AuthRoute from "./routes/authRoute.js"
 import connectDB from "./db/dbConnect.js"
 import env from "dotenv"
 
+
 env.config()
 const app = express()
 
