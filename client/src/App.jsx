@@ -4,6 +4,7 @@ import Login from "./page/login";
 import Register from "./page/Register";
 import Home from "./page/Home";
 import Navbar from "./components/Navbar";
+import PageNotFound from "./page/PageNotFound";
 
 const App = () => {
   return (
@@ -13,7 +14,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register/:role" element={<Register />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>
     </>

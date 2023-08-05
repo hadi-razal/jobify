@@ -46,6 +46,7 @@ const Login = () => {
             Email:
           </label>
           <input
+            autoComplete="nope"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
             type="text"

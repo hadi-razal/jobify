@@ -1,16 +1,46 @@
-import { Job } from "../models/jobModel.js";
-import { User } from "../models/userModel.js"
-import slugify from "slugify"
+// import { Job } from "../models/jobModel.js";
+import { Employee } from "../models/employeeModel.js"
+// import slugify from "slugify"
+import { hashPassword } from "../helpers/hashPassword.js"
 
 
-// Saving a Job
+// Creating an account for jobify 
+export const registerEmployeeController = async (req, res) => {
+    try {
+        const { fullname, email, password, workExperience, education } = req.body;
+        const isEmployeeExist = await Employee.findOne({ email });
+
+        if (isEmployeeExist) {
+            return res.send({ message: "Email already in use" });
+        }
+
+        const hashedPassword = await hashPassword(password)
+        const newEmployee = await new Employee({
+            fullname,
+            email,
+            password: hashedPassword,
+            workExperience,
+            education,
+        }).save();
+
+        res.send({ newEmployee, message: "Employee Account created successfully" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: "Error registering Employee" });
+    }
+};
+
+
+// Saving a Job to employee database
 export const saveJobController = async (req, res) => {
     const { jobId } = req.params;
+
+    // from the middleware
     const userId = req.user._id
     try {
-        const user = await User.findById({ _id: userId });
-        user.savedJobs.push(jobId);
-        user.save();
+        const employee = await Employee.findById({ _id: userId });
+        employee.savedJobs.push(jobId);
+        employee.save();
         res.send({ message: "Job Saved" });
     } catch (error) {
         console.error(error);
@@ -20,10 +50,11 @@ export const saveJobController = async (req, res) => {
 
 // get all saved jobs
 export const getAllSavedJobs = async (req, res) => {
+    // from middleware
     const userId = req.user._id
     try {
-        const user = await User.findById({ _id: userId });
-        const savedJobs = await user.populate("savedJobs")
+        const employee = await Employee.findById({ _id: userId });
+        const savedJobs = await employee.populate("savedJobs")
         res.send({ savedJobs, message: "Fetcehd all jobs successfully" });
     } catch (error) {
         console.error(error);
@@ -31,84 +62,3 @@ export const getAllSavedJobs = async (req, res) => {
     }
 };
 
-// Apply for job
-export const applyForJobController = async (req, res) => {
-    const userId = req.user._id;
-    const { jobId } = req.params;
-    try {
-        const job = await Job.findOne({ _id: jobId });
-        await job.applicants.push(userId);
-        await job.save();
-
-        res.send({ message: "Applied for the job successfully", job });
-    } catch (error) {
-        console.error(error);
-        res.send({ message: "Error in applying for the job" });
-    }
-};
-
-// get jobs based on category
-export const getJobCategoryBasedController = async (req, res) => {
-    const { category } = req.params
-    const slugCategory = slugify(category)
-    try {
-        const catBasedJobs = await Job.find({ slugCategory })
-        res.send({ catBasedJobs, message: "fetched job based on category" })
-    } catch (error) {
-        console.log(error)
-        res.send({ message: "Error in getting categorized job" });
-    }
-}
-
-// fetch data for single page
-export const singleJobPageController = async (req, res) => {
-    const { jobId } = req.params
-    try {
-        const sPage = await Job.findById({ _id: jobId })
-        res.send({ sPage, message: "page Fetched successfully" })
-    } catch (error) {
-        console.log(error)
-        res.status(500).send("Error fetching job for single page");
-    }
-}
-
-
-//job search 
-export const jobSearchController = async (req, res) => {
-    const { keyword, category, location, minSalary, maxSalary } = req.body;
-    try {
-        // Build the search query based on provided criteria
-        const matchQuery = {};
-
-        if (keyword) {
-            matchQuery.$or = [
-                { title: { $regex: keyword, $options: "i" } },
-                { description: { $regex: keyword, $options: "i" } }
-            ];
-        }
-        if (category) {
-            matchQuery.category = category;
-        }
-        if (location) {
-            matchQuery.location = location;
-        }
-        if (minSalary || maxSalary) {
-            matchQuery.salary = {};
-            if (minSalary) {
-                matchQuery.salary.$gte = minSalary;
-            }
-            if (maxSalary) {
-                matchQuery.salary.$lte = maxSalary;
-            }
-        }
-        console.log(matchQuery)
-        // Execute the aggregation pipeline using the Job model
-        const searchResults = await Job.aggregate([
-            { $match: matchQuery }
-        ]);
-        res.send({ results: searchResults });
-    } catch (error) {
-        console.log(error);
-        res.send({ message: "Error in Search" });
-    }
-};

@@ -6,9 +6,9 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     workExperience: { type: Number, required: true },
     education: { type: String, required: true },
-    role: { type: String, required: true, enum: ["company", "employee"], default: 'employee' },
+    role: { type: String, required: true, default: 'employee' },
     savedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'jobs' }],
     appliedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'jobs' }]
-})
+}, { timestamps: true })
 
-export const User = mongoose.model.users || mongoose.model("users", userSchema)
+export const Employee = mongoose.model.users || mongoose.model("users", userSchema)
