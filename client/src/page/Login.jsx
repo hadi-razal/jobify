@@ -1,14 +1,15 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useAuth } from "../context/authContext";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  const [auth, setAuth] = useAuth();
+  const { auth, setAuth } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,26 +21,51 @@ const Login = () => {
           password,
         }
       );
-      console.log(res);
-      if (res.data.token) {
+      console.log(res.data.success);
+      if (res.data.success === false) {
+        toast.error(res.data.message);
+      }
+      if (res.data.user.token) {
         setAuth({
-          user: res.data.user.name,
-          token: res.data.token,
+          name: res.data.user.name,
+          userId: res.data.user.userId,
+          token: res.data.user.token,
           email: res.data.user.email,
           role: res.data.user.role,
         });
+        localStorage.setItem(
+          "auth",
+          JSON.stringify({
+            name: res.data.user.name,
+            userId: res.data.user.userId,
+            token: res.data.user.token,
+            email: res.data.user.email,
+            role: res.data.user.role,
+          })
+        );
         setEmail("");
         setPassword("");
-        navigate("/");
+        if (res.data.user.role === "company") {
+          navigate("/company");
+        } else if (res.data.user.role === "employee") {
+          navigate("/jobs");
+        }
+        toast.success(res.data.message);
       }
-      alert(res.data.message);
+
+      // alert(res.data.message);
     } catch (error) {
       console.log(error);
     }
   };
   console.log(auth);
+
+  if (auth.token) {
+    return <Navigate to={"/jobs"} />;
+  }
   return (
     <div className=" h-[80vh] flex items-center justify-center">
+      <Toaster />
       <div className="p-4 bg-white rounded-lg shadow-lg">
         <form onSubmit={handleSubmit} className="flex flex-col">
           <label htmlFor="email" className="text-gray-700 font-bold mb-2">
@@ -78,6 +104,7 @@ const Login = () => {
           </button>
         </form>
       </div>
+      <Toaster />
     </div>
   );
 };

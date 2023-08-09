@@ -1,12 +1,14 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../context/authContext";
 
 const Navbar = () => {
+  const { logOut } = useAuth();
+  const { auth } = useAuth();
   const location = useLocation();
-  console.log(location);
   return (
-    <div className="w-full h-22 bg-green-600 flex items-center justify-between p-8 ">
-      <Link to={"/"}>
+    <div className="w-full h-22 bg-green-600 flex items-center justify-between p-8 sticky top-0 z-10 ">
+      <Link to={auth.role === "company" ? "/company" : "/jobs"}>
         <div className="text-white font-bold text-[25px] cursor-pointer ">
           Jobify
         </div>
@@ -22,7 +24,9 @@ const Navbar = () => {
             </Link>
           </ul>
         </div>
-      ) : null}
+      ) : (
+        <button onClick={() => logOut()}>Logout</button>
+      )}
     </div>
   );
 };

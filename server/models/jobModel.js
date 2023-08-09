@@ -2,8 +2,6 @@ import mongoose from "mongoose";
 
 const JobSchema = new mongoose.Schema({
     title: { type: String, required: true },
-    bannerImg: { type: String },
-    profileImage: { type: String },
     description: { type: String, required: true },
     location: { type: String, required: true },
     company: { type: String, required: true },
@@ -32,11 +30,13 @@ const JobSchema = new mongoose.Schema({
             "Business Development",
             "Healthcare and Medicine",
             "Education and Teaching",
+            "Engineering",
             "Engineering (Mechanical, Electrical, Civil, etc.)",
         ],
     },
     slugCategory: { type: String, required: true },
-    applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }] // This will store an array of user references who applied to the job
+    applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }], // This will store an array of user references who applied to the job
+    jobSavedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }] // This will store an array of user references who saved  the job
 }, { timestamps: true });
 
 export const Job = mongoose.model.jobs || mongoose.model("jobs", JobSchema);

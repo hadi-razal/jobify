@@ -4,7 +4,7 @@ const Hero = () => {
   return (
     <div className=" p-10 flex flex-col  justify-center items-center lg:px-36 lg:py-24">
       <h1 className="text-[30px] font-semibold">
-        Hello Welcome to
+        Welcome to
         <span className="text-green-500 text-[35px] font-bold"> Jobify</span>
       </h1>
       <p className="text-[14px] md:px-[100px] mt-5">

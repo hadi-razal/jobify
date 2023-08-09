@@ -6,6 +6,7 @@ import JWT from "jsonwebtoken"
 export const loginController = async (req, res) => {
     try {
         const { email, password } = req.body;
+
         let user;
 
         const employee = await Employee.findOne({ email });
@@ -16,7 +17,7 @@ export const loginController = async (req, res) => {
         } else if (company) {
             user = company;
         } else {
-            return res.send("User not found");
+            return res.send({ success: false, message: "User not found" });
         }
         const matchPassword = comparePassword(password, user.password);
         if (!matchPassword) {
@@ -31,6 +32,7 @@ export const loginController = async (req, res) => {
                 name: user.fullname,
                 email: user.email,
                 role: user.role,
+                userId: user._id,
                 token: token
             }
         })
@@ -39,4 +41,26 @@ export const loginController = async (req, res) => {
         console.log(error);
         res.status(500).send("An error occurred in login session");
     }
-};
+}
+
+
+// get all users by id
+export const getUserByIdController = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const employee = await Employee.findById(id);
+        const company = await Company.findById(id);
+
+        if (employee) {
+            res.send({ employee });
+        } else if (company) {
+            res.send({ company });
+        } else {
+            return res.status(404).send("User not found");
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("An error occurred while fetching user data");
+    }
+}

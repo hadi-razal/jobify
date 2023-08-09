@@ -1,5 +1,5 @@
 import express from "express"
-import { applyForJobController, createJobController, deleteJobController, getJobCategoryBasedController, jobSearchController, jobUpdateController, singleJobPageController, totalJobApplicantsController } from "../controllers/jobController.js";
+import { applyForJobController, getAllJobController, createJobController, deleteJobController, getJobCategoryBasedController, jobSearchController, jobUpdateController, singleJobPageController, totalJobApplicantsController } from "../controllers/jobController.js";
 import { requireSignIn } from "../middlewares/authMiddleware.js";
 // import slugify from "slugify";
 
@@ -13,6 +13,9 @@ router.put("/update-job/:jobId", requireSignIn, jobUpdateController);
 
 // delete a job post
 router.delete("/delete-job/:jobId", requireSignIn, deleteJobController);
+
+// get all job posts
+router.get("/get-jobs", getAllJobController);
 
 // total applicants for the job
 router.get("/populate-applicants/:jobId", requireSignIn, totalJobApplicantsController);

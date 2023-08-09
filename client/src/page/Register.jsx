@@ -1,10 +1,25 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
+import CompanyRegisterForm from "../components/companyRegisterForm";
+import EmployeeRegisterForm from "../components/employeeRegisterForm";
+import { useAuth } from "../context/authContext";
 
 const Register = () => {
   const { role } = useParams();
+  const { auth } = useAuth();
 
-  return <div>{role === "company" ? <h1>company</h1> : <h1>Employee</h1>}</div>;
+  if (auth.role === "company") {
+    return <Navigate to={"/company"} />;
+  }
+  if (auth.role === "employee") {
+    return <Navigate to={"/jobs"} />;
+  }
+
+  return (
+    <div>
+      {role === "company" ? <CompanyRegisterForm /> : <EmployeeRegisterForm />}
+    </div>
+  );
 };
 
 export default Register;

@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 const companySchema = new mongoose.Schema({
     companyName: { type: String, required: true },
-    bannerImg: { type: String },
-    profileImage: { type: String },
-    companyEmail: { type: String, required: true, unique: true },
+    bannerImg: { type: Buffer },
+    image: { type: Buffer },
+    email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     companyEstablishedYear: { type: Number, required: true },
     role: { type: String, required: true, default: 'company' },

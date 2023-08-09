@@ -1,17 +1,20 @@
-// import { Job } from "../models/jobModel.js";
 import { Employee } from "../models/employeeModel.js"
-// import slugify from "slugify"
 import { hashPassword } from "../helpers/hashPassword.js"
+import { Company } from "../models/companyModel.js";
 
 
 // Creating an account for jobify 
 export const registerEmployeeController = async (req, res) => {
     try {
         const { fullname, email, password, workExperience, education } = req.body;
-        const isEmployeeExist = await Employee.findOne({ email });
+        const isCompanyEmailExist = await Company.findOne({ email });
+        const isEmployeeEmailExist = await Employee.findOne({ email });
 
-        if (isEmployeeExist) {
-            return res.send({ message: "Email already in use" });
+        if (isCompanyEmailExist) {
+            return res.send({ success: false, message: "Email is already use in employee account" });
+        }
+        if (isEmployeeEmailExist) {
+            return res.send({ success: false, message: "Email is already in use" });
         }
 
         const hashedPassword = await hashPassword(password)
@@ -23,10 +26,10 @@ export const registerEmployeeController = async (req, res) => {
             education,
         }).save();
 
-        res.send({ newEmployee, message: "Employee Account created successfully" });
+        res.send({ newEmployee, success: true, message: "Employee Account created successfully" });
     } catch (error) {
         console.log(error);
-        res.status(500).send({ message: "Error registering Employee" });
+        res.status(500).send({ success: false, message: "Error registering Employee" });
     }
 };
 
@@ -44,7 +47,7 @@ export const saveJobController = async (req, res) => {
         res.send({ message: "Job Saved" });
     } catch (error) {
         console.error(error);
-        res.send({ message: "Error in saving job" });
+        res.send({ success: false, message: "Error in saving job" });
     }
 };
 
@@ -58,7 +61,7 @@ export const getAllSavedJobs = async (req, res) => {
         res.send({ savedJobs, message: "Fetcehd all jobs successfully" });
     } catch (error) {
         console.error(error);
-        res.send({ message: "Error in saving job" });
+        res.send({ success: false, message: "Error in saving job" });
     }
 };
 
