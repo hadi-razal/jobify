@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useAuth } from "../context/authContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
@@ -46,7 +46,7 @@ const Login = () => {
         setEmail("");
         setPassword("");
         if (res.data.user.role === "company") {
-          navigate("/company");
+          navigate("/dashboard");
         } else if (res.data.user.role === "employee") {
           navigate("/jobs");
         }
@@ -102,6 +102,18 @@ const Login = () => {
           >
             Login
           </button>
+          <div className="text-xs flex flex-col mt-3">
+            <p>Dont Have a account yet? Create</p>
+            <span className="">
+              <Link to={"/register/employee"} className="text-blue-800">
+                Employee Account
+              </Link>
+              <br />
+              <Link to={"/register/company"} className="text-blue-800">
+                Company Account
+              </Link>
+            </span>
+          </div>
         </form>
       </div>
       <Toaster />

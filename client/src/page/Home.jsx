@@ -10,7 +10,7 @@ const Home = () => {
   const { auth } = useAuth();
 
   if (auth.token) {
-    return <Navigate to={"/job"} />;
+    return <Navigate to={"/jobs"} />;
   }
 
   return (

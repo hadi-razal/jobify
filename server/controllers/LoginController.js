@@ -10,7 +10,7 @@ export const loginController = async (req, res) => {
         let user;
 
         const employee = await Employee.findOne({ email });
-        const company = await Company.findOne({ companyEmail: email });
+        const company = await Company.findOne({ email });
 
         if (employee) {
             user = employee
@@ -29,7 +29,7 @@ export const loginController = async (req, res) => {
             success: true,
             message: 'Login successful',
             user: {
-                name: user.fullname,
+                name: user.name,
                 email: user.email,
                 role: user.role,
                 userId: user._id,

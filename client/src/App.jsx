@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./page/Login";
 import Register from "./page/Register";
 import Home from "./page/Home";
@@ -8,11 +8,13 @@ import PageNotFound from "./page/PageNotFound";
 import PrivateRoute from "./components/secureRoute/PrivateRoute";
 import JobsPage from "./page/employeePages/JobsPage";
 import { Toaster } from "react-hot-toast";
+import CompanyDashboard from "./page/companyPages/CompanyDashboard";
+import ViewEmployees from "./page/companyPages/ViewEmployees";
 
 const App = () => {
   return (
     <>
-      <Router>
+      <BrowserRouter>
         <Navbar />
         <Toaster />
         <Routes>
@@ -31,8 +33,17 @@ const App = () => {
             }
           />
           {/* Company Pages */}
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <CompanyDashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/view-employees" element={<ViewEmployees />} />
         </Routes>
-      </Router>
+      </BrowserRouter>
     </>
   );
 };

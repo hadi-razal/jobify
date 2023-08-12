@@ -21,12 +21,14 @@ const AuthProvider = ({ children }) => {
 
   // Set Axios default headers when auth changes
   useEffect(() => {
-    if (auth.token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${auth.token}`;
+    if (auth.token && auth.role) {
+      axios.defaults.headers.common["authorization"] = auth.token;
+      axios.defaults.headers.common["role"] = auth.role;
     } else {
-      delete axios.defaults.headers.common["Authorization"];
+      delete axios.defaults.headers.common["authorization"];
+      delete axios.defaults.headers.common["role"];
     }
-  }, [auth]);
+  }, [auth.token, auth.role]);
 
   const clear = () => {
     // Clear auth and remove from local storage

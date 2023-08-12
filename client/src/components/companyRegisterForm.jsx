@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 
 const CompanyRegisterForm = () => {
@@ -9,10 +9,8 @@ const CompanyRegisterForm = () => {
   const [formData, setFormData] = useState({
     companyName: "",
     email: "",
-    image: "",
     password: "",
     companyEstablishedYear: 0,
-    education: "",
     role: "company", // Changed from 'employee' to 'company'
   });
 
@@ -42,7 +40,7 @@ const CompanyRegisterForm = () => {
   };
 
   if (auth.token) {
-    return <Navigate to={"/jobs"} />;
+    return <Navigate to={"/dashboard"} />;
   }
 
   return (
@@ -101,20 +99,18 @@ const CompanyRegisterForm = () => {
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
           />
-          <label className="text-gray-700 font-bold">Education:</label>
-          <input
-            type="text"
-            name="education"
-            value={formData.education}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
-          />
           <button
             type="submit"
             className="bg-green-500 hover:bg-green-600 text-white font-bold rounded-md px-4 py-2 mt-4"
           >
             Create Company Account
           </button>
+          <div className="text-xs mt-2">
+            <p>Already Have an account?</p>
+            <Link to={"/login"} className="text-blue-800">
+              Login
+            </Link>
+          </div>
         </form>
       </div>
     </div>

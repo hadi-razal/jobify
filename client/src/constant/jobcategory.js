@@ -1,10 +1,10 @@
-category: [
-    "Information Technology (IT)",
+export const category = [
+    "Information Technology",
     "Software Development",
     "Data Science",
     "Web Development",
     "Mobile App Development",
-    "Artificial Intelligence (AI) and Machine Learning (ML)",
+    "Artificial Intelligence and Machine Learning",
     "Cybersecurity",
     "Digital Marketing",
     "Content Writing",
@@ -12,12 +12,11 @@ category: [
     "UX / UI Design",
     "Sales and Marketing",
     "Finance and Accounting",
-    "Human Resources (HR)",
+    "Human Resources",
     "Customer Support",
     "Project Management",
     "Business Development",
     "Healthcare and Medicine",
     "Education and Teaching",
-    "Engineering (Mechanical, Electrical, Civil, etc.)",
-]
-export default category;
+    "Engineering",
+];

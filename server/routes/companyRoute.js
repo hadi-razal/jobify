@@ -1,5 +1,5 @@
 import express from "express"
-import { registerCompanyController, saveJobSeekerProfileController, updateCompanyProfileController } from "../controllers/companyController.js";
+import { getCompanyController, registerCompanyController, saveJobSeekerProfileController, updateCompanyProfileController } from "../controllers/companyController.js";
 import { requireSignIn } from "../middlewares/authMiddleware.js"
 
 const router = express.Router()
@@ -10,6 +10,9 @@ router.post("/register", registerCompanyController)
 
 //update company profile
 router.put("/update-profile", requireSignIn, updateCompanyProfileController)
+
+// get company deatails note:(add requireSignIn)
+router.get("/get-my-company", requireSignIn, getCompanyController)
 
 //save a jobseeker profile to a company
 router.put("/save-a-jobseeker-profile", requireSignIn, saveJobSeekerProfileController)

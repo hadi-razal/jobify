@@ -1,3 +1,4 @@
+import { Employee } from "../models/employeeModel.js";
 import { Job } from "../models/jobModel.js";
 import slugify from "slugify";
 
@@ -7,18 +8,21 @@ export const createJobController = async (req, res) => {
     const { title,
         description,
         location,
-        company,
+        companyName,
         category,
         applicants } = req.body
+
+    const companyId = req.user._id
     const slugCategory = slugify(category)
     try {
         const savedJob = await new Job({
             title,
             description,
             location,
-            company,
+            companyName,
             category,
             applicants,
+            companyId,
             slugCategory
         }).save()
         res.send({ savedJob, message: "Job added successfully" });
@@ -93,7 +97,7 @@ export const totalJobApplicantsController = async (req, res) => {
     }
 }
 
-// Apply for job this will save the user id in job databasse
+// Apply for job this will save the user id in job databasse and user database
 export const applyForJobController = async (req, res) => {
     // from middleware
     const userId = req.user._id;
@@ -102,11 +106,14 @@ export const applyForJobController = async (req, res) => {
         const job = await Job.findOne({ _id: jobId });
         await job.applicants.push(userId);
         await job.save();
+        const employee = await Employee.findById(userId);
+        await employee.appliedJobs.push(jobId);
+        await employee.save();
 
-        res.send({ message: "Applied for the job successfully", job });
+        res.send({ success: true, message: "Applied for the job successfully", job });
     } catch (error) {
         console.error(error);
-        res.send({ message: "Error in applying for the job" });
+        res.send({ success: false, message: "Error in applying for the job" });
     }
 };
 
@@ -176,3 +183,16 @@ export const jobSearchController = async (req, res) => {
     }
 };
 
+
+// get all jobs from a single company
+export const getCompanyJobsController = async (req, res) => {
+    try {
+        const companyId = req.user._id
+        const jobs = await Job.find({ companyId })
+        res.send({ jobs, message: "Jobs Fetched successfully" })
+        res.send()
+    } catch (error) {
+        console.log(error);
+        res.send({ message: "Error in getting single company jobs" });
+    }
+}

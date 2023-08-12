@@ -1,4 +1,5 @@
 import { Employee } from "../models/employeeModel.js"
+import { Job } from "../models/jobModel.js"
 import { hashPassword } from "../helpers/hashPassword.js"
 import { Company } from "../models/companyModel.js";
 
@@ -41,13 +42,51 @@ export const saveJobController = async (req, res) => {
     // from the middleware
     const userId = req.user._id
     try {
+
+        // saving job id to user database 
         const employee = await Employee.findById({ _id: userId });
         employee.savedJobs.push(jobId);
         employee.save();
-        res.send({ message: "Job Saved" });
+
+        // saving user id to job database 
+        const job = await Job.findById(jobId);
+        job.jobSavedUsers.push(userId);
+        job.save();
+        res.send({ success: true, message: "Job Saved" });
     } catch (error) {
         console.error(error);
         res.send({ success: false, message: "Error in saving job" });
+    }
+};
+
+// Unsaving a Job from employee database
+export const unsaveJobController = async (req, res) => {
+    const { jobId } = req.params;
+
+    // from the middleware
+    const userId = req.user._id;
+    try {
+
+        // Removing job id from user database 
+        const employee = await Employee.findById({ _id: userId });
+        const jobIndex = employee.savedJobs.indexOf(jobId);
+        if (jobIndex !== -1) {
+            employee.savedJobs.splice(jobIndex, 1);
+            employee.save();
+        }
+
+        // Removing user id from job database 
+        const job = await Job.findById(jobId);
+        const userIndex = job.jobSavedUsers.indexOf(userId);
+        if (userIndex !== -1) {
+            job.jobSavedUsers.splice(userIndex, 1);
+            job.save();
+        }
+
+        res.send({ success: true, message: "Job Removed From Saved" });
+    } catch (error) {
+        console.error(error);
+        res.send({ success: false, message: "Error in unsaving job" });
     }
 };
 
@@ -65,3 +104,12 @@ export const getAllSavedJobs = async (req, res) => {
     }
 };
 
+export const getAllEmployees = async (req, res) => {
+    try {
+        const employees = await Employee.find()
+        res.send({ employees, success: true, message: "fetched employees succesfully" });
+    } catch (error) {
+        console.error(error);
+        res.send({ success: false, message: "Error in fetching employees" });
+    }
+}

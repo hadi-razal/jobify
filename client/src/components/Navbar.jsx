@@ -1,14 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/authContext";
+import { BsFillPersonFill } from "react-icons/bs";
+import NavMenu from "./NavMenu";
 
 const Navbar = () => {
-  const { logOut } = useAuth();
   const { auth } = useAuth();
   const location = useLocation();
+  const [employeePopUp, setEmployeePopUp] = useState(false);
+
+  const toggleEmployeePopUp = () => {
+    setEmployeePopUp(!employeePopUp);
+  };
+
   return (
     <div className="w-full h-22 bg-green-600 flex items-center justify-between p-8 sticky top-0 z-10 ">
-      <Link to={auth.role === "company" ? "/company" : "/jobs"}>
+      <Link
+        to={
+          auth.role === "company"
+            ? "/dashboard"
+            : auth.role === "employee"
+            ? "/jobs"
+            : "/"
+        }
+      >
         <div className="text-white font-bold text-[25px] cursor-pointer ">
           Jobify
         </div>
@@ -25,7 +40,19 @@ const Navbar = () => {
           </ul>
         </div>
       ) : (
-        <button onClick={() => logOut()}>Logout</button>
+        auth.token && (
+          <div>
+            <BsFillPersonFill
+              onClick={toggleEmployeePopUp}
+              className="text-white w-7 h-7 cursor-pointer"
+            />
+          </div>
+        )
+      )}
+      {auth.token && employeePopUp && (
+        <div className="absolute top-[50px] shadow-2xl right-[20px]">
+          <NavMenu onClose={toggleEmployeePopUp} />
+        </div>
       )}
     </div>
   );
