@@ -1,8 +1,16 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import vitePluginExternals from 'vite-plugin-externals';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  
-})
+  plugins: [
+    react(),
+    // vitePluginExternals({
+    //   externals: {
+    //     'mock-aws-s3': 'commonjs mock-aws-s3',
+    //     'aws-sdk': 'commonjs aws-sdk',
+    //     'nock': 'commonjs nock'
+    //   }
+    // })
+  ]
+});

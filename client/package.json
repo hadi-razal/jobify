@@ -4,13 +4,17 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "start": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
+    "aws-sdk": "^2.1435.0",
     "axios": "^1.4.0",
+    "bcrypt": "^5.1.0",
+    "mock-aws-s3": "^4.0.2",
+    "nock": "^13.3.2",
     "react": "^18.2.0",
     "react-click-away-listener": "^2.2.3",
     "react-dom": "^18.2.0",
@@ -29,6 +33,12 @@
     "eslint-plugin-react-refresh": "^0.4.3",
     "postcss": "^8.4.27",
     "tailwindcss": "^3.3.3",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "vite-plugin-externals": "^0.6.2"
+  },
+  "externals": {
+    "mock-aws-s3": "commonjs mock-aws-s3",
+    "aws-sdk": "commonjs aws-sdk",
+    "nock": "commonjs nock"
   }
 }

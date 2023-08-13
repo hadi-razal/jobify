@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import EmployeeCard from "../../components/EmployeeCard";
 import { useAuth } from "../../context/authContext";
 import axios from "axios";
-import { getAllEmployees } from "../../../../server/controllers/employeeControllers";
 
 const ViewEmployees = () => {
   const { auth } = useAuth();
