@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+import { educationOptions } from "../constant/educationOptions"; // Make sure to import educationOptions
+import { workExperience } from "../constant/workExperience";
 
 const EmployeeRegisterForm = () => {
   const [formData, setFormData] = useState({
-    fullname: "",
+    name: "",
     email: "",
     image: "",
     password: "",
@@ -20,6 +22,15 @@ const EmployeeRegisterForm = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleEducationChange = (e) => {
+    // Add this function for education selection
+    const { value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      education: value,
     }));
   };
 
@@ -40,7 +51,6 @@ const EmployeeRegisterForm = () => {
       toast.error(res.data.message);
     }
   };
-
   return (
     <div className="mt-10 mb-10 flex items-center justify-center">
       <Toaster />
@@ -58,8 +68,8 @@ const EmployeeRegisterForm = () => {
           <label className="text-gray-700 font-bold">Full Name:</label>
           <input
             type="text"
-            name="fullname"
-            value={formData.fullname}
+            name="name"
+            value={formData.name}
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
           />
@@ -81,33 +91,37 @@ const EmployeeRegisterForm = () => {
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
           />
-          {/* <input
-            type="file"
-            name="image"
-            id="image"
-            value={formData.image}
-            onChange={handleChange}
-            className="border hidden border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
-          /> */}
           <label className="text-gray-700 font-bold">
-            Work Experience (years):
+            Work Experience(Years):
           </label>
-          <input
-            type="number"
+          <select
             name="workExperience"
-            min="0"
             value={formData.workExperience}
             onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
-          />
+            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+          >
+            <option value="none">Select a Work Experience</option>
+            {workExperience?.map((c, index) => (
+              <option key={index} value={c}>
+                {c !== 0 ? `${c} +` : c}
+              </option>
+            ))}
+          </select>
           <label className="text-gray-700 font-bold">Education:</label>
-          <input
-            type="text"
+          <select
             name="education"
             value={formData.education}
-            onChange={handleChange}
+            onChange={handleEducationChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
-          />
+          >
+            <option value="">Select Education</option>
+            {educationOptions.map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+
           <button
             type="submit"
             className="bg-green-500 hover:bg-green-600 text-white font-bold rounded-md px-4 py-2 mt-4"

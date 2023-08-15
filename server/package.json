@@ -5,7 +5,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "concurrently \"npm run start:client\" \"npm run start:server\"",
+    "start:client": "cd ../client && npm start",
+    "start:server": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",

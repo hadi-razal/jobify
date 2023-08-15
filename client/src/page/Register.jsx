@@ -16,7 +16,7 @@ const Register = () => {
   }
 
   return (
-    <div>
+    <div className="flex items-center justify-center">
       {role === "company" ? <CompanyRegisterForm /> : <EmployeeRegisterForm />}
     </div>
   );

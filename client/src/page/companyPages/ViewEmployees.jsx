@@ -5,16 +5,21 @@ import axios from "axios";
 
 const ViewEmployees = () => {
   const { auth } = useAuth();
-  const [employee, setEmployee] = useState();
+  const [employees, setEmployees] = useState([]); // Initialize as an empty array
+
   const getAllEmployees = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/employee/get-employees`
+        `${import.meta.env.VITE_SERVER_URL}/employee/get-employees`,
+        {
+          headers: {
+            authorization: auth.token,
+          },
+        }
       );
-      console.log(res); // Check the response data in the browser console
-      setEmployee(res.data.employees); // Assuming the actual data is in res.data
+      setEmployees(res.data.employees);
     } catch (error) {
-      console.error("Error fetching jobs:", error);
+      console.error("Error fetching employees:", error);
     }
   };
 
@@ -23,14 +28,17 @@ const ViewEmployees = () => {
   }, [auth.token]);
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <h1 className="text-blue-500">Employees</h1>
+    <div className="flex flex-col items-center justify-center mb-5 cursor-pointer">
+      <h1 className="text-green-600 my-4 text-3xl">Employees</h1>
       <div className="flex flex-col items-center justify-center gap-3 sm:flex-row flex-wrap">
-        <EmployeeCard reloadEmployees={getAllEmployees} employee={employee} />
-        <EmployeeCard />
-        <EmployeeCard />
-        <EmployeeCard />
-        <EmployeeCard />
+        {employees.map((employee) => (
+          <div key={employee._id}>
+            <EmployeeCard
+              reloadEmployees={getAllEmployees}
+              employee={employee}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );

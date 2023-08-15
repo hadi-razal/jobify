@@ -6,9 +6,9 @@ const CompanyStats = () => {
       <h2>
         Total Jobs Posted : <span> 30</span>
       </h2>
-      <h2 className="underline cursor-pointer">View All Jobs</h2>
-      <h2 className="underline cursor-pointer">View Saved Profiles</h2>
-      {/* ... display jobs posted */}
+      <h2>
+        Total Applicants : <span> 33</span>
+      </h2>
     </div>
   );
 };

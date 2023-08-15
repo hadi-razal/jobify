@@ -9,8 +9,12 @@ export const createJobController = async (req, res) => {
         description,
         location,
         companyName,
-        category,
-        applicants } = req.body
+        workExperience,
+        category } = req.body
+
+    if (!title || !description || !location || !companyName || !workExperience || !category) {
+        return res.send({ success: false, message: "Fill in all required inputs" });
+    }
 
     const companyId = req.user._id
     const slugCategory = slugify(category)
@@ -21,14 +25,14 @@ export const createJobController = async (req, res) => {
             location,
             companyName,
             category,
-            applicants,
             companyId,
+            workExperience,
             slugCategory
         }).save()
-        res.send({ savedJob, message: "Job added successfully" });
+        res.send({ success: true, savedJob, message: "Job added successfully" });
     } catch (error) {
         console.error("Error saving job:", error);
-        res.status(500).send("Error saving job");
+        res.status(500).send({ success: false, message: "Error saving job" });
     }
 }
 
@@ -64,13 +68,12 @@ export const deleteJobController = async (req, res) => {
         const deleteJob = await Job.findByIdAndDelete(jobId)
 
         if (!deleteJob) {
-            return res.status(404).json({ message: "Unable to delete " });
+            return res.status(404).json({ success: false, message: "Unable to delete " });
         }
-        res.status(200).json({ message: "Deleted Successfully" });
-        res.json(deleteJob);
+        res.status(200).json({ success: true, message: "Deleted Successfully" });
     } catch (error) {
         console.error("Error Deleting job:", error);
-        res.status(500).json({ message: "Error Deleting job" });
+        res.status(500).json({ success: false, message: "Error Deleting job" });
     }
 }
 

@@ -65,10 +65,56 @@ export const getCompanyController = async (req, res) => {
 
 
 //save a JobSeeker profile to a company
-export const saveJobSeekerProfileController = async () => {
+export const saveProfileController = async (req, res) => {
     try {
-
+        const companyId = req.user._id
+        const { profileId } = req.params
+        const company = await Company.findById(companyId)
+        if (company.savedProfile.includes(profileId)) {
+            return res.send({ company, success: false, message: "Profile Already Saved" })
+        }
+        company.savedProfile.push(profileId)
+        company.save()
+        res.send({ company, success: true, message: "Profile Saved" })
     } catch (error) {
-
+        console.log(error);
+        res.status(500).send({ success: false, message: "Error in saving profile" });
     }
 }
+
+
+export const unsaveProfileController = async (req, res) => {
+    try {
+        const { profileId } = req.params;
+        const companyId = req.user._id;
+        const company = await Company.findById(companyId);
+
+        const indexToRemove = company.savedProfile.indexOf(profileId);
+
+        if (indexToRemove !== -1) {
+            company.savedProfile.splice(indexToRemove, 1);
+            await company.save();
+            res.send({ success: true, message: "Profile Unsaved" });
+        } else {
+            res.send({ success: false, message: "Profile not found in saved profiles" });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ success: false, message: "Error in unsaving profile" });
+    }
+};
+
+// get saved profiles 
+export const getSavedProfilesController = async (req, res) => {
+    try {
+        const companyId = req.user._id;
+        const company = await Company.findById(companyId).populate({
+            path: "savedProfile",
+            select: "-appliedJobs -savedJobs" // Exclude the 'name' field from savedProfile
+        });
+        res.send({ company, success: true, message: "Profiles fetched successfully" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ success: false, message: "Error in fetching saved profiles" });
+    }
+};

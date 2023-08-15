@@ -10,6 +10,10 @@ import JobsPage from "./page/employeePages/JobsPage";
 import { Toaster } from "react-hot-toast";
 import CompanyDashboard from "./page/companyPages/CompanyDashboard";
 import ViewEmployees from "./page/companyPages/ViewEmployees";
+import SinglePageEmployeeProfile from "./page/employeePages/SinglePageEmployeeProfile";
+import PostedJobs from "./page/companyPages/PostedJobs";
+import SingleJobViewPage from "./page/SingleJobViewPage";
+import CreateJobPage from "./page/companyPages/CreateJobPage";
 
 const App = () => {
   return (
@@ -22,6 +26,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register/:role" element={<Register />} />
           <Route path="*" element={<PageNotFound />} />
+          <Route path="/job/:jobId" element={<SingleJobViewPage />} />
 
           {/* eployee pages */}
           <Route
@@ -29,6 +34,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <JobsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/employee/profile/:profileId"
+            element={
+              <PrivateRoute>
+                <SinglePageEmployeeProfile />
               </PrivateRoute>
             }
           />
@@ -42,6 +55,8 @@ const App = () => {
             }
           />
           <Route path="/view-employees" element={<ViewEmployees />} />
+          <Route path="/all-posted-jobs" element={<PostedJobs />} />
+          <Route path="/create-job" element={<CreateJobPage />} />
         </Routes>
       </BrowserRouter>
     </>

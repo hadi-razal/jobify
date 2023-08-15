@@ -1,6 +1,6 @@
 import express from "express"
 import { applyForJobController, getAllJobController, createJobController, deleteJobController, getJobCategoryBasedController, jobSearchController, jobUpdateController, singleJobPageController, totalJobApplicantsController, getCompanyJobsController } from "../controllers/jobController.js";
-import { companyUser, requireSignIn } from "../middlewares/authMiddleware.js";
+import { requireSignIn } from "../middlewares/authMiddleware.js";
 // import slugify from "slugify";
 
 const router = express.Router()
@@ -33,7 +33,7 @@ router.get("/get-category/:category", requireSignIn, getJobCategoryBasedControll
 router.get("/search-job", requireSignIn, jobSearchController)
 
 // get all jobs from a single company
-router.get("/get-jobs-company", requireSignIn, getCompanyJobsController)
+router.get("/get-jobs-mycompany", requireSignIn, getCompanyJobsController)
 
 
 //middlewaretest

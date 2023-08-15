@@ -41,17 +41,33 @@ const CompanyDashboard = () => {
         <CompanyProfile company={company} />
         <CompanyStats />
       </div>
-      <div className="gap-3  text-white flex items-center justify-center">
-        <button className="bg-green-500 cursor-pointer p-5 rounded-lg hover:bg-green-600">
+      <div className="flex flex-col gap-3 sm:flex-row items-center p-5 justify-center text-white">
+        <button
+          onClick={() => {
+            navigate("/create-job");
+          }}
+          className="bg-green-500 md:w-[200px] h-20 w-full cursor-pointer p-5 rounded-lg hover:bg-green-600"
+        >
           Create New Job Post
+        </button>
+        <button
+          onClick={() => {
+            navigate("/all-posted-jobs");
+          }}
+          className="bg-green-500 md:w-[200px] h-20 w-full cursor-pointer p-5 rounded-lg hover:bg-green-600"
+        >
+          View All Posted Jobs
         </button>
         <button
           onClick={() => {
             navigate("/view-employees");
           }}
-          className="bg-green-500 cursor-pointer p-5 rounded-lg hover:bg-green-600"
+          className="bg-green-500 md:w-[200px] h-20 w-full cursor-pointer p-5 rounded-lg hover:bg-green-600"
         >
           View Profiles
+        </button>
+        <button className="bg-green-500 md:w-[200px]  h-20 w-full cursor-pointer p-5 rounded-lg hover:bg-green-600">
+          View Saved Profiles
         </button>
       </div>
     </div>
