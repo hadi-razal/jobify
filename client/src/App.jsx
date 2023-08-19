@@ -14,6 +14,9 @@ import SinglePageEmployeeProfile from "./page/employeePages/SinglePageEmployeePr
 import PostedJobs from "./page/companyPages/PostedJobs";
 import SingleJobViewPage from "./page/SingleJobViewPage";
 import CreateJobPage from "./page/companyPages/CreateJobPage";
+import SavedProfiles from "./page/companyPages/SavedProfiles";
+import EditJob from "./page/companyPages/EditJob";
+import EditProfile from "./page/EditProfile";
 
 const App = () => {
   return (
@@ -27,6 +30,7 @@ const App = () => {
           <Route path="/register/:role" element={<Register />} />
           <Route path="*" element={<PageNotFound />} />
           <Route path="/job/:jobId" element={<SingleJobViewPage />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
 
           {/* eployee pages */}
           <Route
@@ -57,6 +61,8 @@ const App = () => {
           <Route path="/view-employees" element={<ViewEmployees />} />
           <Route path="/all-posted-jobs" element={<PostedJobs />} />
           <Route path="/create-job" element={<CreateJobPage />} />
+          <Route path="/job-edit/:jobId" element={<EditJob />} />
+          <Route path="/saved-profiles" element={<SavedProfiles />} />
         </Routes>
       </BrowserRouter>
     </>

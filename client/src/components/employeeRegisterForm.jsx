@@ -64,7 +64,7 @@ const EmployeeRegisterForm = () => {
             className="rounded-full w-20 h-20"
           />
         </label>
-        <form className="flex flex-col" onSubmit={handleSubmit}>
+        <form className="flex flex-col w-[350px]" onSubmit={handleSubmit}>
           <label className="text-gray-700 font-bold">Full Name:</label>
           <input
             type="text"

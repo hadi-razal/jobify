@@ -1,47 +1,70 @@
 import axios from "axios";
-import React, { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, Link, Navigate } from "react-router-dom";
+import { toast, Toaster } from "react-hot-toast";
 import { useAuth } from "../context/authContext";
 
-const CompanyRegisterForm = () => {
+const CompanyProfileEdit = () => {
   const { auth } = useAuth();
-  const [formData, setFormData] = useState({
+  const [myCompany, setMyCompany] = useState({
     name: "",
     email: "",
-    password: "",
+    description: "",
     companyEstablishedYear: 0,
-    role: "company", // Changed from 'employee' to 'company'
+    role: "company",
   });
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setMyCompany((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const res = await axios.post(
-      `${import.meta.env.VITE_SERVER_URL}/company/register`,
-      formData
-    );
-    if (res.data.success === false) {
-      toast.error(res.data.message);
-    }
-    if (res.data.success === true) {
-      toast.success(res.data.message);
-      navigate("/login");
+  const getCompany = async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}/company/get-my-company`,
+        {
+          headers: {
+            Authorization: `${auth.token}`,
+          },
+        }
+      );
+      if (res.data.success === true) {
+        setMyCompany(res.data.company);
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching company:", error);
     }
   };
 
-  if (auth.token) {
-    return <Navigate to={"/dashboard"} />;
-  }
+  useEffect(() => {
+    getCompany();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.put(
+        `${import.meta.env.VITE_SERVER_URL}/company/update-profile`,
+        myCompany
+      );
+      if (res.data.success === true) {
+        toast.success(res.data.message);
+        navigate("/dashboard");
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
+  };
 
   return (
     <div className="mt-10 mb-10 flex items-center justify-center">
@@ -59,7 +82,7 @@ const CompanyRegisterForm = () => {
           <input
             type="text"
             name="name"
-            value={formData.name}
+            value={myCompany.name}
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
           />
@@ -68,25 +91,10 @@ const CompanyRegisterForm = () => {
             type="email"
             name="email"
             autoComplete="off"
-            value={formData.email}
+            value={myCompany.email}
             onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
-          />
-          <label className="text-gray-700 font-bold">Password:</label>
-          <input
-            type="password"
-            autoComplete="off"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
-          />
-          <input
-            type="file"
-            name="image"
-            id="image"
-            onChange={handleChange}
-            className="border hidden border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
+            className="border text-slate-700 border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
+            disabled // Disable the email input
           />
           <label className="text-gray-700 font-bold">
             Company Established Year:
@@ -95,26 +103,28 @@ const CompanyRegisterForm = () => {
             type="number"
             name="companyEstablishedYear"
             min="0"
-            value={formData.companyEstablishedYear}
+            value={myCompany.companyEstablishedYear}
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
+          />
+          <label className="text-gray-700 font-bold">Description:</label>
+          <textarea
+            name="description"
+            value={myCompany.description}
+            onChange={handleChange}
+            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
+            rows="4"
           />
           <button
             type="submit"
             className="bg-green-500 hover:bg-green-600 text-white font-bold rounded-md px-4 py-2 mt-4"
           >
-            Create Company Account
+            Update Profile
           </button>
-          <div className="text-xs mt-2">
-            <p>Already Have an account?</p>
-            <Link to={"/login"} className="text-blue-800">
-              Login
-            </Link>
-          </div>
         </form>
       </div>
     </div>
   );
 };
 
-export default CompanyRegisterForm;
+export default CompanyProfileEdit;

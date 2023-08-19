@@ -144,7 +144,9 @@ const JobCards = ({ job, reloadJobs }) => {
           </p>
         </div>
         <div>
-          <span className="text-xs text-gray-500">Posted at 10:30 12/23</span>
+          <span className="text-xs text-gray-500">
+            Posted On: {new Date(job.createdAt).toLocaleDateString("en-GB")}
+          </span>
         </div>
         <div className="flex items-center text-gray-600 text-sm ">
           <img

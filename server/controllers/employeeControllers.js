@@ -11,6 +11,8 @@ export const registerEmployeeController = async (req, res) => {
         const isCompanyEmailExist = await Company.findOne({ email });
         const isEmployeeEmailExist = await Employee.findOne({ email });
 
+        const lowerCaseEmail = email.toLowerCase()
+
         if (isCompanyEmailExist) {
             return res.send({ success: false, message: "Email is already use in employee account" });
         }
@@ -21,7 +23,7 @@ export const registerEmployeeController = async (req, res) => {
         const hashedPassword = await hashPassword(password)
         const newEmployee = await new Employee({
             name,
-            email,
+            email: lowerCaseEmail,
             password: hashedPassword,
             workExperience,
             education,

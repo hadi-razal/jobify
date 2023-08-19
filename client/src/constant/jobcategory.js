@@ -1,4 +1,4 @@
-export const category = [
+export const categoryList = [
     "Information Technology",
     "Software Development",
     "Data Science",

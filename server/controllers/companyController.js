@@ -6,10 +6,11 @@ import { Employee } from "../models/employeeModel.js";
 // Creating an account for jobify  as a company
 export const registerCompanyController = async (req, res) => {
     try {
-        const { companyName, email, password, companyEstablishedYear } = req.body;
+        const { name, email, password, companyEstablishedYear } = req.body;
         const isCompanyEmailExist = await Company.findOne({ email });
         const isEmployeeEmailExist = await Employee.findOne({ email });
 
+        const lowerCaseEmail = email.toLowerCase()
 
         if (isCompanyEmailExist) {
             return res.send({ success: false, message: "Email already in use" });
@@ -19,7 +20,7 @@ export const registerCompanyController = async (req, res) => {
         }
         const hashedPassword = await hashPassword(password)
         const newCompany = await new Company({
-            companyName, email, password: hashedPassword, companyEstablishedYear
+            name, email: lowerCaseEmail, password: hashedPassword, companyEstablishedYear
         }).save();
 
         res.status(200).send({ newCompany, success: true, message: "Company Account created successfully" });
@@ -33,29 +34,34 @@ export const registerCompanyController = async (req, res) => {
 // update company profile
 export const updateCompanyProfileController = async (req, res) => {
     try {
-        const { companyName, bannerImg, profileImage, companyEstablishedYear } = req.body;
-        const isCompanyEmailExist = await Company.find({ email });
+        const companyId = req.user._id;
+        const { name, description, companyEstablishedYear } = req.body;
 
-        if (isCompanyEmailExist) {
-            return res.send({ success: false, message: "Email already in use" });
+        const company = await Company.findById(companyId);
+
+        if (!company) {
+            return res.status(404).send({ success: false, message: "Company not found" });
         }
-        const updateCompanyProfile = await Company({
-            companyName, bannerImg, profileImage, companyEmail, companyEstablishedYear
-        }, { new: true })
 
-        res.send({ updateCompanyProfile, success: true, message: "Company Profile Updated successfully" });
+        company.name = name;
+        company.description = description;
+        company.companyEstablishedYear = companyEstablishedYear;
+
+        const updatedCompany = await company.save();
+
+        res.send({ success: true, message: "Company Profile Updated successfully", updatedCompany });
     } catch (error) {
-        console.log(error);
-        res.status(500).send({ success: false, message: "Error Updating company profile account" });
+        console.error(error);
+        res.status(500).send({ success: false, message: "Error updating company profile" });
     }
-}
+};
 
 
 // get company controllerer
 export const getCompanyController = async (req, res) => {
     try {
         const companyId = req.user._id
-        const company = await Company.findById(companyId)
+        const company = await Company.findById({ _id: companyId })
         res.send({ company, success: true, message: "fetched company details" })
     } catch (error) {
         console.log(error);
@@ -108,11 +114,11 @@ export const unsaveProfileController = async (req, res) => {
 export const getSavedProfilesController = async (req, res) => {
     try {
         const companyId = req.user._id;
-        const company = await Company.findById(companyId).populate({
+        const employees = await Company.findById(companyId).populate({
             path: "savedProfile",
             select: "-appliedJobs -savedJobs" // Exclude the 'name' field from savedProfile
         });
-        res.send({ company, success: true, message: "Profiles fetched successfully" });
+        res.send({ employees, success: true, message: "Profiles fetched successfully" });
     } catch (error) {
         console.log(error);
         res.status(500).send({ success: false, message: "Error in fetching saved profiles" });

@@ -43,7 +43,7 @@ const Home = () => {
   return (
     <div>
       <Hero />
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-5 font-bold text-white  mt-5">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-5 font-bold text-white  mt-5 mb-7">
         <Link
           to={"/login"}
           className="bg-green-500 cursor-pointer flex justify-center py-10 rounded-2xl w-[250px] hover:bg-green-600 transition-all duration-300 ease-in-out"

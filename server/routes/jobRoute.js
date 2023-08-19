@@ -1,5 +1,5 @@
 import express from "express"
-import { applyForJobController, getAllJobController, createJobController, deleteJobController, getJobCategoryBasedController, jobSearchController, jobUpdateController, singleJobPageController, totalJobApplicantsController, getCompanyJobsController } from "../controllers/jobController.js";
+import { applyForJobController,getJobsStatusController, getAllJobController, createJobController, deleteJobController, getJobCategoryBasedController, jobSearchController, jobUpdateController, singleJobPageController, totalJobApplicantsController, getCompanyJobsController } from "../controllers/jobController.js";
 import { requireSignIn } from "../middlewares/authMiddleware.js";
 // import slugify from "slugify";
 
@@ -24,19 +24,22 @@ router.get("/populate-applicants/:jobId", requireSignIn, totalJobApplicantsContr
 router.put("/apply-for-job/:jobId", requireSignIn, applyForJobController);
 
 // single job page
-router.get("/single-page-job/:jobId", requireSignIn, singleJobPageController);
+router.get("/single-job/:jobId", requireSignIn, singleJobPageController);
 
 // jobs based on category (pass the category as slug from the client)
 router.get("/get-category/:category", requireSignIn, getJobCategoryBasedController)
 
 //job serach
-router.get("/search-job", requireSignIn, jobSearchController)
+router.get("/search-jobs", requireSignIn, jobSearchController)
 
 // get all jobs from a single company
 router.get("/get-jobs-mycompany", requireSignIn, getCompanyJobsController)
 
+// get the total number or jobs posted and the combined total number of applicants 
+router.get("/total-jobs/total-applicants", requireSignIn, getJobsStatusController)
 
-//middlewaretest
+
+//middleware test
 // router.get("/test-job", companyUser, (req, res) => {
 //     res.send("Hello How are you")
 // })

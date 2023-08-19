@@ -36,7 +36,7 @@ const JobSchema = new mongoose.Schema({
     },
     slugCategory: { type: String, required: true },
     applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }], // This will store an array of user references who applied to the job
-    companyId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'companies' }], // This will store an array of user references who applied to the job
+    companyId: { type: mongoose.Schema.Types.ObjectId, ref: 'companies' }, // This will store an array of user references who applied to the job
     jobSavedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }] // This will store an array of user references who saved  the job
 }, { timestamps: true });
 

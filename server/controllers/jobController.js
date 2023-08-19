@@ -40,23 +40,23 @@ export const createJobController = async (req, res) => {
 // Update the job 
 export const jobUpdateController = async (req, res) => {
     const { jobId } = req.params;
-    const { title, description, location, category } = req.body;
+    const { title, description, salary, location, category } = req.body;
 
     const slugCategory = slugify(category)
     try {
         const updatedJob = await Job.findByIdAndUpdate(
             jobId,
-            { title, description, location, category, slugCategory },
+            { title, salary, description, location, category, slugCategory },
             { new: true }
         );
         if (!updatedJob) {
-            return res.status(404).json({ message: "Unable to Update" });
+            return res.status(404).json({ success: false, message: "Unable to Update" });
         }
-        res.send({ updatedJob, message: "Job updated succesfully" });
+        res.send({ updatedJob, success: true, message: "Job updated succesfully" });
 
     } catch (error) {
         console.error("Error updating job:", error);
-        res.status(500).json({ message: "Error updating job" });
+        res.status(500).json({ success: false, message: "Error updating job" });
     }
 }
 
@@ -148,7 +148,7 @@ export const singleJobPageController = async (req, res) => {
 
 //job search 
 export const jobSearchController = async (req, res) => {
-    const { keyword, category, location, minSalary, maxSalary } = req.body;
+    const { keyword, category, location, minSalary, maxSalary } = req.query;
     try {
         // Build the search query based on provided criteria
         const matchQuery = {};
@@ -159,43 +159,64 @@ export const jobSearchController = async (req, res) => {
                 { description: { $regex: keyword, $options: "i" } }
             ];
         }
-        if (category) {
+        if (category && category !== "all") {
             matchQuery.category = category;
         }
-        if (location) {
-            matchQuery.location = location;
-        }
-        if (minSalary || maxSalary) {
-            matchQuery.salary = {};
-            if (minSalary) {
-                matchQuery.salary.$gte = minSalary;
-            }
-            if (maxSalary) {
-                matchQuery.salary.$lte = maxSalary;
-            }
-        }
-        console.log(matchQuery)
-        // Execute the aggregation pipeline using the Job model
         const searchResults = await Job.aggregate([
             { $match: matchQuery }
         ]);
-        res.send({ results: searchResults });
+        res.send({ success: true, searchResults });
     } catch (error) {
         console.log(error);
-        res.send({ message: "Error in Search" });
+        res.send({ success: false, message: "Error in Search" });
     }
 };
+
+
+
 
 
 // get all jobs from a single company
 export const getCompanyJobsController = async (req, res) => {
     try {
-        const companyId = req.user._id
-        const jobs = await Job.find({ companyId })
-        res.send({ jobs, message: "Jobs Fetched successfully" })
-        res.send()
+        const companyId = req.user._id;
+        console.log(companyId)
+        const jobs = await Job.find({ companyId: companyId }); // Change this line
+        res.send({ jobs, message: "Jobs Fetched successfully" });
     } catch (error) {
         console.log(error);
         res.send({ message: "Error in getting single company jobs" });
     }
-}
+};
+
+
+// get the total number or jobs posted and the combined total number of applicants 
+export const getJobsStatusController = async (req, res) => {
+    try {
+        const companyId = req.user._id;
+        const jobs = await Job.find({ companyId })
+
+        let totalJobs = 0;
+        const jobsWithApplicantsCount = [];
+        for (const job of jobs) {
+            const applicantsCount = job.applicants.length;
+            totalJobs++;
+            jobsWithApplicantsCount.push({
+                _id: job._id,
+                title: job.title,
+                applicantsCount: applicantsCount
+            });
+        }
+
+        res.send({
+            success: true,
+            totalJobs: totalJobs,
+            jobsWithApplicantsCount: jobsWithApplicantsCount
+        });
+
+        // res.send({ jobs, success: true })
+    } catch (error) {
+        console.log(error);
+        res.send({ success: false, message: "Error in getting job's status" });
+    }
+};

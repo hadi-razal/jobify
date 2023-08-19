@@ -37,7 +37,7 @@ const JobsPage = () => {
     <div className="flex flex-col mb-4">
       {/* <h1 className="text-center text-[80px] text-gray-500">Jobs</h1> */}
       <div className="text-center mt-3 bg-gray-300 mx-10 md:mx-16 p-5 rounded-lg">
-        <JobSearchBar />
+        <JobSearchBar setJobs={setJobs} />
       </div>
       <div className="mt-3 mx-10 flex justify-end md:mx-16 rounded-lg">
         {jobs.length !== 0 && <JobSortBy />}

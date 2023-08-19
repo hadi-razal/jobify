@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/authContext";
 import axios from "axios";
 import JobCards from "../../components/JobCards";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const PostedJobs = () => {
   const { auth } = useAuth();
   const navigate = useNavigate();
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState();
 
   const getAllJobs = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/job/get-jobs`
+        `${import.meta.env.VITE_SERVER_URL}/job/get-jobs-mycompany`
       );
       console.log(res);
       setJobs(res.data.jobs);
@@ -23,7 +23,11 @@ const PostedJobs = () => {
 
   useEffect(() => {
     getAllJobs();
-  }, [auth.token]);
+  }, []);
+
+  if (!auth.token) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <>
@@ -32,13 +36,13 @@ const PostedJobs = () => {
           All Jobs Posted By Your Company
         </h1>
         <div className="flex items-center justify-center flex-wrap">
-          {jobs.map((job) => (
+          {jobs?.map((job) => (
             <JobCards key={job._id} job={job} reloadJobs={getAllJobs} />
           ))}
         </div>
       </div>
 
-      {jobs.length === 0 && (
+      {jobs?.length === 0 && (
         <div className="flex flex-col h-[300px] items-center justify-center">
           <h1 className="md:text-[50px]  text-gray-600/40">
             No Jobs Posted By Your Company

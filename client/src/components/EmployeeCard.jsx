@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 
-const EmployeeCard = ({ employee }) => {
+const EmployeeCard = ({ employee,reloadEmployees }) => {
   const navigate = useNavigate();
   const [company, setCompany] = useState([]);
   const { auth } = useAuth();
@@ -39,6 +39,7 @@ const EmployeeCard = ({ employee }) => {
       );
       if (res.data.success === true) {
         getCompany();
+        reloadEmployees()
         toast.success(res.data.message);
       }
       if (res.data.success === false) {

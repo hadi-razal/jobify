@@ -9,8 +9,11 @@ export const loginController = async (req, res) => {
 
         let user;
 
-        const employee = await Employee.findOne({ email });
-        const company = await Company.findOne({ email });
+        const lowerCaseEmail = email.toLowerCase()
+
+        const employee = await Employee.findOne({ email: lowerCaseEmail });
+        const company = await Company.findOne({ email: lowerCaseEmail });
+
 
         if (employee) {
             user = employee

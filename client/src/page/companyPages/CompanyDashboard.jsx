@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingPage from "../../components/LoadingPage";
 import CompanyStats from "../../components/CompanyStats";
-import CompanyProfile from "../../components/companyProfile";
+import CompanyProfile from "../../components/CompanyProfile";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 
@@ -66,7 +66,12 @@ const CompanyDashboard = () => {
         >
           View Profiles
         </button>
-        <button className="bg-green-500 md:w-[200px]  h-20 w-full cursor-pointer p-5 rounded-lg hover:bg-green-600">
+        <button
+          onClick={() => {
+            navigate("/saved-profiles");
+          }}
+          className="bg-green-500 md:w-[200px]  h-20 w-full cursor-pointer p-5 rounded-lg hover:bg-green-600"
+        >
           View Saved Profiles
         </button>
       </div>
