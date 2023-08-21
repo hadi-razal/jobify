@@ -69,6 +69,18 @@ export const getCompanyController = async (req, res) => {
     }
 }
 
+// get company by id controllerer
+export const getCompanyByIdController = async (req, res) => {
+    try {
+        const { companyId } = req.params
+        const company = await Company.findById({ _id: companyId })
+        res.send({ company, success: true, message: "fetched company details" })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ success: false, message: "Error fetching company details" });
+    }
+}
+
 
 //save a JobSeeker profile to a company
 export const saveProfileController = async (req, res) => {

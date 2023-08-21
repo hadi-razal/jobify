@@ -3,7 +3,7 @@ import { useAuth } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 import ClickAwayListener from "react-click-away-listener";
 
-const NavEmployeeMenu = ({ onClose }) => {
+const NavMenu = ({ onClose }) => {
   const { logOut, auth } = useAuth();
   const navigate = useNavigate();
   const [active, setActive] = useState(false);
@@ -59,4 +59,4 @@ const NavEmployeeMenu = ({ onClose }) => {
   );
 };
 
-export default NavEmployeeMenu;
+export default NavMenu;

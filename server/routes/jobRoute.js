@@ -1,5 +1,5 @@
 import express from "express"
-import { applyForJobController,getJobsStatusController, getAllJobController, createJobController, deleteJobController, getJobCategoryBasedController, jobSearchController, jobUpdateController, singleJobPageController, totalJobApplicantsController, getCompanyJobsController } from "../controllers/jobController.js";
+import { getJobsStatusController, getSingleCompanyJobsController, getAllJobController, createJobController, deleteJobController, getJobCategoryBasedController, jobSearchController, jobUpdateController, singleJobPageController, totalJobApplicantsController, getCompanyJobsController, applyForJobController, removeApplicationForJobController } from "../controllers/jobController.js";
 import { requireSignIn } from "../middlewares/authMiddleware.js";
 // import slugify from "slugify";
 
@@ -17,11 +17,17 @@ router.delete("/delete-job/:jobId", requireSignIn, deleteJobController);
 // get all job posts
 router.get("/get-jobs", requireSignIn, getAllJobController);
 
+// get all job from a single company 
+router.get("/get-all-jobs/single-company/:companyId", requireSignIn, getSingleCompanyJobsController);
+
 // total applicants for the job
 router.get("/populate-applicants/:jobId", requireSignIn, totalJobApplicantsController);
 
 //Apply for the job
 router.put("/apply-for-job/:jobId", requireSignIn, applyForJobController);
+
+//Apply for the job
+router.put("/remove-job-application/:jobId", requireSignIn, removeApplicationForJobController);
 
 // single job page
 router.get("/single-job/:jobId", requireSignIn, singleJobPageController);

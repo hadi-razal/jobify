@@ -3,6 +3,7 @@ import Hero from "../components/Hero";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import toast from "react-hot-toast";
+import { AiFillCloseCircle } from "react-icons/ai";
 
 const Home = () => {
   const { auth } = useAuth();
@@ -35,6 +36,14 @@ const Home = () => {
           >
             Company
           </button>
+        </div>
+        <div>
+          <AiFillCloseCircle
+            className="cursor-pointer text-[20px]"
+            onClick={() => {
+              toast.dismiss(t.id);
+            }}
+          />
         </div>
       </span>
     ));

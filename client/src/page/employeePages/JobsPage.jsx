@@ -16,10 +16,32 @@ const JobsPage = () => {
       const res = await axios.get(
         `${import.meta.env.VITE_SERVER_URL}/job/get-jobs`
       );
-      console.log(res); // Check the response data in the browser console
-      setJobs(res.data.jobs); // Assuming the actual data is in res.data
+      setJobs(res.data.jobs);
     } catch (error) {
       console.error("Error fetching jobs:", error);
+    }
+  };
+
+  const sortJob = (selectedOption) => {
+    try {
+      const sortedJobs = jobs.slice();
+
+      if (selectedOption === "none") {
+        // No need to sort the jobs.
+      } else if (selectedOption === "Popular") {
+        sortedJobs.sort((a, b) => b.applicants.length - a.applicants.length);
+      } else if (selectedOption === "SalaryHighToLow") {
+        sortedJobs.sort((a, b) => b.salary - a.salary);
+      } else if (selectedOption === "SalaryLowToHigh") {
+        sortedJobs.sort((a, b) => a.salary - b.salary);
+      } else if (selectedOption === "NewPost") {
+        sortedJobs.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+      }
+      setJobs(sortedJobs);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -31,7 +53,7 @@ const JobsPage = () => {
     return <Navigate to="/dashboard" />;
   }
 
-  console.log(jobs); // Check the jobs state in the browser console
+  console.log(jobs);
 
   return (
     <div className="flex flex-col mb-4">
@@ -40,16 +62,16 @@ const JobsPage = () => {
         <JobSearchBar setJobs={setJobs} />
       </div>
       <div className="mt-3 mx-10 flex justify-end md:mx-16 rounded-lg">
-        {jobs.length !== 0 && <JobSortBy />}
+        {jobs?.length !== 0 && <JobSortBy sortJob={sortJob} />}
       </div>
-      {jobs.length === 0 && (
+      {jobs?.length === 0 && (
         <div className="flex justify-center items-center h-[30vh]">
           <NoJobsFound />
         </div>
       )}
       <div className="flex  items-center justify-center flex-wrap">
-        {jobs.map((job) => (
-          <JobCards key={job.id} job={job} reloadJobs={getAllJobs} />
+        {jobs?.map((job) => (
+          <JobCards key={job._id} job={job} reloadJobs={getAllJobs} />
         ))}
       </div>
     </div>

@@ -17,6 +17,9 @@ import CreateJobPage from "./page/companyPages/CreateJobPage";
 import SavedProfiles from "./page/companyPages/SavedProfiles";
 import EditJob from "./page/companyPages/EditJob";
 import EditProfile from "./page/EditProfile";
+import AboutUs from "./page/AboutUs";
+import Contact from "./page/Contact";
+import SinglePageCompanyProfile from "./page/SinglePageCompanyProfile";
 
 const App = () => {
   return (
@@ -31,6 +34,12 @@ const App = () => {
           <Route path="*" element={<PageNotFound />} />
           <Route path="/job/:jobId" element={<SingleJobViewPage />} />
           <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route
+            path="/company/:companyId"
+            element={<SinglePageCompanyProfile />}
+          />
 
           {/* eployee pages */}
           <Route

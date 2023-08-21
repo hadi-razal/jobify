@@ -8,6 +8,7 @@ export const createJobController = async (req, res) => {
     const { title,
         description,
         location,
+        salary,
         companyName,
         workExperience,
         category } = req.body
@@ -23,6 +24,7 @@ export const createJobController = async (req, res) => {
             title,
             description,
             location,
+            salary,
             companyName,
             category,
             companyId,
@@ -80,7 +82,20 @@ export const deleteJobController = async (req, res) => {
 // get all job controllers
 export const getAllJobController = async (req, res) => {
     try {
+
         const jobs = await Job.find()
+        res.status(200).send({ jobs, success: true, message: "Fetched all jobs by single company succesfully" })
+    } catch (error) {
+        console.log(error)
+        res.status(400).send({ success: false, message: "error while fetching job posts for single company" })
+    }
+}
+
+// get all job from a single company 
+export const getSingleCompanyJobsController = async (req, res) => {
+    try {
+        const { companyId } = req.params
+        const jobs = await Job.find({ companyId: companyId })
         res.status(200).send({ jobs, success: true, message: "Fetched all job posts succesfully" })
     } catch (error) {
         console.log(error)
@@ -102,21 +117,61 @@ export const totalJobApplicantsController = async (req, res) => {
 
 // Apply for job this will save the user id in job databasse and user database
 export const applyForJobController = async (req, res) => {
-    // from middleware
     const userId = req.user._id;
     const { jobId } = req.params;
-    try {
-        const job = await Job.findOne({ _id: jobId });
-        await job.applicants.push(userId);
-        await job.save();
-        const employee = await Employee.findById(userId);
-        await employee.appliedJobs.push(jobId);
-        await employee.save();
 
-        res.send({ success: true, message: "Applied for the job successfully", job });
+    try {
+        const job = await Job.findOneAndUpdate(
+            { _id: jobId },
+            { $addToSet: { applicants: userId } },
+            { new: true }
+        );
+        const employee = await Employee.findByIdAndUpdate(
+            userId,
+            { $addToSet: { appliedJobs: jobId } },
+            { new: true }
+        );
+        res.send({
+            success: true,
+            message: "Applied for the job successfully",
+            job,
+        });
     } catch (error) {
         console.error(error);
-        res.send({ success: false, message: "Error in applying for the job" });
+        res.send({
+            success: false,
+            message: "Error in applying for the job",
+        });
+    }
+};
+
+
+export const removeApplicationForJobController = async (req, res) => {
+    const userId = req.user._id;
+    const { jobId } = req.params;
+
+    try {
+        const job = await Job.findByIdAndUpdate(
+            jobId,
+            { $pull: { applicants: userId } },
+            { new: true }
+        );
+        const employee = await Employee.findByIdAndUpdate(
+            userId,
+            { $pull: { appliedJobs: jobId } },
+            { new: true }
+        );
+        res.send({
+            success: true,
+            message: "Removed application for the job successfully",
+            job,
+        });
+    } catch (error) {
+        console.error(error);
+        res.send({
+            success: false,
+            message: "Error in removing application for the job",
+        });
     }
 };
 
@@ -148,7 +203,7 @@ export const singleJobPageController = async (req, res) => {
 
 //job search 
 export const jobSearchController = async (req, res) => {
-    const { keyword, category, location, minSalary, maxSalary } = req.query;
+    const { keyword, category } = req.query;
     try {
         // Build the search query based on provided criteria
         const matchQuery = {};
@@ -171,10 +226,6 @@ export const jobSearchController = async (req, res) => {
         res.send({ success: false, message: "Error in Search" });
     }
 };
-
-
-
-
 
 // get all jobs from a single company
 export const getCompanyJobsController = async (req, res) => {

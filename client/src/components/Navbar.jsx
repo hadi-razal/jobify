@@ -14,7 +14,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="w-full h-22 bg-green-600 flex items-center justify-between p-8 sticky top-0 z-10 ">
+    <div className="w-full h-[99px] bg-green-600 flex items-center justify-between p-8 sticky top-0 z-10 ">
       <Link
         to={
           auth.role === "company"
@@ -28,7 +28,9 @@ const Navbar = () => {
           Jobify
         </div>
       </Link>
-      {location.pathname === "/" ? (
+      {location.pathname === "/" ||
+      location.pathname === "/about-us" ||
+      location.pathname === "/contact" ? (
         <div>
           <ul className="flex items-center justify-center gap-5 text-white">
             <Link to={"contact"}>

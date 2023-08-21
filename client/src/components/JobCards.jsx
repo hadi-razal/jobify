@@ -113,7 +113,7 @@ const JobCards = ({ job, reloadJobs }) => {
   };
 
   const makeDescriptionVisible = (description) => {
-    if (description.length > 50) {
+    if (description?.length > 50) {
       return description.slice(0, 60) + "...";
     } else {
       return description;
@@ -130,22 +130,22 @@ const JobCards = ({ job, reloadJobs }) => {
       >
         <div className="overflow-y-hidden">
           <div className="flex flex-col items-center justify-center">
-            <h3 className="text-lg">{job.title}</h3>
-            <span className="text-xs flex items-center justify-center">
-              <GrLocation /> {job.location}
+            <h3 className="text-lg font-bold">{job?.title}</h3>
+            <span className="text-xs font-black flex items-center justify-center">
+              <GrLocation /> {job?.location}
             </span>
           </div>
           <h1 className="text-sm">
             <span>Min Work Exp :</span>
-            {job.workExperience} +
+            {job?.workExperience} +
           </h1>
           <p className="text-sm overflow-auto">
-            {makeDescriptionVisible(job.description)}
+            {makeDescriptionVisible(job?.description)}
           </p>
         </div>
         <div>
           <span className="text-xs text-gray-500">
-            Posted On: {new Date(job.createdAt).toLocaleDateString("en-GB")}
+            Posted On: {new Date(job?.createdAt).toLocaleDateString("en-GB")}
           </span>
         </div>
         <div className="flex items-center text-gray-600 text-sm ">
@@ -154,22 +154,22 @@ const JobCards = ({ job, reloadJobs }) => {
             src="https://static.vecteezy.com/system/resources/previews/000/592/901/non_2x/vector-office-building-icon.jpg"
             alt="Company"
           />
-          <h1>{job.companyName}</h1>
+          <h1>{job?.companyName}</h1>
         </div>
         <p
           className={`${
-            job.applicants.length === 0 ? "text-gray-400" : "text-green-400"
+            job?.applicants?.length === 0 ? "text-gray-400" : "text-green-400"
           } text-xs`}
         >
           <span>
-            {job.applicants.length}{" "}
-            {job.applicants.length === 1 ? "applicant" : "applicants"}
+            {job?.applicants?.length}{" "}
+            {job?.applicants?.length === 1 ? "applicant" : "applicants"}
           </span>
         </p>
       </div>
       <div className="flex justify-between items-center mt-2">
         {auth.role === "employee" &&
-          (job.applicants.includes(auth.userId) ? (
+          (job?.applicants?.includes(auth.userId) ? (
             <button className="bg-green-300 hover:bg-green-300 cursor-not-allowed text-white font-bold rounded-md px-4 py-2">
               Applied
             </button>
@@ -203,7 +203,7 @@ const JobCards = ({ job, reloadJobs }) => {
         </button>
         <div className="absolute top-3 right-3 cursor-pointer">
           {auth.role === "employee" &&
-            (job.jobSavedUsers.includes(auth.userId) ? (
+            (job?.jobSavedUsers?.includes(auth.userId) ? (
               <BsFillBookmarkFill
                 onClick={() => {
                   handleUnsave(job._id);
