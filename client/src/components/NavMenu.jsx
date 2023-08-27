@@ -8,14 +8,14 @@ const NavMenu = ({ onClose }) => {
   const navigate = useNavigate();
   const [active, setActive] = useState(false);
 
-  const handleProfileClick = () => {
-    navigate(`/settings/${auth.role}/${auth.userId}`);
-    onClose(); // Close the menu
+  const HandleSavedJobs = () => {
+    navigate(`/savedjobs`);
+    onClose(); 
   };
 
-  const handleSettingsClick = () => {
-    navigate(`/settings/${auth.role}/${auth.userId}`);
-    onClose(); // Close the menu
+  const HandleAppliedJobs = () => {
+    navigate(`/appliedjobs`);
+    onClose(); 
   };
 
   useEffect(() => {
@@ -35,16 +35,16 @@ const NavMenu = ({ onClose }) => {
         <ul>
           <li
             className="cursor-pointer text-center py-1 hover:bg-gray-100"
-            onClick={handleProfileClick}
+            onClick={HandleAppliedJobs}
           >
-            Profile
+            Applied Jobs
           </li>
           <hr className="my-1" />
           <li
             className="cursor-pointer text-center py-1 hover:bg-gray-100"
-            onClick={handleSettingsClick}
+            onClick={HandleSavedJobs}
           >
-            Settings
+            Saved Jobs
           </li>
           <hr className="my-1" />
           <li

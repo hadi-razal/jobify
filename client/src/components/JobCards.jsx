@@ -170,13 +170,13 @@ const JobCards = ({ job, reloadJobs }) => {
       <div className="flex justify-between items-center mt-2">
         {auth.role === "employee" &&
           (job?.applicants?.includes(auth.userId) ? (
-            <button className="bg-green-300 hover:bg-green-300 cursor-not-allowed text-white font-bold rounded-md px-4 py-2">
+            <button className="bg-green-300  transition-all duration-1000 ease-in-out hover:bg-green-300 cursor-not-allowed text-white font-bold rounded-md px-4 py-2">
               Applied
             </button>
           ) : (
             <button
               onClick={() => handleApplyJob(job._id)}
-              className="bg-green-400 hover:bg-green-600 text-white font-bold rounded-md px-4 py-2"
+              className="bg-green-400  transition-all duration-1000 ease-in-out hover:bg-green-600 text-white font-bold rounded-md px-4 py-2"
             >
               Apply
             </button>

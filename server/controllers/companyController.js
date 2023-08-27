@@ -6,7 +6,7 @@ import { Employee } from "../models/employeeModel.js";
 // Creating an account for jobify  as a company
 export const registerCompanyController = async (req, res) => {
     try {
-        const { name, email, password, companyEstablishedYear } = req.body;
+        const { name, email, password, location, companyEstablishedYear } = req.body;
         const isCompanyEmailExist = await Company.findOne({ email });
         const isEmployeeEmailExist = await Employee.findOne({ email });
 
@@ -20,7 +20,7 @@ export const registerCompanyController = async (req, res) => {
         }
         const hashedPassword = await hashPassword(password)
         const newCompany = await new Company({
-            name, email: lowerCaseEmail, password: hashedPassword, companyEstablishedYear
+            name, email: lowerCaseEmail, password: hashedPassword, location, companyEstablishedYear
         }).save();
 
         res.status(200).send({ newCompany, success: true, message: "Company Account created successfully" });

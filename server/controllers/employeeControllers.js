@@ -93,16 +93,30 @@ export const unsaveJobController = async (req, res) => {
 };
 
 // get all saved jobs
-export const getAllSavedJobs = async (req, res) => {
+export const getAllSavedJobsController = async (req, res) => {
     // from middleware
     const userId = req.user._id
     try {
-        const employee = await Employee.findById({ _id: userId });
-        const savedJobs = await employee.populate("savedJobs")
+        const employee = await Employee.findById(userId).populate('savedJobs'); // Use findById with just the userId
+        const savedJobs = employee.savedJobs;
         res.send({ savedJobs, message: "Fetcehd all jobs successfully" });
     } catch (error) {
         console.error(error);
-        res.send({ success: false, message: "Error in saving job" });
+        res.send({ success: false, message: "Error in getting saved  job" });
+    }
+};
+
+// get all applied jobs
+export const getAllAppliedJobsController = async (req, res) => {
+    // from middleware
+    const userId = req.user._id
+    try {
+        const employee = await Employee.findById(userId).populate('appliedJobs'); // Use findById with just the userId
+        const appliedJobs = employee.appliedJobs;
+        res.send({ appliedJobs, message: "Fetcehd all jobs successfully" });
+    } catch (error) {
+        console.error(error);
+        res.send({ success: false, message: "Error in getting saved  job" });
     }
 };
 

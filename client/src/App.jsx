@@ -20,6 +20,8 @@ import EditProfile from "./page/EditProfile";
 import AboutUs from "./page/AboutUs";
 import Contact from "./page/Contact";
 import SinglePageCompanyProfile from "./page/SinglePageCompanyProfile";
+import SavedJobs from "./page/employeePages/SavedJobs";
+import AppliedJobs from "./page/employeePages/AppliedJobs";
 
 const App = () => {
   return (
@@ -58,6 +60,9 @@ const App = () => {
               </PrivateRoute>
             }
           />
+          <Route path="/savedjobs" element={<SavedJobs />} />
+          <Route path="/appliedjobs" element={<AppliedJobs />} />
+
           {/* Company Pages */}
           <Route
             path="/dashboard"

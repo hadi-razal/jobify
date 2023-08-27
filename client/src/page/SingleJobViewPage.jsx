@@ -44,7 +44,7 @@ const SingleJobViewPage = () => {
   useEffect(() => {
     getSingleJob();
   }, []);
-  
+
   useEffect(() => {
     getCompanyDetails();
   }, [job]);
@@ -82,6 +82,19 @@ const SingleJobViewPage = () => {
     }
   };
 
+  const handleApplicants = async () => {
+    try {
+      if (auth.role === "employee") {
+        return;
+      }
+      if (auth.role === "company") {
+        navigate(`/applicants/${job._id}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const navbarHeight = 99;
 
   return (
@@ -98,11 +111,18 @@ const SingleJobViewPage = () => {
               {job.location}
             </span>
           </div>
-          <span className="text-gray-500">&#8377; {job.salary}</span>
+          <span className="text-gray-500">
+            &#8377; {!job.salary ? "Not Disclosed" : job.salary}
+          </span>
           <div className="mt-4">
-            <div className="text-sm flex flex-col text-gray-600">
+            <div className="text-sm flex flex-col gap-3 text-gray-600">
               <span>Category: {job.category}</span>
-              <span className="text-green-500">
+              <span
+                onClick={() => handleApplicants()}
+                className={`text-green-500 ${
+                  auth.role === "company" && "cursor-pointer"
+                } `}
+              >
                 Applicants: {job?.applicants?.length}
               </span>
             </div>
@@ -139,7 +159,7 @@ const SingleJobViewPage = () => {
                 onClick={() => {
                   handleRemoveApplicantion();
                 }}
-                className="bg-red-600 px-7 py-3 w-[300px] rounded-lg "
+                className="bg-red-600 transition-all duration-700 ease-in-out px-7 py-3 w-[300px] rounded-lg "
               >
                 Cancel Application
               </button>
@@ -148,7 +168,7 @@ const SingleJobViewPage = () => {
                 onClick={() => {
                   handleApplyJob();
                 }}
-                className="bg-green-600 w-[300px] px-7 py-3 rounded-lg "
+                className="bg-green-600 transition-all duration-700 ease-in-out w-[300px] px-7 py-3 rounded-lg "
               >
                 Apply
               </button>

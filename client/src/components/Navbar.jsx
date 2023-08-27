@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { BsFillPersonFill } from "react-icons/bs";
+import { HiOutlineLogout } from "react-icons/hi";
 import NavMenu from "./NavMenu";
 
 const Navbar = () => {
-  const { auth } = useAuth();
+  const { logOut, auth } = useAuth();
   const location = useLocation();
   const [employeePopUp, setEmployeePopUp] = useState(false);
 
@@ -14,7 +15,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="w-full h-[99px] bg-green-600 flex items-center justify-between p-8 sticky top-0 z-10 ">
+    <div className="w-full h-[99px] bg-green-600 flex items-center justify-between p-8 sticky top-0 z-10">
       <Link
         to={
           auth.role === "company"
@@ -24,25 +25,24 @@ const Navbar = () => {
             : "/"
         }
       >
-        <div className="text-white font-bold text-[25px] cursor-pointer ">
+        <div className="text-white font-bold text-[25px] cursor-pointer">
           Jobify
         </div>
       </Link>
       {location.pathname === "/" ||
       location.pathname === "/about-us" ||
       location.pathname === "/contact" ? (
-        <div>
-          <ul className="flex items-center justify-center gap-5 text-white">
-            <Link to={"contact"}>
-              <li>Contact</li>
-            </Link>
-            <Link to={"about-us"}>
-              <li>About Us</li>
-            </Link>
-          </ul>
-        </div>
+        <ul className="flex items-center justify-center gap-5 text-white">
+          <li>
+            <Link to="/contact">Contact</Link>
+          </li>
+          <li>
+            <Link to="/about-us">About Us</Link>
+          </li>
+        </ul>
       ) : (
-        auth.token && (
+        auth.token &&
+        auth.role === "employee" && (
           <div>
             <BsFillPersonFill
               onClick={toggleEmployeePopUp}
@@ -51,7 +51,16 @@ const Navbar = () => {
           </div>
         )
       )}
-      {auth.token && employeePopUp && (
+      {auth.token && auth.role === "company" && (
+        <div
+          onClick={logOut}
+          className="flex items-center cursor-pointer justify-center gap-1"
+        >
+          <HiOutlineLogout className="text-[20px] text-white" />
+          {/* <button className="text-white text-[20px] shadow-2xl">Log Out</button> */}
+        </div>
+      )}
+      {auth.token && employeePopUp && auth.role === "employee" && (
         <div className="absolute top-[50px] shadow-2xl right-[20px]">
           <NavMenu onClose={toggleEmployeePopUp} />
         </div>

@@ -1,5 +1,5 @@
 import express from "express"
-import { getAllSavedJobs, getAllEmployees, registerEmployeeController, saveJobController, unsaveJobController } from "../controllers/employeeControllers.js";
+import { getAllAppliedJobsController, getAllEmployees, registerEmployeeController, saveJobController, unsaveJobController, getAllSavedJobsController } from "../controllers/employeeControllers.js";
 import { requireSignIn } from "../middlewares/authMiddleware.js";
 
 const router = express.Router()
@@ -15,7 +15,10 @@ router.put("/save-job/:jobId", requireSignIn, saveJobController)
 router.put("/unsave-job/:jobId", requireSignIn, unsaveJobController)
 
 // Fetch all saved jobs from user
-router.get("/get-saved-jobs", requireSignIn, getAllSavedJobs)
+router.get("/get-saved-jobs", requireSignIn, getAllSavedJobsController)
+
+// Fetch all applied jobs from user
+router.get("/get-applied-jobs", requireSignIn, getAllAppliedJobsController)
 
 // Fetch all employee accounts
 router.get("/get-employees", requireSignIn, getAllEmployees)

@@ -11,6 +11,7 @@ const CompanyRegisterForm = () => {
     email: "",
     password: "",
     companyEstablishedYear: 0,
+    location: "",
     role: "company", // Changed from 'employee' to 'company'
   });
 
@@ -87,6 +88,16 @@ const CompanyRegisterForm = () => {
             id="image"
             onChange={handleChange}
             className="border hidden border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
+          />
+
+          <label className="text-gray-700 font-bold">Location :</label>
+          <input
+            type="text"
+            name="location"
+            min="0"
+            value={formData.location}
+            onChange={handleChange}
+            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
           />
           <label className="text-gray-700 font-bold">
             Company Established Year:
