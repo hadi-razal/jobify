@@ -30,7 +30,6 @@ const CompanyDashboard = () => {
     getCompanyDetails();
   }, []);
 
-  // Check if company data is available before rendering
   if (!company) {
     return <LoadingPage />;
   }

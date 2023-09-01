@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { GrLocation } from "react-icons/gr";
 import JobCards from "../components/JobCards";
+import LoadingPage from "../components/LoadingPage";
 
 const SinglePageCompanyProfile = () => {
   const [company, setCompany] = useState(null);
@@ -46,6 +47,10 @@ const SinglePageCompanyProfile = () => {
   }, []);
 
   console.log(jobs);
+
+  if (!jobs && !company) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="p-3">

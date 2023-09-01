@@ -120,10 +120,24 @@ export const getAllAppliedJobsController = async (req, res) => {
     }
 };
 
-export const getAllEmployees = async (req, res) => {
+//getting all all employees
+export const getAllEmployeesController = async (req, res) => {
     try {
         const employees = await Employee.find()
         res.send({ employees, success: true, message: "fetched employees succesfully" });
+    } catch (error) {
+        console.error(error);
+        res.send({ success: false, message: "Error in fetching employees" });
+    }
+}
+
+
+//getting single employee details
+export const getSingleEmployeeController = async (req, res) => {
+    const { employeeId } = req.params
+    try {
+        const employee = await Employee.findById({ _id: employeeId })
+        res.send({ employee, success: true, message: "fetched employee succesfully" });
     } catch (error) {
         console.error(error);
         res.send({ success: false, message: "Error in fetching employees" });

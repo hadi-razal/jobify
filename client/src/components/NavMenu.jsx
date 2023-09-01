@@ -10,12 +10,12 @@ const NavMenu = ({ onClose }) => {
 
   const HandleSavedJobs = () => {
     navigate(`/savedjobs`);
-    onClose(); 
+    onClose();
   };
 
   const HandleAppliedJobs = () => {
     navigate(`/appliedjobs`);
-    onClose(); 
+    onClose();
   };
 
   useEffect(() => {
@@ -33,6 +33,16 @@ const NavMenu = ({ onClose }) => {
         } bg-white rounded-lg p-5 transition-all duration-300 ease-in-out transform absolute top-[40px] right-[10px] z-10 shadow-md`}
       >
         <ul>
+          <li
+            className="cursor-pointer text-center py-1 hover:bg-gray-100"
+            onClick={() => {
+              navigate("/view-profile");
+              onClose();
+            }}
+          >
+            Profile
+          </li>
+          <hr className="my-1" />
           <li
             className="cursor-pointer text-center py-1 hover:bg-gray-100"
             onClick={HandleAppliedJobs}

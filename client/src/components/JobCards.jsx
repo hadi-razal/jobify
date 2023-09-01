@@ -121,7 +121,7 @@ const JobCards = ({ job, reloadJobs }) => {
   };
 
   return (
-    <div className="relative m-2 border flex flex-col rounded-lg shadow-xl p-5 w-[350px] max-h-[300px] break-words ">
+    <div className="relative m-2 border flex flex-col rounded-lg shadow-xl p-5 w-[350px] h-[280px] break-words justify-evenly ">
       <div
         className="cursor-pointer"
         onClick={() => {

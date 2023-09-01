@@ -1,5 +1,5 @@
 import express from "express"
-import { getAllAppliedJobsController, getAllEmployees, registerEmployeeController, saveJobController, unsaveJobController, getAllSavedJobsController } from "../controllers/employeeControllers.js";
+import { getAllAppliedJobsController, registerEmployeeController, saveJobController, unsaveJobController, getAllSavedJobsController, getAllEmployeesController, getSingleEmployeeController } from "../controllers/employeeControllers.js";
 import { requireSignIn } from "../middlewares/authMiddleware.js";
 
 const router = express.Router()
@@ -21,7 +21,10 @@ router.get("/get-saved-jobs", requireSignIn, getAllSavedJobsController)
 router.get("/get-applied-jobs", requireSignIn, getAllAppliedJobsController)
 
 // Fetch all employee accounts
-router.get("/get-employees", requireSignIn, getAllEmployees)
+router.get("/get-employees", requireSignIn, getAllEmployeesController)
+
+//get a single employee
+router.get("/get-single-employee/:employeeId", requireSignIn, getSingleEmployeeController)
 
 
 export default router;

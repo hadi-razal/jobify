@@ -6,6 +6,8 @@ const userSchema = new mongoose.Schema({
     image: { type: String },
     password: { type: String, required: true },
     workExperience: { type: Number, required: true },
+    description: { type: String },
+    location: { type: String },
     education: { type: String, required: true },
     role: { type: String, default: 'employee' },
     savedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'jobs' }],

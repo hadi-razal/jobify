@@ -4,7 +4,6 @@ import axios from "axios";
 import JobSearchBar from "../../components/jobSearchBar";
 import JobSortBy from "../../components/jobSortBy";
 import { useAuth } from "../../context/authContext.jsx";
-import { Navigate } from "react-router-dom";
 import NoJobsFound from "../../components/NoJobsFound";
 
 const JobsPage = () => {
@@ -49,11 +48,6 @@ const JobsPage = () => {
     getAllJobs();
   }, [auth.token]);
 
-  if (auth.role === "company") {
-    return <Navigate to="/dashboard" />;
-  }
-
-  console.log(jobs);
 
   return (
     <div className="flex flex-col mb-4">

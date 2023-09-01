@@ -97,6 +97,10 @@ const SingleJobViewPage = () => {
 
   const navbarHeight = 99;
 
+  if (!job && !company) {
+    return <LoadingPage />;
+  }
+
   return (
     <div className="">
       {job ? (

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import JobCards from "../../components/JobCards";
 import NoJobsFound from "../../components/NoJobsFound";
+import LoadingPage from "../../components/LoadingPage";
 
 const SavedJobs = () => {
   const [savedJob, setSavedJob] = useState();
@@ -20,6 +21,11 @@ const SavedJobs = () => {
   useEffect(() => {
     getSavedJobs();
   }, []);
+
+  if (!savedJob) {
+    return <LoadingPage />;
+  }
+
   return (
     <div className="flex flex-col items-center justify-center">
       <h1 className="text-[40px] text-gray-400">Saved Jobs</h1>

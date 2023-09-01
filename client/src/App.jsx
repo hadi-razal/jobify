@@ -5,12 +5,12 @@ import Register from "./page/Register";
 import Home from "./page/Home";
 import Navbar from "./components/Navbar";
 import PageNotFound from "./page/PageNotFound";
-import PrivateRoute from "./components/secureRoute/PrivateRoute";
+import EmployeeRoute from "./components/secureRoute/EmployeeRoute";
 import JobsPage from "./page/employeePages/JobsPage";
 import { Toaster } from "react-hot-toast";
 import CompanyDashboard from "./page/companyPages/CompanyDashboard";
 import ViewEmployees from "./page/companyPages/ViewEmployees";
-import SinglePageEmployeeProfile from "./page/employeePages/SinglePageEmployeeProfile";
+import SinglePageEmployeeProfile from "./page/SinglePageEmployeeProfile";
 import PostedJobs from "./page/companyPages/PostedJobs";
 import SingleJobViewPage from "./page/SingleJobViewPage";
 import CreateJobPage from "./page/companyPages/CreateJobPage";
@@ -22,6 +22,9 @@ import Contact from "./page/Contact";
 import SinglePageCompanyProfile from "./page/SinglePageCompanyProfile";
 import SavedJobs from "./page/employeePages/SavedJobs";
 import AppliedJobs from "./page/employeePages/AppliedJobs";
+import CompanyRoute from "./components/secureRoute/CompanyRoute";
+import LoginRoute from "./components/secureRoute/LoginRoute";
+import ViewProfile from "./page/employeePages/ViewProfile";
 
 const App = () => {
   return (
@@ -34,30 +37,64 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register/:role" element={<Register />} />
           <Route path="*" element={<PageNotFound />} />
-          <Route path="/job/:jobId" element={<SingleJobViewPage />} />
-          <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
           <Route
+            path="/job/:jobId"
+            element={
+              <LoginRoute>
+                <SingleJobViewPage />
+              </LoginRoute>
+            }
+          />
+          <Route
+            path="/edit-profile"
+            element={
+              <LoginRoute>
+                <EditProfile />
+              </LoginRoute>
+            }
+          />
+          <Route
+            path="/view-profile"
+            element={
+              <LoginRoute>
+                <ViewProfile />
+              </LoginRoute>
+            }
+          />
+          <Route
             path="/company/:companyId"
-            element={<SinglePageCompanyProfile />}
+            element={
+              <LoginRoute>
+                <SinglePageCompanyProfile />
+              </LoginRoute>
+            }
+          />
+          <Route
+            path="/employee/:employeeId"
+            element={
+              <LoginRoute>
+                <SinglePageEmployeeProfile />
+              </LoginRoute>
+            }
           />
 
           {/* eployee pages */}
           <Route
             path="/jobs"
             element={
-              <PrivateRoute>
+              <EmployeeRoute>
                 <JobsPage />
-              </PrivateRoute>
+              </EmployeeRoute>
             }
           />
           <Route
             path="/employee/profile/:profileId"
             element={
-              <PrivateRoute>
+              <EmployeeRoute>
                 <SinglePageEmployeeProfile />
-              </PrivateRoute>
+              </EmployeeRoute>
             }
           />
           <Route path="/savedjobs" element={<SavedJobs />} />
@@ -67,16 +104,51 @@ const App = () => {
           <Route
             path="/dashboard"
             element={
-              <PrivateRoute>
+              <CompanyRoute>
                 <CompanyDashboard />
-              </PrivateRoute>
+              </CompanyRoute>
             }
           />
-          <Route path="/view-employees" element={<ViewEmployees />} />
-          <Route path="/all-posted-jobs" element={<PostedJobs />} />
-          <Route path="/create-job" element={<CreateJobPage />} />
-          <Route path="/job-edit/:jobId" element={<EditJob />} />
-          <Route path="/saved-profiles" element={<SavedProfiles />} />
+          <Route
+            path="/view-employees"
+            element={
+              <CompanyRoute>
+                <ViewEmployees />
+              </CompanyRoute>
+            }
+          />
+          <Route
+            path="/all-posted-jobs"
+            element={
+              <CompanyRoute>
+                <PostedJobs />
+              </CompanyRoute>
+            }
+          />
+          <Route
+            path="/create-job"
+            element={
+              <CompanyRoute>
+                <CreateJobPage />{" "}
+              </CompanyRoute>
+            }
+          />
+          <Route
+            path="/job-edit/:jobId"
+            element={
+              <CompanyRoute>
+                <EditJob />
+              </CompanyRoute>
+            }
+          />
+          <Route
+            path="/saved-profiles"
+            element={
+              <CompanyRoute>
+                <SavedProfiles />
+              </CompanyRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>

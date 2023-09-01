@@ -29,7 +29,7 @@ const AppliedJobs = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <h1 className="text-[40px] text-gray-400">Applied Jobs</h1>
-      <span className="text text-red-600 text-xs">
+      <span className="text text-red-600 text-[10px]">
         to cancel application click on view more
       </span>
       <div className="flex  items-center justify-center flex-wrap">

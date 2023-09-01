@@ -1,5 +1,4 @@
 import React from "react";
-import CompanyProfile from "../components/CompanyProfile";
 import CompanyProfileEdit from "../components/CompanyProfileEdit";
 import EmployeeProfileEdit from "../components/EmployeeProfileEdit";
 import { useAuth } from "../context/authContext";
