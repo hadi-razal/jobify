@@ -127,7 +127,9 @@ const SingleJobViewPage = () => {
                   auth.role === "company" && "cursor-pointer"
                 } `}
               >
-                Applicants: {job?.applicants?.length}
+                {auth.role === "company" ? "View Applicants" : "Applicants"} :{" "}
+                {""}
+                {job?.applicants?.length}
               </span>
             </div>
 

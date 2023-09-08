@@ -3,6 +3,7 @@ import { useAuth } from "../../context/authContext";
 import axios from "axios";
 import JobCards from "../../components/JobCards";
 import { Navigate, useNavigate } from "react-router-dom";
+import LoadingPage from "../../components/LoadingPage";
 
 const PostedJobs = () => {
   const { auth } = useAuth();
@@ -27,6 +28,10 @@ const PostedJobs = () => {
 
   if (!auth.token) {
     return <Navigate to="/login" />;
+  }
+
+  if (!jobs) {
+    return <LoadingPage />;
   }
 
   return (

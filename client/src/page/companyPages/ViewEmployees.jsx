@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import EmployeeCard from "../../components/EmployeeCard";
 import { useAuth } from "../../context/authContext";
 import axios from "axios";
+import LoadingPage from "../../components/LoadingPage";
 
 const ViewEmployees = () => {
   const { auth } = useAuth();
-  const [employees, setEmployees] = useState([]); // Initialize as an empty array
+  const [employees, setEmployees] = useState();
 
   const getAllEmployees = async () => {
     try {
@@ -27,10 +28,16 @@ const ViewEmployees = () => {
     getAllEmployees();
   }, [auth.token]);
 
+  if (!employees) {
+    return <LoadingPage />;
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center mb-5 cursor-pointer">
-      <h1 className="text-green-600 my-4 text-3xl">Employees</h1>
-      <div className="flex flex-col items-center justify-center gap-3 sm:flex-row flex-wrap">
+    <div className="flex flex-col items-center justify-center mb-5 ">
+      <h1 className="text-gray-400 my-4 text-[30px]">
+        All Employees Rgistered in Jobify
+      </h1>
+      <div className="flex flex-col items-center justify-center gap-3 sm:flex-row cursor-pointer flex-wrap">
         {employees.map((employee) => (
           <div key={employee._id}>
             <EmployeeCard

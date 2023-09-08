@@ -1,5 +1,5 @@
 import express from "express"
-import { getAllAppliedJobsController, registerEmployeeController, saveJobController, unsaveJobController, getAllSavedJobsController, getAllEmployeesController, getSingleEmployeeController } from "../controllers/employeeControllers.js";
+import { getAllAppliedJobsController, registerEmployeeController, saveJobController, unsaveJobController, getAllSavedJobsController, getAllEmployeesController, getSingleEmployeeController, updateEmployeeController } from "../controllers/employeeControllers.js";
 import { requireSignIn } from "../middlewares/authMiddleware.js";
 
 const router = express.Router()
@@ -7,6 +7,9 @@ const router = express.Router()
 
 // Register a account as employee
 router.post("/register", registerEmployeeController)
+
+// update a account profile
+router.post("/update-profile", requireSignIn, updateEmployeeController )
 
 // Saving the job to users database
 router.put("/save-job/:jobId", requireSignIn, saveJobController)

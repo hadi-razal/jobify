@@ -36,6 +36,32 @@ export const registerEmployeeController = async (req, res) => {
     }
 };
 
+export const updateEmployeeController = async (req, res) => {
+    try {
+        const { name, location, description, workExperience, education } = req.body;
+        const employeeId = req.user._id
+        const updatedEmployee = await Employee.findByIdAndUpdate(
+            employeeId,
+            {
+                name,
+                location,
+                description,
+                workExperience,
+                education,
+            },
+            { new: true }
+        );
+
+        if (!updatedEmployee) {
+            return res.status(404).json({ success: false, message: 'Employee not found' });
+        }
+        res.send({ updatedEmployee, success: true, message: "Profile updated successfully" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ success: false, message: "Error in updating profile Employee" });
+    }
+};
+
 
 // Saving a Job to employee database
 export const saveJobController = async (req, res) => {

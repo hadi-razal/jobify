@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { workExperience } from "../../constant/workExperience";
 import { categoryList } from "../../constant/jobcategory";
+import { workExperienceOptions } from "../../constant/workExperience";
 
 const EditJob = () => {
   const params = useParams();
@@ -90,7 +90,7 @@ const EditJob = () => {
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
           >
             <option value="">Select a Work Experience</option>
-            {workExperience?.map((c, index) => (
+            {workExperienceOptions?.map((c, index) => (
               <option key={index} value={c}>
                 {c !== 0 ? `${c} +` : c}
               </option>

@@ -3,10 +3,11 @@ import EmployeeCard from "../../components/EmployeeCard";
 import { useAuth } from "../../context/authContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import LoadingPage from "../../components/LoadingPage";
 
 const SavedProfiles = () => {
   const { auth } = useAuth();
-  const [employees, setEmployees] = useState([]);
+  const [employees, setEmployees] = useState();
   const navigate = useNavigate();
 
   const getAllEmployees = async () => {
@@ -30,7 +31,9 @@ const SavedProfiles = () => {
     getAllEmployees();
   }, [auth.token]);
 
-  console.log(employees);
+  if (!employees) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center mb-5 cursor-pointer">

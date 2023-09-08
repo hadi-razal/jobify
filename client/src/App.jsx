@@ -25,6 +25,7 @@ import AppliedJobs from "./page/employeePages/AppliedJobs";
 import CompanyRoute from "./components/secureRoute/CompanyRoute";
 import LoginRoute from "./components/secureRoute/LoginRoute";
 import ViewProfile from "./page/employeePages/ViewProfile";
+import ApplicantsPage from "./page/companyPages/ApplicantsPage";
 
 const App = () => {
   return (
@@ -138,6 +139,14 @@ const App = () => {
             element={
               <CompanyRoute>
                 <EditJob />
+              </CompanyRoute>
+            }
+          />
+          <Route
+            path="/applicants/:jobId"
+            element={
+              <CompanyRoute>
+                <ApplicantsPage />
               </CompanyRoute>
             }
           />

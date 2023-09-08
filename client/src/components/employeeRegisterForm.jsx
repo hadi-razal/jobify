@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { educationOptions } from "../constant/educationOptions"; // Make sure to import educationOptions
-import { workExperience } from "../constant/workExperience";
+import { workExperienceOptions } from "../constant/workExperience";
 
 const EmployeeRegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -101,7 +101,7 @@ const EmployeeRegisterForm = () => {
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
           >
             <option value="none">Select a Work Experience</option>
-            {workExperience?.map((c, index) => (
+            {workExperienceOptions?.map((c, index) => (
               <option key={index} value={c}>
                 {c !== 0 ? `${c} +` : c}
               </option>

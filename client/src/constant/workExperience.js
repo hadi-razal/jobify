@@ -1,4 +1,4 @@
-export const workExperience = [
+export const workExperienceOptions = [
     0,
     1,
     2,
