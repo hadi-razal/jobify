@@ -50,7 +50,7 @@ const JobsPage = () => {
 
 
   return (
-    <div className="flex flex-col mb-4">
+    <div className="flex flex-col gap-2 mb-4">
       {/* <h1 className="text-center text-[80px] text-gray-500">Jobs</h1> */}
       <div className="text-center mt-3 bg-gray-300 mx-10 md:mx-16 p-5 rounded-lg">
         <JobSearchBar setJobs={setJobs} />
@@ -63,7 +63,7 @@ const JobsPage = () => {
           <NoJobsFound />
         </div>
       )}
-      <div className="flex  items-center justify-center flex-wrap">
+      <div className="flex  items-center justify-center gap-1 flex-wrap">
         {jobs?.map((job) => (
           <JobCards key={job._id} job={job} reloadJobs={getAllJobs} />
         ))}

@@ -79,17 +79,21 @@ export const deleteJobController = async (req, res) => {
     }
 }
 
-// get all job controllers
+// Get all job postings
 export const getAllJobController = async (req, res) => {
     try {
-        const jobs = await Job.find({})
-        console.log(jobs)
-        res.status(200).send({ jobs, success: true, message: "Fetched all jobs by single company succesfully" })
+        const jobs = await Job.find({});
+
+        // If no jobs found
+        if (jobs.length === 0) {
+            return res.status(404).send({ success: false, message: "No job posts found" });
+        }
+        res.status(200).send({ jobs, success: true, message: "Fetched all job posts successfully" });
     } catch (error) {
-        console.log(error)
-        res.status(400).send({ success: false, message: "error while fetching job posts for single company" })
+        console.error("Error fetching job posts:", error);
+        res.status(500).send({ success: false, message: "Error while fetching job posts" });
     }
-}
+};
 
 // get all job from a single company 
 export const getSingleCompanyJobsController = async (req, res) => {

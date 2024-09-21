@@ -1,10 +1,10 @@
-import React from "react";
 import { Navigate, useParams } from "react-router-dom";
 import CompanyRegisterForm from "../components/companyRegisterForm";
 import EmployeeRegisterForm from "../components/employeeRegisterForm";
 import { useAuth } from "../context/authContext";
 
 const Register = () => {
+  
   const { role } = useParams();
   const { auth } = useAuth();
 

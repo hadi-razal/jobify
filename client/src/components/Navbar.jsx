@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { BsFillPersonFill } from "react-icons/bs";
@@ -15,57 +15,56 @@ const Navbar = () => {
   };
 
   return (
-    <div className="w-full h-[99px] bg-green-600 flex items-center justify-between p-8 sticky top-0 z-10">
+    <header className="w-full h-[80px] bg-green-600 flex items-center justify-between px-6 lg:px-12 sticky top-0 z-50 shadow-lg">
+      {/* Logo */}
       <Link
         to={
-          auth.role === "company"
+          auth?.role === "company"
             ? "/dashboard"
-            : auth.role === "employee"
+            : auth?.role === "employee"
             ? "/jobs"
             : "/"
         }
+        className="text-white font-bold text-2xl cursor-pointer"
       >
-        <div className="text-white font-bold text-[25px] cursor-pointer">
-          Jobify
-        </div>
+        Jobify
       </Link>
-      {location.pathname === "/" ||
-      location.pathname === "/about-us" ||
-      location.pathname === "/contact" ? (
-        <ul className="flex items-center justify-center gap-5 text-white">
-          <li>
-            <Link to="/contact">Contact</Link>
-          </li>
-          <li>
-            <Link to="/about-us">About Us</Link>
-          </li>
-        </ul>
+
+      {/* Navigation Links */}
+      {location.pathname === "/" || location.pathname === "/about-us" || location.pathname === "/contact" ? (
+        <nav className="hidden md:flex items-center gap-6 text-white text-lg">
+          <Link to="/about-us" className="hover:text-gray-200 transition">About Us</Link>
+          <Link to="/contact" className="hover:text-gray-200 transition">Contact</Link>
+        </nav>
       ) : (
-        auth.token &&
-        auth.role === "employee" && (
-          <div>
+        auth?.token && auth?.role === "employee" && (
+          <div className="relative">
             <BsFillPersonFill
               onClick={toggleEmployeePopUp}
-              className="text-white w-7 h-7 cursor-pointer"
+              className="text-white w-8 h-8 cursor-pointer hover:text-gray-200 transition"
             />
           </div>
         )
       )}
-      {auth.token && auth.role === "company" && (
+
+      {/* Logout button for companies */}
+      {auth?.token && auth?.role === "company" && (
         <div
           onClick={logOut}
-          className="flex items-center cursor-pointer justify-center gap-1"
+          className="flex items-center cursor-pointer gap-2 text-white hover:text-gray-200 transition"
         >
-          <HiOutlineLogout className="text-[20px] text-white" />
-          {/* <button className="text-white text-[20px] shadow-2xl">Log Out</button> */}
+          <HiOutlineLogout className="text-2xl" />
+          <span className="text-lg">Log Out</span>
         </div>
       )}
-      {auth.token && employeePopUp && auth.role === "employee" && (
-        <div className="absolute top-[50px] shadow-2xl right-[20px]">
+
+      {/* Employee Dropdown Menu */}
+      {auth?.token && employeePopUp && auth?.role === "employee" && (
+        <div className="absolute top-[80px] right-[20px] shadow-2xl rounded-lg bg-white p-4 w-[200px]">
           <NavMenu onClose={toggleEmployeePopUp} />
         </div>
       )}
-    </div>
+    </header>
   );
 };
 

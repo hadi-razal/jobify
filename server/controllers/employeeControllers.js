@@ -13,11 +13,8 @@ export const registerEmployeeController = async (req, res) => {
 
         const lowerCaseEmail = email.toLowerCase()
 
-        if (isCompanyEmailExist) {
-            return res.send({ success: false, message: "Email is already use in employee account" });
-        }
-        if (isEmployeeEmailExist) {
-            return res.send({ success: false, message: "Email is already in use" });
+        if (isCompanyEmailExist || isEmployeeEmailExist) {
+            return res.status(400).send({ success: false, message: "Email is already use  account" });
         }
 
         const hashedPassword = await hashPassword(password)

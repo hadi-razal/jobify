@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
 import { GrLocation } from "react-icons/gr";
 import { BsFillBookmarkFill, BsBookmark } from "react-icons/bs";
 import { useAuth } from "../context/authContext";
@@ -121,7 +121,7 @@ const JobCards = ({ job, reloadJobs }) => {
   };
 
   return (
-    <div className="relative m-2 border flex flex-col rounded-lg shadow-xl p-5 w-[350px] h-[280px] break-words justify-evenly ">
+    <div className="relative  border flex flex-col rounded-sm p-5 sm:w-[320px] w-full h-[280px] break-words justify-evenly ">
       <div
         className="cursor-pointer"
         onClick={() => {
