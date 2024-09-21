@@ -15,7 +15,7 @@ router.put("/update-job/:jobId", requireSignIn, jobUpdateController);
 router.delete("/delete-job/:jobId", requireSignIn, deleteJobController);
 
 // get all job posts
-router.get("/get-jobs", requireSignIn, getAllJobController);
+router.get("/get-jobs", getAllJobController);
 
 // get all job from a single company 
 router.get("/get-all-jobs/single-company/:companyId", requireSignIn, getSingleCompanyJobsController);
@@ -42,7 +42,7 @@ router.get("/search-jobs", requireSignIn, jobSearchController)
 router.get("/get-jobs-mycompany", requireSignIn, getCompanyJobsController)
 
 // get the total number or jobs posted and the combined total number of applicants 
-router.get("/total-jobs/total-applicants", requireSignIn, getJobsStatusController)
+router.get("/total-jobs/total-applicants", requireSignIn , getJobsStatusController)
 
 
 //middleware test

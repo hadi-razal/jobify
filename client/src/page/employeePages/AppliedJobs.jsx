@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import JobCards from "../../components/JobCards";
 import NoJobsFound from "../../components/NoJobsFound";
 import LoadingPage from "../../components/LoadingPage";

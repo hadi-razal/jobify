@@ -82,8 +82,8 @@ export const deleteJobController = async (req, res) => {
 // get all job controllers
 export const getAllJobController = async (req, res) => {
     try {
-
-        const jobs = await Job.find()
+        const jobs = await Job.find({})
+        console.log(jobs)
         res.status(200).send({ jobs, success: true, message: "Fetched all jobs by single company succesfully" })
     } catch (error) {
         console.log(error)
