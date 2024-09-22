@@ -57,7 +57,7 @@ const JobCards = ({ job, reloadJobs }) => {
         Are You Sure?
         <div className="flex gap-3">
           <button
-            className="bg-green-600 rounded-lg p-2"
+            className="bg-blue-800 rounded-lg p-2"
             onClick={() => {
               toast.dismiss(t.id);
               handleDelete(job._id);
@@ -113,41 +113,51 @@ const JobCards = ({ job, reloadJobs }) => {
   };
 
   const makeDescriptionVisible = (description) => {
-    if (description?.length > 50) {
-      return description.slice(0, 60) + "...";
+    if (description?.length > 30) {
+      return description.slice(0, 30) + "...";
     } else {
       return description;
     }
   };
 
+  const formatTextWithLineBreaks = (text) => {
+    if (!text) return "";
+
+    return text
+      .replace(/## (.+)/g, '<h2 class="text-lg font-semibold mt-2">$1</h2>') // Convert ## to h2
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\n\n/g, "</p><p>") // Convert double line breaks to paragraph breaks
+      .replace(/\n/g, "<br>"); // Convert single line breaks to <br>
+  };
+
   return (
-    <div className="relative  border flex flex-col rounded-sm p-5 sm:w-[320px] w-full h-[280px] break-words justify-evenly ">
+    <div className="relative border flex gap-2 flex-col bg-slate-50 rounded-md p-5 sm:w-[300px] min-h-[290px] max-h-[290px] w-full  break-words justify-evenly ">
       <div
         className="cursor-pointer"
         onClick={() => {
           navigate(`/job/${job._id}`);
         }}
       >
-        <div className="overflow-y-hidden">
-          <div className="flex flex-col items-center justify-center">
-            <h3 className="text-lg font-bold">{job?.title}</h3>
-            <span className="text-xs font-black flex items-center justify-center">
-              <GrLocation /> {job?.location}
-            </span>
-          </div>
-          <h1 className="text-sm">
-            <span>Min Work Exp :</span>
-            {job?.workExperience} +
-          </h1>
-          <p className="text-sm overflow-auto">
-            {makeDescriptionVisible(job?.description)}
-          </p>
-        </div>
-        <div>
+        <div className="flex flex-col items-start justify-center gap-1">
+          <h3 className="text-lg font-semibold">{job?.title}</h3>
+          <span className="text-xs font-semibold flex gap-1 items-center justify-center">
+            <GrLocation /> {job?.location}
+          </span>
+          <p className="text-sm overflow-auto">{}</p>
+          <p
+            className="text-gray-700 font-normal"
+            dangerouslySetInnerHTML={{
+              __html: formatTextWithLineBreaks(
+                makeDescriptionVisible(job?.description) ||
+                  "No description available"
+              ),
+            }}
+          ></p>
           <span className="text-xs text-gray-500">
-            Posted On: {new Date(job?.createdAt).toLocaleDateString("en-GB")}
+            Posted On : {new Date(job?.createdAt).toLocaleDateString("en-GB")}
           </span>
         </div>
+
         <div className="flex items-center text-gray-600 text-sm ">
           <img
             className="w-10 h-10 rounded-full"
@@ -158,7 +168,7 @@ const JobCards = ({ job, reloadJobs }) => {
         </div>
         <p
           className={`${
-            job?.applicants?.length === 0 ? "text-gray-400" : "text-green-400"
+            job?.applicants?.length === 0 ? "text-gray-400" : "text-blue-950"
           } text-xs`}
         >
           <span>
@@ -170,13 +180,13 @@ const JobCards = ({ job, reloadJobs }) => {
       <div className="flex justify-between items-center mt-2">
         {auth.role === "employee" &&
           (job?.applicants?.includes(auth.userId) ? (
-            <button className="bg-green-300  transition-all duration-1000 ease-in-out hover:bg-green-300 cursor-not-allowed text-white font-bold rounded-md px-4 py-2">
+            <button className="bg-blue-950 bg-opacity-90 transition-all duration-1000 ease-in-out  cursor-not-allowed text-white font-bold rounded-md px-4 py-2">
               Applied
             </button>
           ) : (
             <button
               onClick={() => handleApplyJob(job._id)}
-              className="bg-green-400  transition-all duration-1000 ease-in-out hover:bg-green-600 text-white font-bold rounded-md px-4 py-2"
+              className="bg-blue-950  transition-all duration-1000 ease-in-out hover:bg-blue-900 text-white font-bold rounded-md px-4 py-2"
             >
               Apply
             </button>

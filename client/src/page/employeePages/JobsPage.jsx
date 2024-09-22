@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import JobCards from "../../components/JobCards";
 import axios from "axios";
 import JobSearchBar from "../../components/jobSearchBar";
@@ -48,25 +48,27 @@ const JobsPage = () => {
     getAllJobs();
   }, [auth.token]);
 
-
   return (
-    <div className="flex flex-col gap-2 mb-4">
+    <div className="flex flex-col  gap-2 mb-4 py-5 px-3 md:px-5">
       {/* <h1 className="text-center text-[80px] text-gray-500">Jobs</h1> */}
-      <div className="text-center mt-3 bg-gray-300 mx-10 md:mx-16 p-5 rounded-lg">
+      <div className="text-center flex items-center justify-center w-full">
         <JobSearchBar setJobs={setJobs} />
       </div>
-      <div className="mt-3 mx-10 flex justify-end md:mx-16 rounded-lg">
-        {jobs?.length !== 0 && <JobSortBy sortJob={sortJob} />}
-      </div>
+
       {jobs?.length === 0 && (
         <div className="flex justify-center items-center h-[30vh]">
           <NoJobsFound />
         </div>
       )}
-      <div className="flex  items-center justify-center gap-1 flex-wrap">
-        {jobs?.map((job) => (
-          <JobCards key={job._id} job={job} reloadJobs={getAllJobs} />
-        ))}
+      <div className="flex flex-col gap-2  items-center justify-center w-full">
+        <div className="flex justify-end items-center max-w-3xl">
+          {jobs?.length !== 0 && <JobSortBy sortJob={sortJob} />}
+        </div>
+        <div className="flex justify-center items-center  rounded-md  gap-2 flex-wrap max-w-7xl">
+          {jobs?.map((job) => (
+            <JobCards key={job._id} job={job} reloadJobs={getAllJobs} />
+          ))}
+        </div>
       </div>
     </div>
   );

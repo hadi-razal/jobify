@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from "react";
 // import axios from "axios";
 
 const JobSortBy = ({ sortJob }) => {
@@ -10,7 +11,7 @@ const JobSortBy = ({ sortJob }) => {
   return (
     <div>
       <select
-        className="bg-gray-200 max-w-[250px] p-2 focus:outline-none rounded-lg"
+        className="bg-slate-200 font-normal w-full p-2 focus:outline-none rounded-md"
         value={selectedOption}
         onChange={(e) => setSelectedOption(e.target.value)}
       >

@@ -15,7 +15,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="w-full h-[80px] bg-green-600 flex items-center justify-between px-6 lg:px-12 sticky top-0 z-50 shadow-lg">
+    <header className="w-full h-[80px] bg-blue-950 flex items-center justify-between px-6 lg:px-12 sticky top-0 z-50 shadow-lg">
       {/* Logo */}
       <Link
         to={
@@ -25,7 +25,7 @@ const Navbar = () => {
             ? "/jobs"
             : "/"
         }
-        className="text-white font-bold text-2xl cursor-pointer"
+        className="text-white font-bold text-[35px] cursor-pointer"
       >
         Jobify
       </Link>

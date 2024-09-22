@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import LoadingPage from "../components/LoadingPage";
@@ -64,7 +64,8 @@ const SingleJobViewPage = () => {
       console.log(error);
     }
   };
-  const handleRemoveApplicantion = async () => {
+
+  const handleRemoveApplication = async () => {
     try {
       const res = await axios.put(
         `${import.meta.env.VITE_SERVER_URL}/job/remove-job-application/${
@@ -101,29 +102,37 @@ const SingleJobViewPage = () => {
     return <LoadingPage />;
   }
 
+  const formatTextWithLineBreaks = (text) => {
+    if (!text) return "";
+
+    return text
+      .replace(/## (.+)/g, '<h2 class="text-lg font-semibold mt-2">$1</h2>') // Convert ## to h2
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\n\n/g, "</p><p>") // Convert double line breaks to paragraph breaks
+      .replace(/\n/g, "<br>"); // Convert single line breaks to <br>
+  };
+
   return (
     <div className="">
-      {job ? (
+      {job && (
         <div
-          className="bg-white p-10 rounded-lg shadow-md"
+          className="bg-white md:px-5 px-3 py-5 rounded-sm"
           style={{ minHeight: `calc(100vh - ${navbarHeight}px)` }}
         >
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-semibold">{job.title}</h1>
-            <span className="text-gray-600 flex justify-center items-center gap-2">
-              <GrLocation />
-              {job.location}
-            </span>
-          </div>
-          <span className="text-gray-500">
-            &#8377; {!job.salary ? "Not Disclosed" : job.salary}
-          </span>
-          <div className="mt-4">
-            <div className="text-sm flex flex-col gap-3 text-gray-600">
-              <span>Category: {job.category}</span>
+          <div className="flex flex-col items-start mb-4">
+            <div className="flex flex-col items-start gap-2">
+              <h1 className="text-2xl font-semibold">{job.title}</h1>
+              <span className="text-gray-600 flex justify-center items-center gap-2">
+                <GrLocation />
+                {job.location}
+              </span>
+              <span className="text-gray-500">
+                &#8377; {!job.salary ? "Not Disclosed" : job.salary}
+              </span>
+              <span className="text-gray-500 font-normal">{job.category}</span>
               <span
                 onClick={() => handleApplicants()}
-                className={`text-green-500 ${
+                className={`text-blue-950 ${
                   auth.role === "company" && "cursor-pointer"
                 } `}
               >
@@ -137,13 +146,13 @@ const SingleJobViewPage = () => {
               onClick={() => {
                 navigate(`/company/${company._id}`);
               }}
-              className="p-3 my-3 cursor-pointer bg-gray-200 shadow-xl rounded-lg"
+              className="p-3 my-3 cursor-pointer rounded-sm"
             >
               <div className="flex gap-3 items-center justify-start">
                 <div className="">
                   <img
                     src="https://static.vecteezy.com/system/resources/previews/000/592/901/non_2x/vector-office-building-icon.jpg"
-                    className="rounded-full shadow-md p-2 w-16 h-16"
+                    className=" p-2 w-16 h-16"
                     alt="Company Logo"
                   />
                 </div>
@@ -155,17 +164,24 @@ const SingleJobViewPage = () => {
                 </div>
               </div>
             </div>
-            <h2 className="text-lg font-semibold mt-2">Description</h2>
-            <p className="text-gray-700">{job.description}</p>
+
+            <p
+              className="text-gray-700 font-normal"
+              dangerouslySetInnerHTML={{
+                __html: formatTextWithLineBreaks(
+                  job?.description || "No description available"
+                ),
+              }}
+            ></p>
           </div>
 
-          <div className="h-16 my-7 rounded-lg flex justify-center items-center text-white font-semibold">
+          <div className="h-16 my-7 rounded-md flex justify-center items-center text-white font-semibold">
             {job.applicants.includes(auth?.userId) ? (
               <button
                 onClick={() => {
-                  handleRemoveApplicantion();
+                  handleRemoveApplication();
                 }}
-                className="bg-red-600 transition-all duration-700 ease-in-out px-7 py-3 w-[300px] rounded-lg "
+                className="bg-red-600 transition-all duration-700 ease-in-out px-7 py-3 w-[300px] rounded-md"
               >
                 Cancel Application
               </button>
@@ -174,16 +190,12 @@ const SingleJobViewPage = () => {
                 onClick={() => {
                   handleApplyJob();
                 }}
-                className="bg-green-600 transition-all duration-700 ease-in-out w-[300px] px-7 py-3 rounded-lg "
+                className="bg-blue-950 transition-all duration-700 ease-in-out w-[300px] px-7 py-3 rounded-md"
               >
                 Apply
               </button>
             )}
           </div>
-        </div>
-      ) : (
-        <div className="text-center text-gray-600">
-          <LoadingPage />
         </div>
       )}
     </div>

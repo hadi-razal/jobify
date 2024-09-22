@@ -1,71 +1,89 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 import { categoryList } from "../constant/jobcategory";
 import { BiSearchAlt } from "react-icons/bi";
 import axios from "axios";
 
 const JobSearchBar = ({ setJobs }) => {
   const [keyword, setKeyword] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("all");
 
   const handleSearch = async () => {
     try {
-      let categoryParam = category; // Use the selected category
-      if (category === "all") {
-        categoryParam = undefined; // Send undefined to the backend to indicate all categories
-      }
+      const categoryParam = category === "all" ? undefined : category;
 
       const res = await axios.get(
         `${import.meta.env.VITE_SERVER_URL}/job/search-jobs`,
         {
           params: {
             keyword,
-            category: categoryParam, // Use the modified category parameter
+            category: categoryParam,
           },
         }
       );
 
-      if (res.data.success === true) {
+      if (res.data.success) {
         setJobs(res.data.searchResults);
-        console.log(res.data.searchResults);
       } else {
-        console.log(res.data.message);
+        console.error(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching jobs:", error);
     }
   };
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between">
-      <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-1">
-        <input
-          type="text"
-          value={keyword}
-          placeholder="Search"
-          onChange={(e) => setKeyword(e.target.value)}
-          className="bg-gray-200 p-2 focus:outline-none w-[250px] rounded-lg"
-        />
+    <div className="bg-slate-100 p-4 rounded-md max-w-7xl w-full">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-2">
+        {/* Search Input */}
+        <div className="flex flex-col w-full">
+          <label htmlFor="jobSearch" className="sr-only">
+            Search Jobs
+          </label>
+          <input
+            type="text"
+            id="jobSearch"
+            value={keyword}
+            placeholder="Search jobs..."
+            onChange={(e) => setKeyword(e.target.value)}
+            className="bg-white w-full font-normal  border-gray-300 p-3 rounded-md  focus:outline-none"
+            aria-label="Job Search Input"
+          />
+        </div>
 
-        <select
-          id="categorySelect"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="bg-gray-200 w-[250px] p-2 focus:outline-none rounded-lg"
-        >
-          <option value="all">All Category</option>
-          {categoryList.map((c, index) => (
-            <option key={index} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
+        {/* Category Select */}
+        <div className="flex flex-col w-full">
+          <label htmlFor="categorySelect" className="sr-only">
+            Select Category
+          </label>
+          <select
+            id="categorySelect"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="bg-white border font-normal  w-full p-3 rounded-md focus:outline-none"
+            aria-label="Category Select"
+          >
+            <option value="all">All Categories</option>
+            {categoryList.map((c, index) => (
+              <option key={index} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Search Button */}
+        <div className="flex flex-col w-full">
+          <button
+            onClick={handleSearch}
+            className="flex w-full items-center justify-center bg-blue-950 hover:bg-blue-900 text-white font-normal p-3 rounded-md transition-all focus:ring-2 focus:ring-blue-600 focus:outline-none"
+            aria-label="Search Button"
+          >
+            <BiSearchAlt className="mr-2" />
+            Search
+          </button>
+        </div>
       </div>
-      <button
-        onClick={handleSearch}
-        className="flex items-center max-w-[250px] justify-center bg-green-500 hover:bg-green-600 text-white font-bold rounded-md p-2 md:p-5 mt-2 md:mt-0 w-full md:w-auto"
-      >
-        <BiSearchAlt />
-      </button>
     </div>
   );
 };
