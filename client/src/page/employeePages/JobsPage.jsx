@@ -4,7 +4,7 @@ import axios from "axios";
 import JobSearchBar from "../../components/jobSearchBar";
 import JobSortBy from "../../components/jobSortBy";
 import { useAuth } from "../../context/authContext.jsx";
-import NoJobsFound from "../../components/NoJobsFound";
+import BounceLoader from "react-spinners/BounceLoader";
 
 const JobsPage = () => {
   const { auth } = useAuth();
@@ -56,14 +56,16 @@ const JobsPage = () => {
       </div>
 
       {jobs?.length === 0 && (
-        <div className="flex justify-center items-center h-[30vh]">
-          <NoJobsFound />
+        <div className="flex flex-col items-center pt-20">
+          <BounceLoader color="#172554" className=" text-blue-950 text-4xl" />
         </div>
       )}
+
       <div className="flex flex-col gap-2  items-center justify-center w-full">
-        <div className="flex justify-end items-center max-w-3xl">
+        <div className="flex justify-end items-center w-full max-w-7xl">
           {jobs?.length !== 0 && <JobSortBy sortJob={sortJob} />}
         </div>
+
         <div className="flex justify-center items-center  rounded-md  gap-2 flex-wrap max-w-7xl">
           {jobs?.map((job) => (
             <JobCards key={job._id} job={job} reloadJobs={getAllJobs} />

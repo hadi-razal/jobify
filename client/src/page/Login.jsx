@@ -1,122 +1,129 @@
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../context/authContext";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { auth, setAuth } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/auth/login`,
-        {
-          email,
-          password,
-        }
+        { email, password }
       );
-      console.log(res.data.success);
-      if (res.data.success === false) {
+
+      if (!res.data.success) {
         toast.error(res.data.message);
+        setIsLoading(false);
+        return;
       }
-      if (res.data.user.token) {
-        setAuth({
-          name: res.data.user.name,
-          userId: res.data.user.userId,
-          token: res.data.user.token,
-          email: res.data.user.email,
-          role: res.data.user.role,
-        });
+
+      const { token, name, userId, email: userEmail, role } = res.data.user;
+
+      if (token) {
+        setAuth({ name, userId, token, email: userEmail, role });
         localStorage.setItem(
           "auth",
-          JSON.stringify({
-            name: res.data.user.name,
-            userId: res.data.user.userId,
-            token: res.data.user.token,
-            email: res.data.user.email,
-            role: res.data.user.role,
-          })
+          JSON.stringify({ name, userId, token, email: userEmail, role })
         );
         setEmail("");
         setPassword("");
-        if (res.data.user.role === "company") {
-          navigate("/dashboard");
-        } else if (res.data.user.role === "employee") {
-          navigate("/jobs");
-        }
+
+        // Navigate based on user role
+        navigate(role === "company" ? "/dashboard" : "/jobs");
         toast.success(res.data.message);
       }
-
-      // alert(res.data.message);
+      setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error("An error occurred. Please try again.");
+      setIsLoading(false);
     }
   };
-  console.log(auth);
 
+  // Redirect if user is already authenticated
   if (auth.token) {
-    return <Navigate to={"/jobs"} />;
+    return <Navigate to="/jobs" />;
   }
-  return (
-    <div className=" h-[80vh] flex items-center justify-center">
-      <Toaster />
-      <div className="p-4 bg-white rounded-lg shadow-lg">
-        <form onSubmit={handleSubmit} className="flex flex-col">
-          <label htmlFor="email" className="text-gray-700 font-bold mb-2">
-            Email:
-          </label>
-          <input
-            autoComplete="nope"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            type="text"
-            id="email"
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-            placeholder="Enter your email"
-          />
 
-          <label
-            htmlFor="password"
-            className="text-gray-700 font-bold mb-2 mt-4"
-          >
-            Password:
-          </label>
-          <input
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            type="password"
-            id="password"
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-            placeholder="Enter your password"
-          />
+  return (
+    <div className="relative h-[80vh] flex items-center justify-center">
+      <Toaster />
+
+      <div className="rounded-sm flex flex-col items-center justify-center gap-4 sm:w-[400px] w-full px-4 py-7">
+        <div className="flex flex-col items-start justify-center w-full">
+          <span className="text-[30px] font-semibold">
+            Login to your account
+          </span>
+          <span className="text-sm font-light">
+            Access your career opportunities
+          </span>
+        </div>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-full">
+          <div className="flex flex-col w-full">
+            <label htmlFor="email" className="text-sm font-medium">
+              Email:
+            </label>
+            <input
+              type="email"
+              autoComplete="off"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              id="email"
+              className="w-full border px-3 py-3 border-b rounded-sm focus:outline-none"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div className="flex flex-col w-full">
+            <label htmlFor="password" className="text-sm font-medium">
+              Password:
+            </label>
+            <input
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              id="password"
+              className="w-full border px-3 py-3 border-b rounded-sm focus:outline-none"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
 
           <button
             type="submit"
-            className="bg-green-500 hover:bg-green-600 text-white font-bold rounded-md px-4 py-2 mt-6"
+            className="px-5 py-3 h-[50px] w-full bg-blue-950 text-white rounded-sm"
+            disabled={isLoading}
           >
-            Login
+            {isLoading ? "Logging in..." : "Login"}
           </button>
-          <div className="text-xs flex flex-col mt-3">
-            <p>Dont Have a account yet? Create</p>
-            <span className="">
-              <Link to={"/register/employee"} className="text-blue-800">
-                Employee Account
-              </Link>
-              <br />
-              <Link to={"/register/company"} className="text-blue-800">
-                Company Account
-              </Link>
-            </span>
-          </div>
         </form>
+
+        <div className="flex flex-col items-center justify-center text-sm mt-4">
+          <span className="font-light">
+            Don&apos;t have an account yet?{" "}
+            <Link to="/register/employee" className="text-blue-950 underline">
+              Create one
+            </Link>
+          </span>
+          <span className="text-blue-950 underline cursor-pointer font-light mt-2">
+            <Link
+              to="/login/forgot-password"
+              className="text-blue-950 underline"
+            >
+              Forgot password?
+            </Link>
+          </span>
+        </div>
       </div>
-      <Toaster />
     </div>
   );
 };

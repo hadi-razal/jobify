@@ -215,12 +215,15 @@ const JobCards = ({ job, reloadJobs }) => {
           {auth.role === "employee" &&
             (job?.jobSavedUsers?.includes(auth.userId) ? (
               <BsFillBookmarkFill
+                size={22}
+                className="text-blue-950"
                 onClick={() => {
                   handleUnsave(job._id);
                 }}
               />
             ) : (
               <BsBookmark
+                size={22}
                 onClick={() => {
                   handleSave(job._id);
                 }}

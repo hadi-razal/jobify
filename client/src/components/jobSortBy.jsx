@@ -11,7 +11,7 @@ const JobSortBy = ({ sortJob }) => {
   return (
     <div>
       <select
-        className="bg-slate-200 font-normal w-full p-2 focus:outline-none rounded-md"
+        className="bg-slate-100 font-normal w-full p-2 focus:outline-none rounded-md"
         value={selectedOption}
         onChange={(e) => setSelectedOption(e.target.value)}
       >

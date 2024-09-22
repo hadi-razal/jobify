@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../context/authContext";
 import axios from "axios";
 import JobCards from "../../components/JobCards";
@@ -40,7 +40,7 @@ const PostedJobs = () => {
         <h1 className="sm:text-[30px] text-[20px] underline mt-5 text-green-600 ">
           All Jobs Posted By Your Company
         </h1>
-        <div className="flex items-center justify-center flex-wrap">
+        <div className="flex justify-center items-center  rounded-md  gap-2 flex-wrap max-w-7xl">
           {jobs?.map((job) => (
             <JobCards key={job._id} job={job} reloadJobs={getAllJobs} />
           ))}

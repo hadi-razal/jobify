@@ -5,7 +5,9 @@ import NoJobsFound from "../../components/NoJobsFound";
 import LoadingPage from "../../components/LoadingPage";
 
 const AppliedJobs = () => {
+  
   const [appliedJob, setAppliedJobs] = useState();
+
   const getAppliedJobs = async () => {
     try {
       const res = await axios.get(
@@ -32,9 +34,9 @@ const AppliedJobs = () => {
       <span className="text text-red-600 text-[10px]">
         to cancel application click on view more
       </span>
-      <div className="flex  items-center justify-center flex-wrap">
-        {appliedJob?.map((job, i) => (
-          <JobCards job={job} key={i} reloadJobs={getAppliedJobs} />
+      <div className="flex justify-center items-center  rounded-md  gap-2 flex-wrap max-w-7xl">
+        {appliedJob?.map((job) => (
+          <JobCards key={job._id} job={job} reloadJobs={getAppliedJobs} />
         ))}
       </div>
       {appliedJob?.length === 0 && (

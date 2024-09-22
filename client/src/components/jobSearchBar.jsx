@@ -76,7 +76,7 @@ const JobSearchBar = ({ setJobs }) => {
         <div className="flex flex-col w-full">
           <button
             onClick={handleSearch}
-            className="flex w-full items-center justify-center bg-blue-950 hover:bg-blue-900 text-white font-normal p-3 rounded-md transition-all focus:ring-2 focus:ring-blue-600 focus:outline-none"
+            className="flex w-full items-center justify-center bg-blue-950 hover:bg-blue-900 text-white font-normal p-3 rounded-md transition-all  focus:outline-none"
             aria-label="Search Button"
           >
             <BiSearchAlt className="mr-2" />

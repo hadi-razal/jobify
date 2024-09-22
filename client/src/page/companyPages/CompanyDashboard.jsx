@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingPage from "../../components/LoadingPage";
 import CompanyStats from "../../components/CompanyStats";
@@ -45,7 +45,7 @@ const CompanyDashboard = () => {
           onClick={() => {
             navigate("/create-job");
           }}
-          className="bg-green-500 md:w-[200px] h-20 w-full cursor-pointer p-5 rounded-lg hover:bg-green-600"
+          className="bg-blue-950 md:w-[200px] h-20 w-full cursor-pointer p-5 rounded-lg hover:bg-blue-900"
         >
           Create New Job Post
         </button>
@@ -53,7 +53,7 @@ const CompanyDashboard = () => {
           onClick={() => {
             navigate("/all-posted-jobs");
           }}
-          className="bg-green-500 md:w-[200px] h-20 w-full cursor-pointer p-5 rounded-lg hover:bg-green-600"
+          className="bg-blue-950 md:w-[200px] h-20 w-full cursor-pointer p-5 rounded-lg hover:bg-blue-900"
         >
           View All Posted Jobs
         </button>
@@ -61,7 +61,7 @@ const CompanyDashboard = () => {
           onClick={() => {
             navigate("/view-employees");
           }}
-          className="bg-green-500 md:w-[200px] h-20 w-full cursor-pointer p-5 rounded-lg hover:bg-green-600"
+          className="bg-blue-950 md:w-[200px] h-20 w-full cursor-pointer p-5 rounded-lg hover:bg-blue-900"
         >
           View Profiles
         </button>
@@ -69,7 +69,7 @@ const CompanyDashboard = () => {
           onClick={() => {
             navigate("/saved-profiles");
           }}
-          className="bg-green-500 md:w-[200px]  h-20 w-full cursor-pointer p-5 rounded-lg hover:bg-green-600"
+          className="bg-blue-950 md:w-[200px]  h-20 w-full cursor-pointer p-5 rounded-lg hover:bg-blue-900"
         >
           View Saved Profiles
         </button>
