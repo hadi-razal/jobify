@@ -139,7 +139,7 @@ const JobCards = ({ job, reloadJobs }) => {
         }}
       >
         <div className="flex flex-col items-start justify-center gap-1">
-          <h3 className="text-lg font-semibold">{job?.title}</h3>
+          <h3 className="text-lg font-semibold overflow-ellipsis pr-3">{job?.title}</h3>
           <span className="text-xs font-semibold flex gap-1 items-center justify-center">
             <GrLocation /> {job?.location}
           </span>
