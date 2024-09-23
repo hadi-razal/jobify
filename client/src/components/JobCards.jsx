@@ -124,10 +124,10 @@ const JobCards = ({ job, reloadJobs }) => {
     if (!text) return "";
 
     return text
-      .replace(/## (.+)/g, '<h2 class="text-lg font-semibold mt-2">$1</h2>') // Convert ## to h2
+      .replace(/## (.+)/g, '<h2 class="text-lg font-semibold mt-2">$1</h2>')
       .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\n\n/g, "</p><p>") // Convert double line breaks to paragraph breaks
-      .replace(/\n/g, "<br>"); // Convert single line breaks to <br>
+      .replace(/\n\n/g, "</p><p>") 
+      .replace(/\n/g, "<br>");
   };
 
   return (

@@ -1,4 +1,4 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import { BiSolidPencil } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
@@ -14,7 +14,7 @@ const CompanyProfile = ({ company }) => {
   };
 
   return (
-    <div className="bg-gray-600 p-5 rounded-lg h-[250px] w-full relative flex flex-col items-center justify-center shadow-2xl">
+    <div className="bg-gray-500 p-5 rounded-lg h-[250px] w-full relative flex flex-col items-center justify-center shadow-2xl">
       <div className="flex gap-3 items-center">
         <img
           className="w-16 h-16 rounded-full shadow-lg"

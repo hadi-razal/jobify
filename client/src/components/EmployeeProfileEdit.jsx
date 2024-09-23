@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { educationOptions } from "../constant/educationOptions";
 import { workExperienceOptions } from "../constant/workExperience";
 import { useAuth } from "../context/authContext";
+import LoadingPage from "../components/LoadingPage";
 
 const EmployeeProfileEdit = () => {
   const { auth } = useAuth();
+  const navigate = useNavigate();
+
   const [employee, setEmployee] = useState({
     name: "",
     location: "",
@@ -15,8 +18,7 @@ const EmployeeProfileEdit = () => {
     description: "",
     education: "",
   });
-
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getEmployeeData();
@@ -31,7 +33,10 @@ const EmployeeProfileEdit = () => {
       );
       setEmployee(res.data.employee);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching user data:", error);
+      toast.error("Failed to load profile data");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -50,99 +55,114 @@ const EmployeeProfileEdit = () => {
         `${import.meta.env.VITE_SERVER_URL}/employee/update-profile`,
         employee
       );
-      if (res.data.success === true) {
+      if (res.data.success) {
         toast.success(res.data.message);
-        navigate("/view-profile");
+        navigate("/profile");
       } else {
         toast.error(res.data.message);
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error updating profile:", error);
       toast.error("An error occurred while updating the profile.");
     }
   };
 
+  if (loading) {
+    return <LoadingPage />;
+  }
+
   return (
-    <div className="mt-10 mb-10 flex items-center justify-center">
+    <div className="flex flex-col items-center justify-center w-full py-5 px-3">
       <Toaster />
-      <div className="p-4 bg-white rounded-lg shadow-2xl flex flex-col justify-center items-center">
-        <label htmlFor="image" className="mb-3">
+      <h1 className="sm:text-[40px] text-[35px] font-semibold  text-gray-400">
+        Edit Profile
+      </h1>
+      <div className="w-full max-w-xl p-5 ">
+        <div className=" flex justify-center">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
             alt="Profile"
             className="rounded-full w-20 h-20"
           />
-        </label>
-        <form className="flex flex-col w-[350px]" onSubmit={handleSubmit}>
-          <label className="text-gray-700 font-bold">Full Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={employee.name}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-          />
-          <label className="text-gray-700 font-bold">Email:</label>
-          <input
-            type="email"
-            name="email"
-            autoComplete="off"
-            value={employee.email}
-            onChange={handleChange}
-            className="border border-gray-400 text-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
-            disabled
-          />
-          <label className="text-gray-700 font-bold">Description:</label>
-          <textarea
-            type="text"
-            name="description"
-            autoComplete="off"
-            value={employee.description}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
-          />
-          <label className="text-gray-700 font-bold">Location:</label>
-          <input
-            type="text"
-            name="location"
-            value={employee.location}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
-          />
-          <label className="text-gray-700 font-bold">
-            Work Experience(Years):
-          </label>
-          <select
-            name="workExperience"
-            value={employee.workExperience}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-          >
-            <option value="">Select a Work Experience</option>
-            {workExperienceOptions.map((experience, index) => (
-              <option key={index} value={experience}>
-                {experience !== 0 ? `${experience} +` : experience}
-              </option>
-            ))}
-          </select>
-          <label className="text-gray-700 font-bold">Education:</label>
-          <select
-            name="education"
-            value={employee.education}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
-          >
-            <option value="">Select Education</option>
-            {educationOptions.map((option, index) => (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-
+        </div>
+        <form className="w-full grid grid-cols-1 gap-4" onSubmit={handleSubmit}>
+          <div>
+            <label className="text-sm font-medium">Full Name:</label>
+            <input
+              type="text"
+              name="name"
+              value={employee.name || ""}
+              onChange={handleChange}
+              className="w-full border px-3 py-2 border-gray-300 rounded-sm focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium">Email:</label>
+            <input
+              type="email"
+              name="email"
+              value={employee.email || ""}
+              className="w-full border px-3 py-2 border-gray-300 rounded-sm text-gray-400"
+              disabled
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium">Location:</label>
+            <input
+              type="text"
+              name="location"
+              value={employee.location || ""}
+              onChange={handleChange}
+              className="w-full border px-3 py-2 border-gray-300 rounded-sm focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium">Education:</label>
+            <select
+              name="education"
+              value={employee.education}
+              onChange={handleChange}
+              className="w-full border px-3 py-2 border-gray-300 rounded-sm focus:outline-none"
+            >
+              <option value="">Select Education</option>
+              {educationOptions.map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="text-sm font-medium">
+              Work Experience (Years):
+            </label>
+            <select
+              name="workExperience"
+              value={employee.workExperience}
+              onChange={handleChange}
+              className="w-full border px-3 py-2 border-gray-300 rounded-sm focus:outline-none"
+            >
+              <option value="">Select Work Experience</option>
+              {workExperienceOptions.map((experience, index) => (
+                <option key={index} value={experience}>
+                  {experience !== 0 ? `${experience} +` : experience}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="text-sm font-medium">Description:</label>
+            <textarea
+              name="description"
+              value={employee.description || ""}
+              onChange={handleChange}
+              className="w-full border px-3 py-2 border-gray-300 rounded-sm focus:outline-none"
+              rows={4}
+            />
+          </div>
           <button
             type="submit"
-            className="bg-green-500 hover:bg-green-600 text-white font-bold rounded-md px-4 py-2 mt-4"
+            className="w-full bg-blue-950 text-white py-3 rounded-sm hover:bg-blue-900 transition duration-200"
           >
             Update Profile
           </button>

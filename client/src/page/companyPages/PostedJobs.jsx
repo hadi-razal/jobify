@@ -36,9 +36,9 @@ const PostedJobs = () => {
 
   return (
     <>
-      <div className="mb-3 flex flex-col justify-center items-center">
-        <h1 className="sm:text-[30px] text-[20px] underline mt-5 text-green-600 ">
-          All Jobs Posted By Your Company
+      <div className="flex flex-col justify-center items-center py-5">
+        <h1 className="sm:text-[40px] text-[25px] font-semibold mb-2  text-gray-400 ">
+          Your Jobs
         </h1>
         <div className="flex justify-center items-center  rounded-md  gap-2 flex-wrap max-w-7xl">
           {jobs?.map((job) => (

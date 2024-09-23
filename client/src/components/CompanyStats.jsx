@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const CompanyStats = () => {
   const [totalJobs, setTotalJobs] = useState(0);
@@ -32,11 +32,11 @@ const CompanyStats = () => {
   }, []);
 
   return (
-    <div className="bg-gray-600  rounded-lg h-[250px] w-full flex flex-col items-center justify-center shadow-2xl">
-      <h2>
+    <div className="bg-gray-500  rounded-lg h-[250px] w-full flex flex-col items-center justify-center shadow-2xl">
+      <h2 className="font-bold"> 
         Total Jobs Posted : <span> {totalJobs}</span>
       </h2>
-      <h2>
+      <h2 className="font-bold">
         Total Applicants : <span> {totalApplicants}</span>
       </h2>
     </div>

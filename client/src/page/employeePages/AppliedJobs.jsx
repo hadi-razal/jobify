@@ -5,7 +5,6 @@ import NoJobsFound from "../../components/NoJobsFound";
 import LoadingPage from "../../components/LoadingPage";
 
 const AppliedJobs = () => {
-  
   const [appliedJob, setAppliedJobs] = useState();
 
   const getAppliedJobs = async () => {
@@ -29,11 +28,10 @@ const AppliedJobs = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <h1 className="text-[40px] text-gray-400">Applied Jobs</h1>
-      <span className="text text-red-600 text-[10px]">
-        to cancel application click on view more
-      </span>
+    <div className="flex flex-col items-center justify-center py-5">
+      <h1 className="sm:text-[40px] text-[35px] font-semibold mb-2 text-gray-400 ">
+        Applied Jobs
+      </h1>
       <div className="flex justify-center items-center  rounded-md  gap-2 flex-wrap max-w-7xl">
         {appliedJob?.map((job) => (
           <JobCards key={job._id} job={job} reloadJobs={getAppliedJobs} />

@@ -67,17 +67,25 @@ const CompanyProfileEdit = () => {
   };
 
   return (
-    <div className="mt-10 mb-10 flex items-center justify-center">
+    <div className="relative  mb-10 flex items-center justify-center w-full">
       <Toaster />
-      <div className="p-4 bg-white rounded-lg shadow-2xl flex flex-col justify-center items-center">
-        <label htmlFor="image" className="mb-3">
+      <div className="p-4 flex flex-col justify-center items-center sm:w-[400px] w-full px-4 py-7">
+        <div className="flex flex-col items-start justify-center w-full">
+          <span className="text-[30px] font-semibold">
+            Edit Company Profile
+          </span>
+          <span className="text-sm font-light">
+            Update your company details
+          </span>
+        </div>
+        <label htmlFor="image" className="mb-3 mt-3 flex justify-center">
           <img
             src="https://static.vecteezy.com/system/resources/previews/000/592/901/non_2x/vector-office-building-icon.jpg"
             className="rounded-full w-20 h-20"
             alt="Company Logo"
           />
         </label>
-        <form className="flex flex-col" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-2 w-full" onSubmit={handleSubmit}>
           <label className="text-gray-700 font-bold">Company Name:</label>
           <input
             type="text"
@@ -85,16 +93,15 @@ const CompanyProfileEdit = () => {
             value={myCompany.name}
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+            required
           />
           <label className="text-gray-700 font-bold">Email:</label>
           <input
             type="email"
             name="email"
-            autoComplete="off"
             value={myCompany.email}
-            onChange={handleChange}
-            className="border text-slate-700 border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
-            disabled // Disable the email input
+            className="border border-gray-400 rounded px-3 py-2 focus:outline-none  mt-2 text-slate-700"
+            disabled
           />
           <label className="text-gray-700 font-bold">
             Company Established Year:
@@ -105,19 +112,20 @@ const CompanyProfileEdit = () => {
             min="0"
             value={myCompany.companyEstablishedYear}
             onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
+            className="border border-gray-400 rounded px-3 py-2 focus:outline-none  mt-2"
+            required
           />
           <label className="text-gray-700 font-bold">Description:</label>
           <textarea
             name="description"
             value={myCompany.description}
             onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500 mt-2"
+            className="border border-gray-400 rounded px-3 py-2 focus:outline-none  mt-2"
             rows="4"
           />
           <button
             type="submit"
-            className="bg-green-500 hover:bg-green-600 text-white font-bold rounded-md px-4 py-2 mt-4"
+            className="bg-blue-950 hover:bg-blue-900 text-white font-bold rounded-md px-4 py-2 mt-4"
           >
             Update Profile
           </button>

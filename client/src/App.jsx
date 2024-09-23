@@ -56,7 +56,7 @@ const App = () => {
             }
           />
           <Route
-            path="/view-profile"
+            path="/profile"
             element={
               <LoginRoute>
                 <ViewProfile />
