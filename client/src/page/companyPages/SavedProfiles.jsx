@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import EmployeeCard from "../../components/EmployeeCard";
 import { useAuth } from "../../context/authContext";
 import axios from "axios";
@@ -36,16 +36,17 @@ const SavedProfiles = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center mb-5 cursor-pointer">
-      <h1 className="text-green-600 my-4 text-3xl">Employees</h1>
-      <div className="flex flex-col items-center justify-center gap-3 sm:flex-row flex-wrap">
+    <div className="flex flex-col items-center justify-center py-5 px-3 cursor-pointer">
+      <h1 className="sm:text-[40px] text-[35px] font-semibold mb-2  text-gray-400">
+        Saved Profiles
+      </h1>
+      <div className="flex items-center justify-center gap-3 sm:flex-row flex-wrap max-w-6xl">
         {employees.map((employee) => (
-          <div key={employee._id}>
-            <EmployeeCard
-              reloadEmployees={getAllEmployees}
-              employee={employee}
-            />
-          </div>
+          <EmployeeCard
+            key={employee._id}
+            reloadEmployees={getAllEmployees}
+            employee={employee}
+          />
         ))}
         {employees.length === 0 && (
           <div className="flex flex-col h-[300px] items-center justify-center">

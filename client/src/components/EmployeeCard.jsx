@@ -2,12 +2,12 @@
 import { useEffect, useState } from "react";
 import { BsFillBookmarkFill, BsBookmark } from "react-icons/bs";
 import { useAuth } from "../context/authContext";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 
 const EmployeeCard = ({ employee, reloadEmployees }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [company, setCompany] = useState([]);
   const { auth } = useAuth();
 

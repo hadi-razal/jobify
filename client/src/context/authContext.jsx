@@ -1,4 +1,5 @@
-import { useState, useContext, useEffect, createContext } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useContext, createContext } from "react";
 import axios from "axios";
 
 const AuthContext = createContext();

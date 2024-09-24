@@ -177,7 +177,7 @@ const JobCards = ({ job, reloadJobs }) => {
           </span>
         </p>
       </div>
-      <div className="flex justify-between items-center mt-2">
+      <div className="flex justify-between items-center gap-2 mt-2">
         {auth.role === "employee" &&
           (job?.applicants?.includes(auth.userId) ? (
             <button className="bg-blue-950 bg-opacity-90 transition-all duration-1000 ease-in-out  cursor-not-allowed text-white font-bold rounded-md px-4 py-2">
@@ -232,7 +232,7 @@ const JobCards = ({ job, reloadJobs }) => {
 
           {auth.role === "company" && (
             <div
-              className="relative group"
+              className="relative  group"
               onClick={() => navigate(`/job-edit/${job._id}`)}
             >
               <p className="hidden absolute text-[10px] z-10 rounded-lg transition-all duration-300 ease-in-out bg-gray-500 px-3 opacity-0 -mt-4 group-hover:opacity-70 group-hover:flex">

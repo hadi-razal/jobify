@@ -35,7 +35,7 @@ const Navbar = () => {
       {(location.pathname === "/" ||
         location.pathname === "/about-us" ||
         location.pathname === "/contact") && (
-        <nav className="hidden md:flex items-center gap-6 text-white text-lg">
+        <nav className="flex items-center gap-3 text-white text-lg">
           <Link to="/about-us" className="hover:text-gray-200 transition">
             About Us
           </Link>
