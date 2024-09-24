@@ -36,8 +36,8 @@ const PostedJobs = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center py-5">
-        <h1 className="sm:text-[40px] text-[25px] font-semibold mb-2  text-gray-400 ">
+      <div className="flex flex-col justify-center items-center py-5 px-3">
+        <h1 className="sm:text-[40px] text-[35px] font-semibold mb-2  text-gray-400">
           Your Jobs
         </h1>
         <div className="flex justify-center items-center  rounded-md  gap-2 flex-wrap max-w-7xl">

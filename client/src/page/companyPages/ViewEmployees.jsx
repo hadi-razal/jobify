@@ -35,7 +35,7 @@ const ViewEmployees = () => {
   return (
     <div className="flex flex-col items-center justify-center py-5 px-3">
       <h1 className="sm:text-[40px] text-[35px] font-semibold mb-2  text-gray-400">
-        All Registered users in Jobify
+        Registered users
       </h1>
       <div className="flex flex-col items-center justify-center gap-3 sm:flex-row cursor-pointer flex-wrap max-w-6xl w-full">
         {employees.map((employee) => (

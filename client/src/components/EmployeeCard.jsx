@@ -78,7 +78,7 @@ const EmployeeCard = ({ employee, reloadEmployees }) => {
     <div className="relative flex flex-col justify-between bg-slate-100 shadow-md border rounded-lg p-4 w-full sm:max-w-[300px] min-h-[235px] transition-all hover:shadow-lg hover:border-gray-300">
       <div
         className="cursor-pointer"
-        onClick={() => navigate(`/employee/profile/${employee._id}`)}
+        // onClick={() => navigate(`/employee/profile/${employee._id}`)}
       >
         <div className="flex items-center gap-3 mb-4">
           <img
