@@ -27,7 +27,7 @@ const SavedJobs = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center py-5">
+    <div className="flex flex-col items-center justify-center py-5 px-2 ">
       <h1 className="sm:text-[40px] text-[35px] font-semibold mb-2  text-gray-400">
         Saved Jobs
       </h1>

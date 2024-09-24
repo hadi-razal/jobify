@@ -91,25 +91,17 @@ const ViewProfile = () => {
           </div>
 
           <div>
-            <label className="text-sm font-medium mb-1">Education</label>
+            <label className="text-sm font-medium mb-1">Resume URL</label>
             <input
               className="w-full border px-3 py-3 border-gray-300 rounded-sm focus:outline-none"
-              value={employee?.education || "Not specified"}
+              value={employee?.resumeURL}
+              placeholder="No URL"
               disabled
             />
           </div>
 
           <div>
-            <label className="text-sm font-medium mb-1">Work Experience</label>
-            <input
-              className="w-full border px-3 py-3 border-gray-300 rounded-sm focus:outline-none"
-              value={employee?.workExperience || "Not specified"}
-              disabled
-            />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium mb-1">Description</label>
+            <label className="text-sm font-medium mb-1">About</label>
             <textarea
               className="w-full border px-3 py-3 border-gray-300 rounded-sm focus:outline-none"
               value={

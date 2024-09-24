@@ -3,8 +3,6 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
-import { educationOptions } from "../constant/educationOptions";
-import { workExperienceOptions } from "../constant/workExperience";
 
 const EmployeeRegisterForm = () => {
   const { auth } = useAuth();
@@ -12,8 +10,7 @@ const EmployeeRegisterForm = () => {
     name: "",
     email: "",
     password: "",
-    workExperience: 0,
-    education: "",
+    resumeURL: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -23,14 +20,6 @@ const EmployeeRegisterForm = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
-    }));
-  };
-
-  const handleEducationChange = (e) => {
-    const { value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      education: value,
     }));
   };
 
@@ -64,92 +53,80 @@ const EmployeeRegisterForm = () => {
     <div className="relative mt-10 mb-10 flex items-center justify-center w-full">
       <Toaster />
       <div className="p-4 flex flex-col justify-center items-center sm:w-[400px] w-full px-4 py-7">
-        <div className="flex flex-col items-start justify-center w-full">
-          <span className="text-[30px] font-semibold">
+        <div className="flex flex-col items-start justify-center w-full mb-4">
+          <span className="text-[30px] font-semibold text-gray-700">
             Create Employee Account
           </span>
-          <span className="text-sm font-light">
+          <span className="text-sm font-light text-gray-500">
             Join us to access more features
           </span>
         </div>
-        <form className="flex flex-col gap-2 w-full" onSubmit={handleSubmit}>
-          <label className="text-gray-700 font-bold">Full Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-            required
-          />
-          <label className="text-gray-700 font-bold">Email:</label>
-          <input
-            type="email"
-            name="email"
-            autoComplete="off"
-            value={formData.email}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none mt-2"
-            required
-          />
-          <label className="text-gray-700 font-bold">Password:</label>
-          <input
-            type="password"
-            name="password"
-            autoComplete="off"
-            value={formData.password}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none mt-2"
-            required
-          />
-          <label className="text-gray-700 font-bold">
-            Work Experience (Years):
-          </label>
-          <select
-            name="workExperience"
-            value={formData.workExperience}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none"
-            required
-          >
-            <option value="none">Select Work Experience</option>
-            {workExperienceOptions?.map((c, index) => (
-              <option key={index} value={c}>
-                {c !== 0 ? `${c} +` : c}
-              </option>
-            ))}
-          </select>
-          <label className="text-gray-700 font-bold">Education:</label>
-          <select
-            name="education"
-            value={formData.education}
-            onChange={handleEducationChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none mt-2"
-            required
-          >
-            <option value="">Select Education</option>
-            {educationOptions.map((option, index) => (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+        <form className="flex flex-col w-full" onSubmit={handleSubmit}>
+          <div className="mb-2">
+            <label className="text-sm font-medium mb-1">Full Name</label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full border px-3 py-3 border-gray-300 rounded-sm focus:outline-none focus:border-blue-500"
+              required
+            />
+          </div>
+
+          <div className="mb-2">
+            <label className="text-sm font-medium mb-1">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              autoComplete="off"
+              className="w-full border px-3 py-3 border-gray-300 rounded-sm focus:outline-none focus:border-blue-500"
+              required
+            />
+          </div>
+
+          <div className="mb-2">
+            <label className="text-sm font-medium mb-1">Password</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              autoComplete="off"
+              className="w-full border px-3 py-3 border-gray-300 rounded-sm focus:outline-none focus:border-blue-500"
+              required
+            />
+          </div>
+
+          <div className="mb-2">
+            <label className="text-sm font-medium mb-1">Resume URL</label>
+            <input
+              type="text"
+              name="resumeURL"
+              value={formData.resumeURL}
+              onChange={handleChange}
+              autoComplete="off"
+              className="w-full border px-3 py-3 border-gray-300 rounded-sm focus:outline-none focus:border-blue-500"
+              required
+            />
+          </div>
 
           <button
             type="submit"
-            className="bg-blue-950 hover:bg-blue-900 text-white font-bold rounded-md px-4 py-2 mt-4"
+            className="w-full bg-blue-950 text-white p-3 rounded hover:bg-blue-900 transition duration-200 mt-4"
             disabled={isLoading}
           >
-            {isLoading ? "Creating account..." : "Create Employee Account"}
+            {isLoading ? "Creating account..." : "Create Account"}
           </button>
 
-          <div className="text-xs mt-2 flex items-center justify-center gap-1">
+          <div className="text-xs mt-4 flex items-center justify-center gap-1">
             <p>Already have an account?</p>
             <Link to={"/login"} className="text-blue-950 underline">
               Login
             </Link>
           </div>
-          
         </form>
       </div>
     </div>

@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import { educationOptions } from "../constant/educationOptions";
-import { workExperienceOptions } from "../constant/workExperience";
 import { useAuth } from "../context/authContext";
 import LoadingPage from "../components/LoadingPage";
 
@@ -14,9 +12,8 @@ const EmployeeProfileEdit = () => {
   const [employee, setEmployee] = useState({
     name: "",
     location: "",
-    workExperience: "",
+    resumeURL: "",
     description: "",
-    education: "",
   });
   const [loading, setLoading] = useState(true);
 
@@ -87,7 +84,7 @@ const EmployeeProfileEdit = () => {
         </div>
         <form className="w-full grid grid-cols-1 gap-4" onSubmit={handleSubmit}>
           <div>
-            <label className="text-sm font-medium">Full Name:</label>
+            <label className="text-sm font-medium">Full Name</label>
             <input
               type="text"
               name="name"
@@ -97,7 +94,7 @@ const EmployeeProfileEdit = () => {
             />
           </div>
           <div>
-            <label className="text-sm font-medium">Email:</label>
+            <label className="text-sm font-medium">Email</label>
             <input
               type="email"
               name="email"
@@ -107,7 +104,7 @@ const EmployeeProfileEdit = () => {
             />
           </div>
           <div>
-            <label className="text-sm font-medium">Location:</label>
+            <label className="text-sm font-medium">Location</label>
             <input
               type="text"
               name="location"
@@ -117,38 +114,14 @@ const EmployeeProfileEdit = () => {
             />
           </div>
           <div>
-            <label className="text-sm font-medium">Education:</label>
-            <select
-              name="education"
-              value={employee.education}
+            <label className="text-sm font-medium">ResumeURL </label>
+            <input
+              type="text"
+              name="resumeURL"
+              value={employee.resumeURL || ""}
               onChange={handleChange}
               className="w-full border px-3 py-2 border-gray-300 rounded-sm focus:outline-none"
-            >
-              <option value="">Select Education</option>
-              {educationOptions.map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="text-sm font-medium">
-              Work Experience (Years):
-            </label>
-            <select
-              name="workExperience"
-              value={employee.workExperience}
-              onChange={handleChange}
-              className="w-full border px-3 py-2 border-gray-300 rounded-sm focus:outline-none"
-            >
-              <option value="">Select Work Experience</option>
-              {workExperienceOptions.map((experience, index) => (
-                <option key={index} value={experience}>
-                  {experience !== 0 ? `${experience} +` : experience}
-                </option>
-              ))}
-            </select>
+            />
           </div>
           <div>
             <label className="text-sm font-medium">Description:</label>

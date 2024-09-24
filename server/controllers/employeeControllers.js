@@ -7,14 +7,14 @@ import { Company } from "../models/companyModel.js";
 // Creating an account for jobify 
 export const registerEmployeeController = async (req, res) => {
     try {
-        const { name, email, password, workExperience, education } = req.body;
+        const { name, email, password, resumeURL } = req.body;
         const isCompanyEmailExist = await Company.findOne({ email });
         const isEmployeeEmailExist = await Employee.findOne({ email });
 
         const lowerCaseEmail = email.toLowerCase()
 
         if (isCompanyEmailExist || isEmployeeEmailExist) {
-            return res.status(400).send({ success: false, message: "Email is already use  account" });
+            return res.send({ success: false, message: "Email is already in use" });
         }
 
         const hashedPassword = await hashPassword(password)
@@ -22,8 +22,7 @@ export const registerEmployeeController = async (req, res) => {
             name,
             email: lowerCaseEmail,
             password: hashedPassword,
-            workExperience,
-            education,
+            resumeURL
         }).save();
 
         res.send({ newEmployee, success: true, message: "Employee Account created successfully" });
@@ -35,7 +34,7 @@ export const registerEmployeeController = async (req, res) => {
 
 export const updateEmployeeController = async (req, res) => {
     try {
-        const { name, location, description, workExperience, education } = req.body;
+        const { name, location, description, resumeURL } = req.body;
         const employeeId = req.user._id
         const updatedEmployee = await Employee.findByIdAndUpdate(
             employeeId,
@@ -43,8 +42,7 @@ export const updateEmployeeController = async (req, res) => {
                 name,
                 location,
                 description,
-                workExperience,
-                education,
+                resumeURL
             },
             { new: true }
         );

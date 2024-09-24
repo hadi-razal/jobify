@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import EmployeeCard from "../../components/EmployeeCard";
 import { useAuth } from "../../context/authContext";
 import axios from "axios";
@@ -33,18 +33,17 @@ const ViewEmployees = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center mb-5 ">
-      <h1 className="text-gray-400 my-4 text-[30px]">
-        All Employees Rgistered in Jobify
+    <div className="flex flex-col items-center justify-center py-5 px-3">
+      <h1 className="sm:text-[40px] text-[35px] font-semibold mb-2  text-gray-400">
+        All Registered users in Jobify
       </h1>
-      <div className="flex flex-col items-center justify-center gap-3 sm:flex-row cursor-pointer flex-wrap">
+      <div className="flex flex-col items-center justify-center gap-3 sm:flex-row cursor-pointer flex-wrap max-w-6xl w-full">
         {employees.map((employee) => (
-          <div key={employee._id}>
-            <EmployeeCard
-              reloadEmployees={getAllEmployees}
-              employee={employee}
-            />
-          </div>
+          <EmployeeCard
+            key={employee._id}
+            reloadEmployees={getAllEmployees}
+            employee={employee}
+          />
         ))}
       </div>
     </div>

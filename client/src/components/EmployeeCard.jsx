@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 import { BsFillBookmarkFill, BsBookmark } from "react-icons/bs";
 import { useAuth } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 
-const EmployeeCard = ({ employee,reloadEmployees }) => {
+const EmployeeCard = ({ employee, reloadEmployees }) => {
   const navigate = useNavigate();
   const [company, setCompany] = useState([]);
   const { auth } = useAuth();
@@ -20,11 +21,10 @@ const EmployeeCard = ({ employee,reloadEmployees }) => {
           },
         }
       );
-      if (res.data.success === true) {
+      if (res.data.success) {
         getCompany();
         toast.success(res.data.message);
-      }
-      if (res.data.success === false) {
+      } else {
         toast.error(res.data.message);
       }
     } catch (error) {
@@ -37,12 +37,11 @@ const EmployeeCard = ({ employee,reloadEmployees }) => {
       const res = await axios.put(
         `${import.meta.env.VITE_SERVER_URL}/company/unsave-profile/${id}`
       );
-      if (res.data.success === true) {
+      if (res.data.success) {
         getCompany();
-        reloadEmployees()
+        reloadEmployees();
         toast.success(res.data.message);
-      }
-      if (res.data.success === false) {
+      } else {
         toast.error(res.data.message);
       }
     } catch (error) {
@@ -59,7 +58,6 @@ const EmployeeCard = ({ employee,reloadEmployees }) => {
         `${import.meta.env.VITE_SERVER_URL}/company/get-my-company`,
         { headers }
       );
-      console.log(res);
       setCompany(res.data.company);
     } catch (error) {
       console.log(error);
@@ -71,72 +69,68 @@ const EmployeeCard = ({ employee,reloadEmployees }) => {
   }, []);
 
   const makeDescriptionVisible = (description) => {
-    if (description.length > 50) {
-      return description.slice(0, 200) + "...";
-    } else {
-      return description;
-    }
+    return description.length > 50
+      ? `${description.slice(0, 100)}...`
+      : description;
   };
 
   return (
-    <div className="rounded-lg border w-[300px] items-center  shadow-2xl h-[330px] justify-between  p-7 relative flex flex-col">
+    <div className="relative flex flex-col justify-between bg-slate-100 shadow-md border rounded-lg p-4 w-full sm:max-w-[300px] min-h-[235px] transition-all hover:shadow-lg hover:border-gray-300">
       <div
-        onClick={() => {
-          navigate(`/employee/profile/${employee._id}`);
-        }}
+        className="cursor-pointer"
+        onClick={() => navigate(`/employee/profile/${employee._id}`)}
       >
-        <div className="flex items-center justify-start gap-3 mb-3">
+        <div className="flex items-center gap-3 mb-4">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
             alt="profile"
-            className="rounded-full shadow-lg h-10 w-10"
+            className="rounded-full shadow-md h-12 w-12"
           />
-          <h1 className="text-m">{employee?.name}</h1>
+          <h1 className="text-lg font-semibold text-gray-800">
+            {employee?.name}
+          </h1>
         </div>
-        <div className="text-sm">
-          <h1>
-            Work Experience : <span>{employee.workExperience} Yrs+</span>
-          </h1>
-          <h1>
-            Education: <span>{employee.education}</span>
-          </h1>
-          <p className="text-xs">
+        <div className="text-sm text-gray-700">
+          <p className="text-sm text-gray-600 mt-2">
             {employee.description
               ? makeDescriptionVisible(employee.description)
-              : "Profile Has No Description"}
+              : "No description available."}
           </p>
         </div>
-        <div className="flex-grow"></div>{" "}
-        {/* This will push the save profile section to the bottom */}
-        <div className="flex justify-center items-center text-xs font-semibold mt-1">
-          <span>{employee.email}</span>
-        </div>
       </div>
-      <div>
-        <div className="flex items-center justify-center text-white bg-green-500 cursor-pointer rounded-lg p-3 mt-2 gap-3">
-          {company?.savedProfile?.includes(employee._id) ? (
-            <div
-              className="flex items-center justify-center gap-3"
-              onClick={() => {
-                handleUnsave(employee._id);
-              }}
-            >
-              <BsFillBookmarkFill />
-              <span>Remove From Saved</span>
-            </div>
-          ) : (
-            <div
-              className="flex items-center justify-center gap-3"
-              onClick={() => {
-                handleSave(employee._id);
-              }}
-            >
-              <BsBookmark />
-              <span>Save This Profile</span>
-            </div>
-          )}
-        </div>
+
+      <div className="flex text-xs font-semibold mt-2">
+        <span className="text-gray-600">{employee.email}</span>
+        <a
+          href={employee.resumeURL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-500 ml-2 underline"
+        >
+          View Resume
+        </a>
       </div>
+
+      <div className="mt-4">
+        {company?.savedProfile?.includes(employee._id) ? (
+          <button
+            className="w-full flex items-center justify-center gap-2 p-2 rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors"
+            onClick={() => handleUnsave(employee._id)}
+          >
+            <BsFillBookmarkFill />
+            <span>Remove From Saved</span>
+          </button>
+        ) : (
+          <button
+            className="w-full flex items-center justify-center gap-2 p-2 rounded-md bg-blue-950 text-white hover:bg-blue-900 transition-colors"
+            onClick={() => handleSave(employee._id)}
+          >
+            <BsBookmark />
+            <span>Save This Profile</span>
+          </button>
+        )}
+      </div>
+
       <Toaster />
     </div>
   );
