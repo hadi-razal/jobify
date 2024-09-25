@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
@@ -9,7 +9,6 @@ import { workExperienceOptions } from "../../constant/workExperience";
 const CreateJobPage = () => {
   const navigate = useNavigate();
   const { auth } = useAuth();
-
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -19,6 +18,7 @@ const CreateJobPage = () => {
     salary: "",
     category: "none",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,27 +28,24 @@ const CreateJobPage = () => {
     }));
   };
 
-  console.log(formData.workExperience);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/job/create-job`,
         formData
       );
-      console.log(res.data.message);
-      if (res.data.success === true) {
+      if (res.data.success) {
         toast.success(res.data.message);
-        navigate("/all-posted-jobs"); // Redirect to the jobs listing page
-      }
-
-      if (res.data.success === false) {
+        navigate("/all-posted-jobs");
+      } else {
         toast.error(res.data.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(response.data.message);
+      toast.error("An error occurred. Please try again.");
     }
+    setIsLoading(false);
   };
 
   if (!auth.token) {
@@ -56,43 +53,33 @@ const CreateJobPage = () => {
   }
 
   return (
-    <div className="mt-10 mb-10 flex items-center justify-center ">
+    <div className="relative py-5 mb-10 flex items-center justify-center w-full">
       <Toaster />
-      <div className="p-4 bg-white rounded-lg shadow-2xl flex flex-col justify-center items-center">
-        <h1 className="text-[30px] text-green-600">Create Job</h1>
-        <form className="flex flex-col w-[400px] px-4" onSubmit={handleSubmit}>
-          <label className="text-gray-700 font-bold">Title:</label>
+      <div className="p-4 flex flex-col justify-center items-center sm:w-[400px] w-full px-4 py-7">
+        <div className="flex flex-col items-start justify-center w-full">
+          <span className="text-[30px] font-semibold">Post a Job</span>
+          <span className="text-sm font-light">
+            Fill in the job details below
+          </span>
+        </div>
+        <form className="flex flex-col gap-2 w-full" onSubmit={handleSubmit}>
+          <label className="text-gray-700 font-bold">Job Title:</label>
           <input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+            required
           />
           <label className="text-gray-700 font-bold">Description:</label>
           <textarea
-            type="text"
             name="description"
             value={formData.description}
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+            required
           />
-          <label className="text-gray-700 font-bold">
-            Work Experience(Years):
-          </label>
-          <select
-            name="workExperience"
-            value={formData.workExperience}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-          >
-            <option value="none">Select a Work Experience</option>
-            {workExperienceOptions?.map((c, index) => (
-              <option key={index} value={c}>
-                {c !== 0 ? `${c} +` : c}
-              </option>
-            ))}
-          </select>
           <label className="text-gray-700 font-bold">Location:</label>
           <input
             type="text"
@@ -100,8 +87,8 @@ const CreateJobPage = () => {
             value={formData.location}
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+            required
           />
-
           <label className="text-gray-700 font-bold">Salary:</label>
           <input
             type="number"
@@ -109,6 +96,7 @@ const CreateJobPage = () => {
             value={formData.salary}
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+            required
           />
           <label className="text-gray-700 font-bold">Category:</label>
           <select
@@ -116,9 +104,10 @@ const CreateJobPage = () => {
             value={formData.category}
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+            required
           >
             <option value="none">Select a category</option>
-            {categoryList?.map((c, index) => (
+            {categoryList.map((c, index) => (
               <option key={index} value={c}>
                 {c}
               </option>
@@ -126,9 +115,10 @@ const CreateJobPage = () => {
           </select>
           <button
             type="submit"
-            className="bg-green-500 hover:bg-green-600 text-white font-bold rounded-md px-4 py-2 mt-4"
+            className="bg-blue-950 hover:bg-blue-900 text-white font-bold rounded-md px-4 py-2 mt-4"
+            disabled={isLoading}
           >
-            Post
+            {isLoading ? "Posting..." : "Post Job"}
           </button>
         </form>
       </div>

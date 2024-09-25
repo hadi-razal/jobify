@@ -11,7 +11,7 @@ const JobsPage = () => {
   const { auth } = useAuth();
   const [jobs, setJobs] = useState([]);
   const [LoadMoreClicked, setLoadMoreClicked] = useState(false);
-  const [jobsToDisplay, setJobsToDisplay] = useState(10); // Default number of jobs to display
+  const [jobsToDisplay, setJobsToDisplay] = useState(16); // Default number of jobs to display
   const [isLoading, setIsLoading] = useState(false);
 
   const getAllJobs = async () => {
@@ -30,7 +30,7 @@ const JobsPage = () => {
 
   const handleLoadMore = () => {
     setLoadMoreClicked(true);
-    setJobsToDisplay((prev) => prev + 10);
+    setJobsToDisplay((prev) => prev + 16);
     setLoadMoreClicked(false); // Load more jobs when clicking "Load More"
   };
 
@@ -74,7 +74,7 @@ const JobsPage = () => {
           <BounceLoader color="#172554" className=" text-blue-950 text-4xl" />
         </div>
       ) : (
-        <>
+        <div className="flex items-center justify-center flex-wrap">
           <div className="flex justify-end items-center w-full max-w-7xl">
             {jobs?.length !== 0 && <JobSortBy sortJob={sortJob} />}
           </div>
@@ -96,7 +96,7 @@ const JobsPage = () => {
             )}
           </div>
           {/* Load More Button */}
-        </>
+        </div>
       )}
     </div>
   );
