@@ -74,7 +74,7 @@ const JobsPage = () => {
           <BounceLoader color="#172554" className=" text-blue-950 text-4xl" />
         </div>
       ) : (
-        <div className="flex items-center justify-center flex-wrap">
+        <div className="flex items-center gap-2 justify-center flex-wrap">
           <div className="flex justify-end items-center w-full max-w-7xl">
             {jobs?.length !== 0 && <JobSortBy sortJob={sortJob} />}
           </div>

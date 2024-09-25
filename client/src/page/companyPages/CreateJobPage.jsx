@@ -4,7 +4,6 @@ import { Navigate, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { categoryList } from "../../constant/jobcategory";
 import { useAuth } from "../../context/authContext";
-import { workExperienceOptions } from "../../constant/workExperience";
 
 const CreateJobPage = () => {
   const navigate = useNavigate();

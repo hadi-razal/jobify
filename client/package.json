@@ -13,6 +13,8 @@
     "aws-sdk": "^2.1435.0",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
+    "framer-motion": "^11.7.0",
+    "lucide-react": "^0.446.0",
     "mock-aws-s3": "^4.0.2",
     "nock": "^13.3.2",
     "react": "^18.2.0",
