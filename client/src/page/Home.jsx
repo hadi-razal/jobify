@@ -62,7 +62,7 @@ const Home = () => {
 
       {/* Why Choose Us Section */}
       <motion.section
-        className="w-full py-16 bg-gradient-to-r from-blue-600 to-indigo-700 text-white"
+        className="w-full py-16 bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 text-white"
         initial="initial"
         animate="animate"
         variants={fadeInUp}
@@ -145,13 +145,13 @@ const Home = () => {
                 key={index}
                 className="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300"
               >
-                <Briefcase className="h-12 w-12 mx-auto text-blue-500" />
+                <Briefcase className="h-12 w-12 mx-auto text-blue-950" />
                 <h3 className="mt-4 text-xl font-semibold text-gray-900">
                   {job.title}
                 </h3>
                 <p className="mt-2 text-gray-600">{job.company}</p>
                 <p className="text-gray-500">{job.location}</p>
-                <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-300">
+                <button className="mt-4 bg-blue-950 text-white px-4 py-2 rounded hover:bg-blue-900 transition-colors duration-300">
                   Apply Now
                 </button>
               </div>
