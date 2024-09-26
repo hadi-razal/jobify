@@ -7,6 +7,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { BiSolidPencil } from "react-icons/bi";
 import { Users } from "lucide-react";
+import { timeAgo } from "../helpers/time";
 
 //this job card for both employee and company so it contain delete,edit job as an company and save,unsave as an employee
 
@@ -131,6 +132,8 @@ const JobCards = ({ job, reloadJobs }) => {
       .replace(/\n/g, "<br>");
   };
 
+  const jobPostedTime = timeAgo(job?.createdAt);
+
   return (
     <div className="relative border flex flex-col bg-slate-50 rounded-md px-4  sm:w-[300px] min-h-[230px] max-h-[280px] w-full  break-words justify-evenly ">
       <div
@@ -156,9 +159,6 @@ const JobCards = ({ job, reloadJobs }) => {
               ),
             }}
           ></p>
-          <span className="text-xs text-gray-500">
-            {new Date(job?.createdAt).toLocaleDateString("en-GB")}
-          </span>
         </div>
 
         <div className="flex items-center text-gray-600 text-sm ">
@@ -182,15 +182,17 @@ const JobCards = ({ job, reloadJobs }) => {
         </div>
       </div>
       <div className="flex justify-between items-center gap-2">
+        <span className="text-xs text-gray-500">{jobPostedTime}</span>
+
         {auth.role === "employee" &&
           (job?.applicants?.includes(auth.userId) ? (
-            <button className="bg-blue-950 bg-opacity-90 transition-all duration-1000 ease-in-out  cursor-not-allowed text-white font-bold rounded-md px-4 py-2">
+            <button className="bg-gray-300 text-gray-600 font-semibold py-2 px-4 rounded-lg cursor-not-allowed transition-transform duration-300 ease-in-out transform hover:scale-105 hover:bg-gray-400">
               Applied
             </button>
           ) : (
             <button
               onClick={() => handleApplyJob(job._id)}
-              className="bg-blue-950  transition-all duration-1000 ease-in-out hover:bg-blue-900 text-white font-bold rounded-md px-4 py-2"
+              className="bg-blue-950 text-white py-2 px-4 rounded-lg font-semibold transition-transform duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-900 hover:shadow-lg"
             >
               Apply
             </button>
@@ -207,14 +209,6 @@ const JobCards = ({ job, reloadJobs }) => {
           </button>
         )}
 
-        <button
-          onClick={() => {
-            navigate(`/job/${job._id}`);
-          }}
-          className="bg-gray-400 hover:bg-gray-600 text-white font-bold rounded-md px-4 py-2"
-        >
-          View More
-        </button>
         <div className="absolute top-3 right-3 cursor-pointer">
           {auth.role === "employee" &&
             (job?.jobSavedUsers?.includes(auth.userId) ? (

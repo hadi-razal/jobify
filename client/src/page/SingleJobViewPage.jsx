@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { MapPin, DollarSign, Briefcase, Users } from "lucide-react";
 import { useAuth } from "../context/authContext";
 import toast from "react-hot-toast";
+import LoadingPage from "../components/LoadingPage";
 
 const SingleJobViewPage = () => {
   const { auth } = useAuth();
@@ -97,11 +98,7 @@ const SingleJobViewPage = () => {
   };
 
   if (!job || !company) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        Loading...
-      </div>
-    );
+    return <LoadingPage />;
   }
 
   return (

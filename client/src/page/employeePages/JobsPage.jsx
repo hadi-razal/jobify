@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Loader2 } from "lucide-react";
 import { useAuth } from "../../context/authContext.jsx";
 import JobSearchBar from "../../components/JobSearchBar";
 import JobSortBy from "../../components/JobSortBy";
 import JobCards from "../../components/JobCards.jsx";
+import LoadingPage from "../../components/LoadingPage.jsx";
 
 const JobsPage = () => {
   const { auth } = useAuth();
@@ -59,18 +59,22 @@ const JobsPage = () => {
   const displayedJobs = jobs.slice(0, jobsToDisplay);
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <div className="mb-8">
+    <div className="container mx-auto px-4 py-5 max-w-7xl">
+      <div className="mb-2">
         <JobSearchBar setJobs={setJobs} />
       </div>
 
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-          <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+          <LoadingPage />
+        </div>
+      ) : jobs.length === 0 ? (
+        <div className="flex justify-center items-center h-64">
+          <p>No jobs available at the moment. Please check back later!</p>
         </div>
       ) : (
         <>
-          <div className="flex justify-end mb-4">
+          <div className="flex justify-end mb-2">
             {jobs.length > 0 && <JobSortBy sortJob={sortJob} />}
           </div>
 

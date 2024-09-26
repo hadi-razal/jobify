@@ -53,7 +53,7 @@ const SinglePageCompanyProfile = () => {
   }
 
   return (
-    <div className="p-3">
+    <div className="p-3 pb-5">
       <div className="flex items-center justify-center flex-col rounded-lg">
         <div className="flex items-center  justify-center -mb-16">
           <img
@@ -77,7 +77,9 @@ const SinglePageCompanyProfile = () => {
       </div>
       <div className="flex flex-col items-center justify-center">
         <div className="flex items-center justify-center mt-4 text-gray-500 text-[30px]">
-          <h1>Jobs From {company?.name}</h1>
+          <h1 className="sm:text-[40px] text-[35px] font-semibold  text-gray-400">
+            Jobs From {company?.name}
+          </h1>
         </div>
         <div className="flex justify-center items-center  rounded-md  gap-2 flex-wrap max-w-7xl">
           {jobs?.map((job) => (
