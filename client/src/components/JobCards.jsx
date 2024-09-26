@@ -186,13 +186,13 @@ const JobCards = ({ job, reloadJobs }) => {
 
         {auth.role === "employee" &&
           (job?.applicants?.includes(auth.userId) ? (
-            <button className="bg-gray-300 text-gray-600 font-semibold py-2 px-4 rounded-lg cursor-not-allowed transition-transform duration-300 ease-in-out transform hover:scale-105 hover:bg-gray-400">
+            <button className="bg-gray-300 text-gray-600 font-semibold py-2 px-4 rounded-lg cursor-not-allowed transition-transform duration-300 ease-in-out transform">
               Applied
             </button>
           ) : (
             <button
               onClick={() => handleApplyJob(job._id)}
-              className="bg-blue-950 text-white py-2 px-4 rounded-lg font-semibold transition-transform duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-900 hover:shadow-lg"
+              className="bg-blue-950 text-white py-2 px-4 rounded-lg font-semibold transition-transform duration-300 ease-in-out transform  hover:bg-blue-900 hover:shadow-lg"
             >
               Apply
             </button>
