@@ -142,8 +142,8 @@ const JobCards = ({ job, reloadJobs }) => {
           navigate(`/job/${job._id}`);
         }}
       >
-        <div className="flex flex-col items-start justify-center gap-1">
-          <h3 className="text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap pr-5 w-full">
+        <div className="flex flex-col items-start justify-center gap-1 w-full">
+          <h3 className="text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap max-w-[250px] sm:max-w-[200px] w-full">
             {job?.title}
           </h3>
           <span className="text-[12px] font-medium flex gap-1 items-center justify-center">

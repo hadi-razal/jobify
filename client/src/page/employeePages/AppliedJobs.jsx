@@ -5,7 +5,7 @@ import NoJobsFound from "../../components/NoJobsFound";
 import LoadingPage from "../../components/LoadingPage";
 
 const AppliedJobs = () => {
-  const [appliedJob, setAppliedJobs] = useState();
+  const [appliedJob, setAppliedJobs] = useState(null);
 
   const getAppliedJobs = async () => {
     try {
@@ -23,18 +23,18 @@ const AppliedJobs = () => {
     getAppliedJobs();
   }, []);
 
-  if (!appliedJob) {
+  if (appliedJob === null) {
     return <LoadingPage />;
   }
 
   return (
-    <div className="flex flex-col items-center justify-center py-5 px-2 ">
-      <h1 className="sm:text-[40px] text-[35px] font-semibold mb-2 text-gray-400 ">
+    <div className="max-w-7xl mx-auto flex flex-col items-center justify-center py-5 px-3">
+      <h1 className="sm:text-[40px] text-[35px] font-semibold mb-2 text-gray-400">
         Applied Jobs
       </h1>
-      <div className="flex justify-center items-center  rounded-md  gap-2 flex-wrap max-w-7xl">
-        {appliedJob?.map((job) => (
-          <JobCards key={job._id} job={job} reloadJobs={getAppliedJobs} />
+      <div className="flex justify-center items-center rounded-md gap-2 flex-wrap">
+        {appliedJob?.map((job, i) => (
+          <JobCards job={job} key={i} reloadJobs={getAppliedJobs} />
         ))}
       </div>
       {appliedJob?.length === 0 && (

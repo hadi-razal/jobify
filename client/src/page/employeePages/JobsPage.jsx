@@ -59,7 +59,7 @@ const JobsPage = () => {
   const displayedJobs = jobs.slice(0, jobsToDisplay);
 
   return (
-    <div className="container mx-auto px-4 py-5 max-w-7xl">
+    <div className="container mx-auto px-3 py-5 max-w-7xl">
       <div className="mb-2">
         <JobSearchBar setJobs={setJobs} />
       </div>

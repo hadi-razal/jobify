@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { MapPin, DollarSign, Briefcase, Users } from "lucide-react";
+import { MapPin, DollarSign, Briefcase, Users, Calendar } from "lucide-react";
 import { useAuth } from "../context/authContext";
 import toast from "react-hot-toast";
 import LoadingPage from "../components/LoadingPage";
+import { timeAgo } from "../helpers/time";
 
 const SingleJobViewPage = () => {
   const { auth } = useAuth();
@@ -97,6 +98,8 @@ const SingleJobViewPage = () => {
       .replace(/\n/g, "<br>");
   };
 
+  const jobPostedTime = timeAgo(job?.createdAt);
+
   if (!job || !company) {
     return <LoadingPage />;
   }
@@ -133,6 +136,11 @@ const SingleJobViewPage = () => {
                 Applicants
               </span>
             </div>
+          </div>
+
+          <div className="flex items-center text-gray-600 mt-4">
+            <Calendar className="w-4 h-4 mr-2" />
+            <span>{jobPostedTime}</span>
           </div>
         </div>
 
