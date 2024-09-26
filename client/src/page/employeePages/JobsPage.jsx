@@ -1,60 +1,55 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import JobCards from "../../components/JobCards";
 import axios from "axios";
-import JobSearchBar from "../../components/jobSearchBar";
-import JobSortBy from "../../components/jobSortBy";
+import { Loader2 } from "lucide-react";
 import { useAuth } from "../../context/authContext.jsx";
-import BounceLoader from "react-spinners/BounceLoader";
+import JobSearchBar from "../../components/JobSearchBar";
+import JobSortBy from "../../components/JobSortBy";
+import JobCards from "../../components/JobCards.jsx";
 
 const JobsPage = () => {
   const { auth } = useAuth();
   const [jobs, setJobs] = useState([]);
-  const [LoadMoreClicked, setLoadMoreClicked] = useState(false);
-  const [jobsToDisplay, setJobsToDisplay] = useState(16); // Default number of jobs to display
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [jobsToDisplay, setJobsToDisplay] = useState(12);
 
   const getAllJobs = async () => {
     try {
-      setIsLoading(true); // Show loader when fetching jobs
       const res = await axios.get(
         `${import.meta.env.VITE_SERVER_URL}/job/get-jobs`
       );
       setJobs(res.data.jobs);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching jobs:", error);
-    } finally {
-      setIsLoading(false); // Hide loader after jobs are fetched
+      setIsLoading(false);
     }
   };
 
   const handleLoadMore = () => {
-    setLoadMoreClicked(true);
-    setJobsToDisplay((prev) => prev + 16);
-    setLoadMoreClicked(false); // Load more jobs when clicking "Load More"
+    setJobsToDisplay((prev) => prev + 12);
   };
 
   const sortJob = (selectedOption) => {
-    try {
-      const sortedJobs = jobs.slice();
-
-      if (selectedOption === "none") {
-        // No need to sort the jobs.
-      } else if (selectedOption === "Popular") {
+    const sortedJobs = [...jobs];
+    switch (selectedOption) {
+      case "Popular":
         sortedJobs.sort((a, b) => b.applicants.length - a.applicants.length);
-      } else if (selectedOption === "SalaryHighToLow") {
+        break;
+      case "SalaryHighToLow":
         sortedJobs.sort((a, b) => b.salary - a.salary);
-      } else if (selectedOption === "SalaryLowToHigh") {
+        break;
+      case "SalaryLowToHigh":
         sortedJobs.sort((a, b) => a.salary - b.salary);
-      } else if (selectedOption === "NewPost") {
+        break;
+      case "NewPost":
         sortedJobs.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
-      }
-      setJobs(sortedJobs);
-    } catch (error) {
-      console.log(error);
+        break;
+      default:
+      // No sorting
     }
+    setJobs(sortedJobs);
   };
 
   useEffect(() => {
@@ -64,39 +59,38 @@ const JobsPage = () => {
   const displayedJobs = jobs.slice(0, jobsToDisplay);
 
   return (
-    <div className="flex flex-col gap-2 mb-4 py-5 px-3 md:px-5">
-      <div className="text-center flex items-center justify-center w-full">
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="mb-8">
         <JobSearchBar setJobs={setJobs} />
       </div>
 
       {isLoading ? (
-        <div className="flex flex-col items-center pt-20">
-          <BounceLoader color="#172554" className=" text-blue-950 text-4xl" />
+        <div className="flex justify-center items-center h-64">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
         </div>
       ) : (
-        <div className="flex items-center gap-2 justify-center flex-wrap">
-          <div className="flex justify-end items-center w-full max-w-7xl">
-            {jobs?.length !== 0 && <JobSortBy sortJob={sortJob} />}
+        <>
+          <div className="flex justify-end mb-4">
+            {jobs.length > 0 && <JobSortBy sortJob={sortJob} />}
           </div>
 
-          <div className="flex justify-center items-center rounded-md gap-2 flex-wrap max-w-7xl">
+          <div className="flex items-center justify-center flex-wrap gap-2">
             {displayedJobs.map((job) => (
               <JobCards key={job._id} job={job} reloadJobs={getAllJobs} />
             ))}
           </div>
 
-          <div className="w-full flex items-center justify-center">
-            {displayedJobs.length < jobs.length && (
+          {displayedJobs.length < jobs.length && (
+            <div className="flex justify-center mt-8">
               <button
                 onClick={handleLoadMore}
-                className="w-[200px] bg-blue-950 text-white rounded-md px-3 py-3 mt-4"
+                className="px-6 py-2 bg-blue-950 text-white rounded-md hover:bg-blue-900 transition-colors duration-300"
               >
-                {LoadMoreClicked ? "Loading..." : "Load More"}
+                Load More
               </button>
-            )}
-          </div>
-          {/* Load More Button */}
-        </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

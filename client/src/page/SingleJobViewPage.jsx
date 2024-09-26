@@ -1,67 +1,58 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import LoadingPage from "../components/LoadingPage";
-import { GrLocation } from "react-icons/gr";
-import toast from "react-hot-toast";
+import { MapPin, DollarSign, Briefcase, Users } from "lucide-react";
 import { useAuth } from "../context/authContext";
+import toast from "react-hot-toast";
 
 const SingleJobViewPage = () => {
   const { auth } = useAuth();
   const [job, setJob] = useState(null);
-  const [company, setCompany] = useState();
-  const params = useParams();
+  const [company, setCompany] = useState(null);
+  const { jobId } = useParams();
   const navigate = useNavigate();
 
-  const getSingleJob = async () => {
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/job/single-job/${params.jobId}`
-      );
-      setJob(res.data.sPage);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getCompanyDetails = async () => {
-    if (job && job.companyId) {
+  useEffect(() => {
+    const fetchJobAndCompany = async () => {
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_SERVER_URL}/company/get-company/${
-            job.companyId
-          }`
+        const jobRes = await axios.get(
+          `${import.meta.env.VITE_SERVER_URL}/job/single-job/${jobId}`
         );
-        if (res.data.success === true) {
-          setCompany(res.data.company);
+        setJob(jobRes.data.sPage);
+
+        if (jobRes.data.sPage?.companyId) {
+          const companyRes = await axios.get(
+            `${import.meta.env.VITE_SERVER_URL}/company/get-company/${
+              jobRes.data.sPage.companyId
+            }`
+          );
+          setCompany(companyRes.data.company);
         }
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching job and company details:", error);
       }
-    }
-  };
+    };
 
-  useEffect(() => {
-    getSingleJob();
-  }, []);
-
-  useEffect(() => {
-    getCompanyDetails();
-  }, [job]);
+    fetchJobAndCompany();
+  }, [jobId]);
 
   const handleApplyJob = async () => {
     try {
       const res = await axios.put(
         `${import.meta.env.VITE_SERVER_URL}/job/apply-for-job/${job._id}`
       );
-      if (res.data.success === true) {
-        getSingleJob();
+      if (res.data.success) {
+        setJob((prevJob) => ({
+          ...prevJob,
+          applicants: [...prevJob.applicants, auth.userId],
+        }));
         toast.success(res.data.message);
       } else {
         toast.error(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error applying for job:", error);
+      toast.error("Failed to apply for job");
     }
   };
 
@@ -72,132 +63,128 @@ const SingleJobViewPage = () => {
           job._id
         }`
       );
-      if (res.data.success === true) {
-        getSingleJob();
+      if (res.data.success) {
+        setJob((prevJob) => ({
+          ...prevJob,
+          applicants: prevJob.applicants.filter((id) => id !== auth.userId),
+        }));
         toast.success(res.data.message);
       } else {
         toast.error(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error removing application:", error);
+      toast.error("Failed to remove application");
     }
   };
 
-  const handleApplicants = async () => {
-    try {
-      if (auth.role === "employee") {
-        return;
-      }
-      if (auth.role === "company") {
-        navigate(`/applicants/${job._id}`);
-      }
-    } catch (error) {
-      console.log(error);
+  const handleApplicants = () => {
+    if (auth.role === "company") {
+      navigate(`/applicants/${job._id}`);
     }
   };
 
-  const navbarHeight = 99;
+  const formatDescription = (text) => {
+    if (!text) return "";
+    return text
+      .replace(
+        /## (.+)/g,
+        '<h2 class="text-xl font-semibold mt-6 mb-2">$1</h2>'
+      )
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\n\n/g, "</p><p class='mb-4'>")
+      .replace(/\n/g, "<br>");
+  };
 
-  if (!job && !company) {
-    return <LoadingPage />;
+  if (!job || !company) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
   }
 
-  const formatTextWithLineBreaks = (text) => {
-    if (!text) return "";
-
-    return text
-      .replace(/## (.+)/g, '<h2 class="text-lg font-semibold mt-2">$1</h2>') // Convert ## to h2
-      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\n\n/g, "</p><p>") // Convert double line breaks to paragraph breaks
-      .replace(/\n/g, "<br>"); // Convert single line breaks to <br>
-  };
-
   return (
-    <div className="">
-      {job && (
-        <div
-          className="bg-white md:px-5 px-3 py-5 rounded-sm"
-          style={{ minHeight: `calc(100vh - ${navbarHeight}px)` }}
-        >
-          <div className="flex flex-col items-start mb-4">
-            <div className="flex flex-col items-start gap-2">
-              <h1 className="text-2xl font-semibold">{job.title}</h1>
-              <span className="text-gray-600 flex justify-center items-center gap-2">
-                <GrLocation />
-                {job.location}
-              </span>
-              <span className="text-gray-500">
-                &#8377; {!job.salary ? "Not Disclosed" : job.salary}
-              </span>
-              <span className="text-gray-500 font-normal">{job.category}</span>
-              <span
-                onClick={() => handleApplicants()}
-                className={`text-blue-950 ${
-                  auth.role === "company" && "cursor-pointer"
-                } `}
-              >
-                {auth.role === "company" ? "View Applicants" : "Applicants"} :{" "}
-                {""}
-                {job?.applicants?.length}
-              </span>
-            </div>
-
-            <div
-              onClick={() => {
-                navigate(`/company/${company._id}`);
-              }}
-              className="p-3 my-3 cursor-pointer rounded-sm"
-            >
-              <div className="flex gap-3 items-center justify-start">
-                <div className="">
-                  <img
-                    src="https://static.vecteezy.com/system/resources/previews/000/592/901/non_2x/vector-office-building-icon.jpg"
-                    className=" p-2 w-16 h-16"
-                    alt="Company Logo"
-                  />
-                </div>
-                <div>
-                  <h1>{company?.name}</h1>
-                  <h1 className="text-sm font-thin">
-                    <span>email</span> : {company?.email}
-                  </h1>
-                </div>
-              </div>
-            </div>
-
-            <p
-              className="text-gray-700 font-normal"
-              dangerouslySetInnerHTML={{
-                __html: formatTextWithLineBreaks(
-                  job?.description || "No description available"
-                ),
-              }}
-            ></p>
+    <div className="container mx-auto px-4 py-5 max-w-7xl">
+      <div className="bg-white shadow-sm rounded-lg ">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold mb-2">{job.title}</h1>
+          <div className="flex items-center text-gray-600 mb-4">
+            <MapPin className="w-4 h-4 mr-2" />
+            <span>{job.location}</span>
           </div>
-
-          <div className="h-16 my-7 rounded-md flex justify-center items-center text-white font-semibold">
-            {job.applicants.includes(auth?.userId) ? (
-              <button
-                onClick={() => {
-                  handleRemoveApplication();
-                }}
-                className="bg-red-600 transition-all duration-700 ease-in-out px-7 py-3 w-[300px] rounded-md"
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+            <div className="flex items-center">
+              <DollarSign className="w-4 h-4 mr-2 text-gray-400" />
+              <span>
+                {job.salary ? `₹${job.salary}` : "Salary not disclosed"}
+              </span>
+            </div>
+            <div className="flex items-center">
+              <Briefcase className="w-4 h-4 mr-2 text-gray-400" />
+              <span>{job.category}</span>
+            </div>
+            <div className="flex items-center">
+              <Users className="w-4 h-4 mr-2 text-gray-400" />
+              <span
+                onClick={handleApplicants}
+                className={
+                  auth.role === "company" ? "cursor-pointer text-blue-600" : ""
+                }
               >
-                Cancel Application
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  handleApplyJob();
-                }}
-                className="bg-blue-950 transition-all duration-700 ease-in-out w-[300px] px-7 py-3 rounded-md"
-              >
-                Apply
-              </button>
-            )}
+                {auth.role === "company" ? "View" : ""} {job.applicants.length}{" "}
+                Applicants
+              </span>
+            </div>
           </div>
         </div>
-      )}
+
+        <div className="border-t border-b py-4 mb-6">
+          <div
+            onClick={() => navigate(`/company/${company._id}`)}
+            className="flex items-center cursor-pointer"
+          >
+            <img
+              src="https://static.vecteezy.com/system/resources/previews/000/592/901/non_2x/vector-office-building-icon.jpg"
+              className="w-12 h-12 mr-4 rounded"
+              alt={company.name}
+            />
+            <div>
+              <h2 className="font-semibold">{company.name}</h2>
+              <p className="text-sm text-gray-600">{company.email}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="prose max-w-none mb-8">
+          <div
+            dangerouslySetInnerHTML={{
+              __html: formatDescription(
+                job.description || "No description available"
+              ),
+            }}
+          />
+        </div>
+
+        <div className="flex justify-center">
+          <button
+            onClick={
+              job.applicants.includes(auth?.userId)
+                ? handleRemoveApplication
+                : handleApplyJob
+            }
+            className={`px-6 py-2 rounded-md text-white font-medium transition-colors duration-300 ${
+              job.applicants.includes(auth?.userId)
+                ? "bg-red-500 hover:bg-red-600"
+                : "bg-blue-950 hover:bg-blue-900"
+            }`}
+          >
+            {job.applicants.includes(auth?.userId)
+              ? "Withdraw Application"
+              : "Apply Now"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

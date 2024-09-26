@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { BiSolidPencil } from "react-icons/bi";
+import { Users } from "lucide-react";
 
 //this job card for both employee and company so it contain delete,edit job as an company and save,unsave as an employee
 
@@ -126,12 +127,12 @@ const JobCards = ({ job, reloadJobs }) => {
     return text
       .replace(/## (.+)/g, '<h2 class="text-lg font-semibold mt-2">$1</h2>')
       .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\n\n/g, "</p><p>") 
+      .replace(/\n\n/g, "</p><p>")
       .replace(/\n/g, "<br>");
   };
 
   return (
-    <div className="relative border flex gap-2 flex-col bg-slate-50 rounded-md p-5 sm:w-[300px] min-h-[290px] max-h-[290px] w-full  break-words justify-evenly ">
+    <div className="relative border flex flex-col bg-slate-50 rounded-md px-4  sm:w-[300px] min-h-[230px] max-h-[280px] w-full  break-words justify-evenly ">
       <div
         className="cursor-pointer"
         onClick={() => {
@@ -139,8 +140,10 @@ const JobCards = ({ job, reloadJobs }) => {
         }}
       >
         <div className="flex flex-col items-start justify-center gap-1">
-          <h3 className="text-lg font-semibold overflow-ellipsis pr-3">{job?.title}</h3>
-          <span className="text-xs font-semibold flex gap-1 items-center justify-center">
+          <h3 className="text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap pr-5 w-full">
+            {job?.title}
+          </h3>
+          <span className="text-[12px] font-medium flex gap-1 items-center justify-center">
             <GrLocation /> {job?.location}
           </span>
           <p className="text-sm overflow-auto">{}</p>
@@ -154,7 +157,7 @@ const JobCards = ({ job, reloadJobs }) => {
             }}
           ></p>
           <span className="text-xs text-gray-500">
-            Posted On : {new Date(job?.createdAt).toLocaleDateString("en-GB")}
+            {new Date(job?.createdAt).toLocaleDateString("en-GB")}
           </span>
         </div>
 
@@ -166,18 +169,19 @@ const JobCards = ({ job, reloadJobs }) => {
           />
           <h1>{job?.companyName}</h1>
         </div>
-        <p
-          className={`${
+        <div
+          className={`flex items-center justify-center${
             job?.applicants?.length === 0 ? "text-gray-400" : "text-blue-950"
           } text-xs`}
         >
+          <Users className="w-4 h-4 mr-2 text-gray-400" />
           <span>
             {job?.applicants?.length}{" "}
             {job?.applicants?.length === 1 ? "applicant" : "applicants"}
           </span>
-        </p>
+        </div>
       </div>
-      <div className="flex justify-between items-center gap-2 mt-2">
+      <div className="flex justify-between items-center gap-2">
         {auth.role === "employee" &&
           (job?.applicants?.includes(auth.userId) ? (
             <button className="bg-blue-950 bg-opacity-90 transition-all duration-1000 ease-in-out  cursor-not-allowed text-white font-bold rounded-md px-4 py-2">
