@@ -17,14 +17,14 @@ const Hero = () => {
   };
 
   return (
-    <div className="relative bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 flex flex-col justify-center items-center min-h-screen text-white text-center overflow-hidden h-[calc(100vh-80px)] w-full">
+    <div className="relative bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 flex flex-col justify-start pt-[80px] items-center min-h-screen text-white text-center overflow-hidden h-[calc(100vh-80px)] w-full">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         className="w-full px-4 sm:px-6 lg:px-8 z-10"
       >
-        <h1 className="text-[45px] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-2 md:mb-8 leading-[45px]">
+        <h1 className="text-[45px]  sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-2 md:mb-8 leading-[45px]">
           Discover Your
           <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500">
             Dream Career
