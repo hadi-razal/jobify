@@ -184,14 +184,6 @@ const Home = () => {
                 </li>
                 <li>
                   <Link
-                    to="/profile"
-                    className="text-gray-400 hover:text-white transition-colors duration-300"
-                  >
-                    My Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link
                     to="/resources"
                     className="text-gray-400 hover:text-white transition-colors duration-300"
                   >

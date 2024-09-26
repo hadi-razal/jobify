@@ -6,7 +6,7 @@ const Modal = ({ isOpen, onClose, onSelect }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 duration-300 ease-in-out transition-all">
       <div className="bg-white rounded-lg shadow-lg p-6 max-w-md  sm:w-[340px] w-[280px] ">
         <h2 className="font-bold text-blue-950 text-lg mb-4">
           Select Type Of Account:
