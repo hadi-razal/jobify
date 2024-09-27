@@ -12,6 +12,9 @@ import { timeAgo } from "../helpers/time";
 //this job card for both employee and company so it contain delete,edit job as an company and save,unsave as an employee
 
 const JobCards = ({ job, reloadJobs }) => {
+
+  
+
   const { auth } = useAuth();
   const navigate = useNavigate();
 

@@ -11,7 +11,7 @@ import JobCards from "../components/JobCards";
 const SingleJobViewPage = () => {
   const { auth } = useAuth();
   const [job, setJob] = useState(null);
-  const [relatedJobs, setRelatedJobs] = useState(null);
+  const [relatedJobs, setRelatedJobs] = useState([]);
   const [company, setCompany] = useState(null);
   const { jobId } = useParams();
   const navigate = useNavigate();
@@ -22,6 +22,7 @@ const SingleJobViewPage = () => {
         `${import.meta.env.VITE_SERVER_URL}/job/get-jobs`
       );
       setRelatedJobs(res.data.jobs);
+      window.scrollTo(0, 0);
     } catch (error) {
       console.error("Error fetching jobs:", error);
     }
@@ -119,7 +120,7 @@ const SingleJobViewPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-5 max-w-7xl">
+    <div className="container mx-auto px-4 py-5 pb-10 max-w-7xl">
       <div className="bg-white shadow-sm rounded-lg ">
         <div className="mb-6">
           <h1 className="text-3xl font-bold mb-2">{job.title}</h1>
@@ -212,12 +213,17 @@ const SingleJobViewPage = () => {
           </h1>
 
           <div className="flex items-center justify-center flex-wrap gap-2 mb10">
-            {relatedJobs
-              .filter((job) => job._id !== jobId)
-              .slice(0, 8)
-              .map((job) => (
-                <JobCards key={job._id} job={job} reloadJobs={getAllJobs} />
-              ))}
+            {relatedJobs.length > 0 &&
+              relatedJobs
+                .filter((relatedJob) => relatedJob._id !== jobId)
+                .slice(0, 8)
+                .map((relatedJob) => (
+                  <JobCards
+                    key={relatedJob._id}
+                    job={relatedJob}
+                    reloadJobs={getAllJobs}
+                  />
+                ))}
           </div>
         </div>
       </div>
