@@ -8,7 +8,7 @@ const CompanyRoute = ({ children }) => {
     return <Navigate to="/login" />;
   }
   if (auth.role === "employee") {
-    return <Navigate to="*" />;
+    return <Navigate to="/dashboard" />;
   }
   return children;
 };

@@ -25,6 +25,7 @@ import CompanyRoute from "./components/secureRoute/CompanyRoute";
 import LoginRoute from "./components/secureRoute/LoginRoute";
 import ViewProfile from "./page/employeePages/ViewProfile";
 import ApplicantsPage from "./page/companyPages/ApplicantsPage";
+import SingleJobViewCompanyPage from "./page/companyPages/SingleJobViewCompanyPage";
 
 const App = () => {
   return (
@@ -130,6 +131,14 @@ const App = () => {
             element={
               <CompanyRoute>
                 <CreateJobPage />{" "}
+              </CompanyRoute>
+            }
+          />
+          <Route
+            path="/company/jobs/:jobId"
+            element={
+              <CompanyRoute>
+                <SingleJobViewCompanyPage />{" "}
               </CompanyRoute>
             }
           />

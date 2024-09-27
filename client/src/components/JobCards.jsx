@@ -139,7 +139,8 @@ const JobCards = ({ job, reloadJobs }) => {
       <div
         className="cursor-pointer"
         onClick={() => {
-          navigate(`/job/${job._id}`);
+          if (auth.role === "employee") navigate(`/job/${job._id}`);
+          if (auth.role === "company") navigate(`/company/jobs/${job._id}`);
         }}
       >
         <div className="flex flex-col items-start justify-center gap-1 w-full">

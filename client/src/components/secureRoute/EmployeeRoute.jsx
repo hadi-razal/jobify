@@ -1,4 +1,4 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 
@@ -8,7 +8,7 @@ const EmployeeRoute = ({ children }) => {
     return <Navigate to="/login" />;
   }
   if (auth.role === "company") {
-    return <Navigate to="*" />;
+    return <Navigate to="/dashboard" />;
   }
   return children;
 };
