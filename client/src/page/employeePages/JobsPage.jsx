@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/authContext.jsx";
-import JobSearchBar from "../../components/JobSearchBar";
+import JobSearchBar from "../../components/jobSearchBar.jsx";
 import JobSortBy from "../../components/JobSortBy";
 import JobCards from "../../components/JobCards.jsx";
 import LoadingPage from "../../components/LoadingPage.jsx";
@@ -74,7 +74,13 @@ const JobsPage = () => {
         </div>
       ) : (
         <>
-          <div className="flex justify-end mb-2">
+          <div className="flex items-center gap-3 justify-between mb-2">
+            {/* <button
+              onClick={getAllJobs}
+              className="text-blue-600 hover:text-blue-800 transition-colors duration-300"
+            >
+              Reset Search
+            </button> */}
             {jobs.length > 0 && <JobSortBy sortJob={sortJob} />}
           </div>
 

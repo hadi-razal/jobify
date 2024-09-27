@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 import ClickAwayListener from "react-click-away-listener";
+import { User, Briefcase, BookmarkCheck, LogOut } from "lucide-react";
 
 const NavMenu = ({ onClose }) => {
   const { logOut } = useAuth();
@@ -21,44 +22,49 @@ const NavMenu = ({ onClose }) => {
     };
   }, []);
 
+  const menuItems = [
+    { icon: User, label: "Profile", path: "/profile" },
+    { icon: Briefcase, label: "Applied Jobs", path: "/appliedjobs" },
+    { icon: BookmarkCheck, label: "Saved Jobs", path: "/savedjobs" },
+    {
+      icon: LogOut,
+      label: "Log Out",
+      action: logOut,
+      className: "text-red-600",
+    },
+  ];
+
   return (
     <ClickAwayListener onClickAway={onClose}>
       <div
-        className={`w-[200px] h-[200px] flex flex-col justify-center ${
+        className={`w-64 bg-white rounded-lg shadow-lg p-4 transition-all duration-300 ease-in-out transform absolute top-12 right-4 z-10 ${
           active ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[-10px]"
-        } bg-slate-100 rounded-lg p-5 transition-all duration-300 ease-in-out transform absolute top-[40px] right-[10px] z-10 shadow-md`}
+        }`}
       >
-        <ul>
-          <li
-            className="cursor-pointer text-center py-1 hover:bg-gray-100"
-            onClick={() => handleNavigation("/profile")}
-          >
-            Profile
-          </li>
-          <hr className="my-1" />
-          <li
-            className="cursor-pointer text-center py-1 hover:bg-gray-100"
-            onClick={() => handleNavigation("/appliedjobs")}
-          >
-            Applied Jobs
-          </li>
-          <hr className="my-1" />
-          <li
-            className="cursor-pointer text-center py-1 hover:bg-gray-100"
-            onClick={() => handleNavigation("/savedjobs")}
-          >
-            Saved Jobs
-          </li>
-          <hr className="my-1" />
-          <li
-            className="text-red-600 text-center cursor-pointer py-1 hover:bg-gray-100"
-            onClick={() => {
-              logOut();
-              onClose();
-            }}
-          >
-            Log Out
-          </li>
+        <ul className="space-y-2">
+          {menuItems.map((item, index) => (
+            <li key={index}>
+              <button
+                onClick={() => {
+                  if (item.path) {
+                    handleNavigation(item.path);
+                  } else if (item.action) {
+                    item.action();
+                    onClose();
+                  }
+                }}
+                className={`w-full flex items-center space-x-3 px-4 py-2 rounded-md transition-colors duration-200 hover:bg-gray-100 ${
+                  item.className || ""
+                }`}
+              >
+                <item.icon size={18} />
+                <span>{item.label}</span>
+              </button>
+              {index < menuItems.length - 1 && (
+                <hr className="my-1 border-gray-200" />
+              )}
+            </li>
+          ))}
         </ul>
       </div>
     </ClickAwayListener>
