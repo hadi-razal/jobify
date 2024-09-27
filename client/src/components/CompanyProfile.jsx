@@ -41,7 +41,7 @@ const CompanyProfile = ({ company }) => {
   };
 
   return (
-    <div className="bg-blue-950 p-8 rounded-md  max-w-md w-full mx-auto relative overflow-hidden">
+    <div className="bg-blue-950 p-8 rounded-md  sm:max-w-md w-full mx-auto relative overflow-hidden">
       <div className="absolute top-0 right-0 mt-4 mr-4">
         <button
           onClick={() => navigate("/edit-profile")}

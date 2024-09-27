@@ -1,137 +1,106 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { BsFillBookmarkFill, BsBookmark } from "react-icons/bs";
 import { useAuth } from "../context/authContext";
-// import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import axios from "axios";
 
 const EmployeeCard = ({ employee, reloadEmployees }) => {
-  // const navigate = useNavigate();
-  const [company, setCompany] = useState([]);
+  const [isSaved, setIsSaved] = useState(false);
   const { auth } = useAuth();
 
-  const handleSave = async (id) => {
+  const handleSaveToggle = useCallback(async () => {
     try {
-      const res = await axios.put(
-        `${import.meta.env.VITE_SERVER_URL}/company/save-profile/${id}`,
-        {
-          headers: {
-            authorization: auth.token,
-          },
-        }
-      );
-      if (res.data.success) {
-        getCompany();
-        toast.success(res.data.message);
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+      const url = `${import.meta.env.VITE_SERVER_URL}/company/${
+        isSaved ? "unsave" : "save"
+      }-profile/${employee._id}`;
+      const headers = { Authorization: auth.token };
 
-  const handleUnsave = async (id) => {
-    try {
-      const res = await axios.put(
-        `${import.meta.env.VITE_SERVER_URL}/company/unsave-profile/${id}`
-      );
+      const res = await axios.put(url, {}, { headers });
+
       if (res.data.success) {
-        getCompany();
+        setIsSaved(!isSaved);
         reloadEmployees();
         toast.success(res.data.message);
       } else {
         toast.error(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error toggling save status:", error);
+      toast.error("An error occurred. Please try again.");
     }
-  };
-
-  const getCompany = async () => {
-    try {
-      const headers = {
-        Authorization: `${auth.token}`,
-      };
-      const res = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/company/get-my-company`,
-        { headers }
-      );
-      setCompany(res.data.company);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }, [isSaved, employee._id, auth.token, reloadEmployees]);
 
   useEffect(() => {
-    getCompany();
-  }, []);
+    const checkSavedStatus = async () => {
+      try {
+        const headers = { Authorization: auth.token };
+        const res = await axios.get(
+          `${import.meta.env.VITE_SERVER_URL}/company/get-my-company`,
+          { headers }
+        );
+        setIsSaved(res.data.company.savedProfile.includes(employee._id));
+      } catch (error) {
+        console.error("Error fetching company data:", error);
+      }
+    };
 
-  const makeDescriptionVisible = (description) => {
-    return description.length > 50
-      ? `${description.slice(0, 100)}...`
+    checkSavedStatus();
+  }, [auth.token, employee._id]);
+
+  const truncateDescription = (description, maxLength = 100) => {
+    return description.length > maxLength
+      ? `${description.slice(0, maxLength)}...`
       : description;
   };
 
   return (
-    <div className="relative flex flex-col justify-between bg-slate-100 shadow-md border rounded-lg p-4 w-full sm:max-w-[300px] min-h-[235px] transition-all hover:shadow-lg hover:border-gray-300">
-      <div
-        className="cursor-pointer"
-        // onClick={() => navigate(`/employee/profile/${employee._id}`)}
-      >
+    <div className="bg-white shadow-md border rounded-lg p-4 w-full  min-h-[350px] max-h-[350px] sm:min-w-[300px] sm:max-w-[300px] transition-all hover:shadow-lg hover:border-gray-300 flex flex-col">
+      <div className="flex-grow">
         <div className="flex items-center gap-3 mb-4">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
-            alt="profile"
-            className="rounded-full shadow-md h-12 w-12"
+            src={
+              employee.profilePicture ||
+              "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
+            }
+            alt={`${employee.name}'s profile`}
+            className="rounded-full shadow-md h-12 w-12 object-cover"
           />
           <h1 className="text-lg font-semibold text-gray-800">
-            {employee?.name}
+            {employee.name}
           </h1>
         </div>
-        <div className="text-sm text-gray-700">
-          <p className="text-sm text-gray-600 mt-2">
-            {employee.description
-              ? makeDescriptionVisible(employee.description)
-              : "No description available."}
-          </p>
+        <div className="flex flex-col justify-between items-start text-xs font-semibold mb-2">
+          <span className="text-gray-600">{employee.email}</span>
+          {employee.resumeURL && (
+            <a
+              href={employee.resumeURL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline"
+            >
+              View Resume
+            </a>
+          )}
         </div>
+        <p className="text-sm text-gray-600 mb-2">
+          {employee.description
+            ? truncateDescription(employee.description)
+            : "No description available."}
+        </p>
       </div>
 
-      <div className="flex text-xs font-semibold mt-2">
-        <span className="text-gray-600">{employee.email}</span>
-        <a
-          href={employee.resumeURL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-500 ml-2 underline"
-        >
-          View Resume
-        </a>
-      </div>
-
-      <div className="mt-4">
-        {company?.savedProfile?.includes(employee._id) ? (
-          <button
-            className="w-full flex items-center justify-center gap-2 p-2 rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors"
-            onClick={() => handleUnsave(employee._id)}
-          >
-            <BsFillBookmarkFill />
-            <span>Remove From Saved</span>
-          </button>
-        ) : (
-          <button
-            className="w-full flex items-center justify-center gap-2 p-2 rounded-md bg-blue-950 text-white hover:bg-blue-900 transition-colors"
-            onClick={() => handleSave(employee._id)}
-          >
-            <BsBookmark />
-            <span>Save This Profile</span>
-          </button>
-        )}
-      </div>
-
-      <Toaster />
+      <button
+        className={`w-full flex items-center justify-center gap-2 p-2 rounded-md transition-colors ${
+          isSaved
+            ? "bg-red-500 hover:bg-red-600 text-white"
+            : "bg-blue-950 hover:bg-blue-900 text-white"
+        }`}
+        onClick={handleSaveToggle}
+      >
+        {isSaved ? <BsFillBookmarkFill /> : <BsBookmark />}
+        <span>{isSaved ? "Remove From Saved" : "Save This Profile"}</span>
+      </button>
     </div>
   );
 };

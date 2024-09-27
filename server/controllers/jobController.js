@@ -274,4 +274,17 @@ export const getJobsStatusController = async (req, res) => {
         console.log(error);
         res.send({ success: false, message: "Error in getting job's status" });
     }
+
+};
+
+// get all the applicants from the job 
+export const populateApplicantsController = async (req, res) => {
+    try {
+        const { jobId } = req.params
+        const jobs = await Job.findById({ _id: jobId }).populate("applicants");
+        res.send({ jobs, message: "Jobs Fetched all applicants", applicants: jobs.applicants || [] });
+    } catch (error) {
+        console.log(error);
+        res.send({ message: "Error in getting all applicants from jobs" });
+    }
 };

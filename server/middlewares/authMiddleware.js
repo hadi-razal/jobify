@@ -1,5 +1,7 @@
 import JWT from "jsonwebtoken";
 
+
+// token check 
 export const requireSignIn = async (req, res, next) => {
     try {
         const decode = JWT.verify(
@@ -17,6 +19,9 @@ export const requireSignIn = async (req, res, next) => {
         })
     }
 };
+
+
+// should pass the role in headers or save in cookies 
 
 export const companyUser = async (req, res, next) => {
     try {

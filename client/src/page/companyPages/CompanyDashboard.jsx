@@ -18,12 +18,12 @@ import {
 const DashboardCard = ({ title, description, icon: Icon, onClick }) => (
   <div
     onClick={onClick}
-    className="bg-white sm:min-w-[270px] sm:max-w-[270px] w-full gap-1  rounded-md p-6 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-xl  cursor-pointer"
+    className="bg-white sm:min-w-[270px] sm:max-w-[270px] h-[180px] w-full gap-1  rounded-md p-6 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-xl  cursor-pointer"
   >
-    <Icon size={48} className="text-blue-600 mb-4" />
-    <h3 className="text-xl font-semibold text-gray-800 mb-2">{title}</h3>
-    <p className="text-gray-600 text-center mb-4">{description}</p>
-    <ArrowRight size={24} className="text-blue-600" />
+    <Icon size={48} className="text-blue-950 " />
+    <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
+    <p className="text-gray-600 text-center">{description}</p>
+    <ArrowRight size={24} className="text-blue-950" />
   </div>
 );
 
@@ -56,10 +56,10 @@ const CompanyDashboard = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-80px)] md:max-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row">
+    <div className="min-h-[calc(100vh-80px)] md:max-h-screen flex items-center justify-center bg-gray-100 pb-12 px-4 sm:px-6 pt-7 lg:px-8">
+      <div className="max-w-7xl mx-auto flex items-center justify-center gap-4 flex-col md:flex-row">
         {/* Company profile section */}
-        <div className="md:w-1/2 w-full mb-6 md:mb-0 md:pr-8">
+        <div className="md:w-1/2 w-full ">
           <CompanyProfile company={company} /> {/* Display company profile */}
         </div>
 

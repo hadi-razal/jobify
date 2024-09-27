@@ -1,5 +1,5 @@
 import express from "express"
-import { getJobsStatusController, getSingleCompanyJobsController, getAllJobController, createJobController, deleteJobController, getJobCategoryBasedController, jobSearchController, jobUpdateController, singleJobPageController, totalJobApplicantsController, getCompanyJobsController, applyForJobController, removeApplicationForJobController } from "../controllers/jobController.js";
+import { getJobsStatusController, getSingleCompanyJobsController, getAllJobController, createJobController, deleteJobController, getJobCategoryBasedController, jobSearchController, jobUpdateController, singleJobPageController, totalJobApplicantsController, getCompanyJobsController, applyForJobController, removeApplicationForJobController, populateApplicantsController } from "../controllers/jobController.js";
 import { requireSignIn } from "../middlewares/authMiddleware.js";
 // import slugify from "slugify";
 
@@ -42,7 +42,10 @@ router.get("/search-jobs", requireSignIn, jobSearchController)
 router.get("/get-jobs-mycompany", requireSignIn, getCompanyJobsController)
 
 // get the total number or jobs posted and the combined total number of applicants 
-router.get("/total-jobs/total-applicants", requireSignIn , getJobsStatusController)
+router.get("/total-jobs/total-applicants", requireSignIn, getJobsStatusController)
+
+// get the total number or jobs posted and the combined total number of applicants 
+router.get("/applicants/:jobId", requireSignIn, populateApplicantsController)
 
 
 //middleware test
