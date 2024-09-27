@@ -58,7 +58,7 @@ const CompanyProfile = ({ company }) => {
         <img
           className="w-24 h-24 rounded-full border-4 border-white shadow-lg"
           src={company.logoUrl || "https://via.placeholder.com/80"}
-          alt={`${company.name} logo`}
+          alt={`${company.name} logo`} 
         />
         <div className="ml-6">
           <h1 className="text-3xl font-bold text-white">{company.name}</h1>
@@ -79,24 +79,10 @@ const CompanyProfile = ({ company }) => {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="bg-white bg-opacity-10 p-4 rounded-lg shadow-lg text-center">
-          <h3 className="text-indigo-200 text-xs">Industry</h3>
-          <p className="text-white text-lg font-semibold">
-            {company.industry || "N/A"}
-          </p>
-        </div>
-        <div className="bg-white bg-opacity-10 p-4 rounded-lg shadow-lg text-center">
-          <h3 className="text-indigo-200 text-xs">Size</h3>
-          <p className="text-white text-lg font-semibold">
-            {company.size || "N/A"}
-          </p>
-        </div>
-      </div>
+    
 
       {/* Stats Section */}
       <div className="bg-white bg-opacity-10 rounded-lg p-5 shadow-lg">
-        <h2 className="text-white text-xl font-semibold mb-2">Company Stats</h2>
         <div className="flex justify-between text-lg text-indigo-100">
           <div className="text-center">
             <span className="block text-2xl font-bold text-white">
