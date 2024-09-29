@@ -10,7 +10,6 @@ export const createJobController = async (req, res) => {
         location,
         salary,
         companyName,
-        workExperience,
         category } = req.body
 
     if (!title || !description || !location || !companyName || !category) {
@@ -28,7 +27,6 @@ export const createJobController = async (req, res) => {
             companyName,
             category,
             companyId,
-            workExperience,
             slugCategory
         }).save()
         res.send({ success: true, savedJob, message: "Job added successfully" });
