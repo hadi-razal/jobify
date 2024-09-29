@@ -111,7 +111,13 @@ const Login = () => {
           <span className="font-light">
             Don&apos;t have an account yet?{" "}
             <Link to="/register/employee" className="text-blue-950 underline">
-              Create one
+              create account
+            </Link>
+          </span>
+          <span className="font-light">
+            are you an employer?{" "}
+            <Link to="/register/company" className="text-blue-950 underline">
+              create account
             </Link>
           </span>
           <span className="text-blue-950 underline cursor-pointer font-light mt-2">

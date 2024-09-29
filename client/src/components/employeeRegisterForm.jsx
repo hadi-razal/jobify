@@ -50,7 +50,7 @@ const EmployeeRegisterForm = () => {
   }
 
   return (
-    <div className="relative mt-10 mb-10 flex items-center justify-center w-full">
+    <div className="relative mb-10 flex items-center justify-center w-full">
       <Toaster />
       <div className="p-4 flex flex-col justify-center items-center sm:w-[400px] w-full px-4 py-7">
         <div className="flex flex-col items-start justify-center w-full mb-4">

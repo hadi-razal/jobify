@@ -52,7 +52,7 @@ const CompanyRegisterForm = () => {
   }
 
   return (
-    <div className="relative mt-10 mb-10 flex items-center justify-center w-full">
+    <div className="relative mb-10 flex items-center justify-center w-full">
       <Toaster />
       <div className="p-4flex flex-col justify-center items-center sm:w-[400px] w-full px-4 py-7">
         <div className="flex flex-col items-start justify-center w-full">
@@ -60,7 +60,6 @@ const CompanyRegisterForm = () => {
             Create Company Account
           </span>
           <span className="text-sm font-light">
-            Join us to access more features
           </span>
         </div>
         <form className="flex flex-col gap-2 w-full" onSubmit={handleSubmit}>
