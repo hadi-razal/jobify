@@ -215,7 +215,8 @@ export const jobSearchController = async (req, res) => {
         if (keyword) {
             matchQuery.$or = [
                 { title: { $regex: keyword, $options: "i" } },
-                { description: { $regex: keyword, $options: "i" } }
+                { description: { $regex: keyword, $options: "i" } },
+                { location: { $regex: keyword, $options: "i" } }
             ];
         }
         if (category && category !== "all") {
