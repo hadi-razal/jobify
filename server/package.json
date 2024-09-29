@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "build": "npm install"
   },
-  "author": "",
+  "author": "hadirazal",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
