@@ -33,7 +33,7 @@ const JobSearchBar = ({ setJobs }) => {
   };
 
   return (
-    <div className="bg-slate-100 p-4 rounded-md max-w-7xl w-full">
+    <div className="bg-slate-100 py-4 px-2 rounded-md max-w-7xl w-full">
       <div className="flex flex-col md:flex-row items-center justify-between gap-2">
         {/* Search Input */}
         <div className="flex flex-col w-full ">
@@ -44,22 +44,7 @@ const JobSearchBar = ({ setJobs }) => {
             type="text"
             id="jobSearch"
             value={keyword}
-            placeholder="Search jobs..."
-            onChange={(e) => setKeyword(e.target.value)}
-            className="bg-white font-sans w-full  border-gray-300 p-3 rounded-md  focus:outline-none"
-            aria-label="Job Search Input"
-          />
-        </div>
-
-        <div className="flex flex-col w-full ">
-          <label htmlFor="jobSearch" className="sr-only">
-            Location
-          </label>
-          <input
-            type="text"
-            id="jobSearch"
-            value={keyword}
-            placeholder="Location."
+            placeholder="Search by job title or location"
             onChange={(e) => setKeyword(e.target.value)}
             className="bg-white font-sans w-full  border-gray-300 p-3 rounded-md  focus:outline-none"
             aria-label="Job Search Input"
