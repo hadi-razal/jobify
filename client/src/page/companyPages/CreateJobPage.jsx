@@ -34,6 +34,7 @@ const CreateJobPage = () => {
         `${import.meta.env.VITE_SERVER_URL}/job/create-job`,
         formData
       );
+      console.log(res)
       if (res.data.success) {
         toast.success(res.data.message);
         navigate("/all-posted-jobs");

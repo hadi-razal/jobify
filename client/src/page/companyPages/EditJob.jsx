@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -12,7 +12,6 @@ const EditJob = () => {
     title: "",
     description: "",
     location: "",
-    workExperience: "",
     salary: "",
     category: "",
   });
@@ -30,7 +29,6 @@ const EditJob = () => {
       const res = await axios.get(
         `${import.meta.env.VITE_SERVER_URL}/job/single-job/${params.jobId}`
       );
-      console.log(res.data.sPage);
       setJob(res.data.sPage);
     } catch (error) {
       console.log(error);
@@ -60,11 +58,15 @@ const EditJob = () => {
   };
 
   return (
-    <div className="mt-10 mb-10 flex items-center justify-center">
+    <div className="relative py-5 mb-10 flex items-center justify-center w-full">
       <Toaster />
-      <div className="p-4 bg-white rounded-lg shadow-2xl flex flex-col justify-center items-center">
-        <h1 className="text-[30px] text-green-600">Update Job Profile</h1>
-        <form className="flex flex-col w-[400px] px-4" onSubmit={handleSubmit}>
+      <div className="p-4 flex flex-col justify-center items-center sm:w-[400px] w-full px-4 py-7">
+        <div className="flex flex-col items-start justify-center w-full">
+          <span className="text-[30px] font-semibold text-blue-950 mb-2">
+            Update Job Profile
+          </span>
+        </div>
+        <form className="flex flex-col gap-2 w-full" onSubmit={handleSubmit}>
           <label className="text-gray-700 font-bold">Title:</label>
           <input
             type="text"
@@ -72,6 +74,7 @@ const EditJob = () => {
             value={job.title}
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+            required
           />
           <label className="text-gray-700 font-bold">Description:</label>
           <textarea
@@ -79,23 +82,8 @@ const EditJob = () => {
             value={job.description}
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+            required
           />
-          <label className="text-gray-700 font-bold">
-            Work Experience (Years):
-          </label>
-          <select
-            name="workExperience"
-            value={job.workExperience}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-          >
-            <option value="">Select a Work Experience</option>
-            {workExperienceOptions?.map((c, index) => (
-              <option key={index} value={c}>
-                {c !== 0 ? `${c} +` : c}
-              </option>
-            ))}
-          </select>
           <label className="text-gray-700 font-bold">Location:</label>
           <input
             type="text"
@@ -103,6 +91,7 @@ const EditJob = () => {
             value={job.location}
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+            required
           />
           <label className="text-gray-700 font-bold">Salary:</label>
           <input
@@ -111,6 +100,7 @@ const EditJob = () => {
             value={job.salary}
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+            required
           />
           <label className="text-gray-700 font-bold">Category:</label>
           <select
@@ -118,6 +108,7 @@ const EditJob = () => {
             value={job.category}
             onChange={handleChange}
             className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+            required
           >
             <option value="">Select a category</option>
             {categoryList?.map((c, index) => (
@@ -126,9 +117,10 @@ const EditJob = () => {
               </option>
             ))}
           </select>
+          
           <button
             type="submit"
-            className="bg-green-500 hover:bg-green-600 text-white font-bold rounded-md px-4 py-2 mt-4"
+            className="bg-blue-950 hover:bg-blue-900 text-white font-bold rounded-md px-4 py-2 mt-4"
           >
             Update
           </button>
