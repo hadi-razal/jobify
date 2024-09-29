@@ -13,7 +13,7 @@ export const createJobController = async (req, res) => {
         workExperience,
         category } = req.body
 
-    if (!title || !description || !location || !companyName || !workExperience || !category) {
+    if (!title || !description || !location || !companyName || !category) {
         return res.send({ success: false, message: "Fill in all required inputs" });
     }
 

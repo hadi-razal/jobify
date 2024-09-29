@@ -13,7 +13,6 @@ const CreateJobPage = () => {
     description: "",
     companyName: auth.name,
     location: "",
-    workExperience: "",
     salary: "",
     category: "none",
   });
