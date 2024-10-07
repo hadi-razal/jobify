@@ -1,119 +1,87 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ChevronRight, ArrowRight } from "lucide-react";
-import RegisterOptionModal from "./RegisterOptionModal";
+import { Link } from "react-router-dom";
+import {
+  ChevronRight,
+  Search,
+  Briefcase,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 
 const Hero = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const handleSelect = (type) => {
-    if (type === "employee") {
-      navigate("/register/employee");
-    } else if (type === "company") {
-      navigate("/register/company");
-    }
+  const handleSearch = (e) => {
+    e.preventDefault();
+    console.log("Searching for:", searchQuery);
   };
 
+  const features = [
+    { icon: Briefcase, text: "100,000+ Job Listings" },
+    { icon: TrendingUp, text: "Career Growth Tools" },
+    { icon: Users, text: "Expert Career Advice" },
+  ];
+
   return (
-    <div className="relative bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 flex flex-col justify-start pt-[80px] items-center min-h-screen text-white text-center overflow-hidden h-[calc(100vh-80px)] w-full">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="w-full px-4 sm:px-6 lg:px-8 z-10"
-      >
-        <h1 className="text-[45px]  sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-2 md:mb-8 leading-[45px]">
-          Discover Your
-          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500">
-            Dream Career
-          </span>
+    <div className="bg-blue-950 w-full flex flex-col items-center justify-center h-[calc(100vh-80px)] py-12 px-4 sm:px-6 lg:px-8 text-white text-center">
+      <div className="max-w-4xl w-full space-y-8">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
+          Elevate Your Career with{" "}
+          <span className="text-yellow-300">Jobify</span>
         </h1>
-        <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 md:mb-10 text-gray-300 max-w-3xl lg:max-w-4xl mx-auto">
-          Join our thriving community of professionals and unlock a world of
-          opportunities. Let Jobify be your guide to success in the
-          ever-evolving job market.
+        <p className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto">
+          Unlock a world of opportunities and take the next step in your
+          professional journey. Let{" "}
+          <span className="font-semibold text-yellow-300">Jobify</span> be your
+          compass to navigate the ever-changing landscape of career
+          possibilities.
         </p>
-        <motion.p
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className="text-xl sm:text-2xl md:text-3xl font-bold text-yellow-300 mb-8 md:mb-12"
-        >
-          Your future starts here!
-        </motion.p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 font-bold mt-8 md:mt-12">
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="w-full sm:w-auto"
-          >
-            <Link
-              to="/login"
-              className="bg-white text-blue-950 flex items-center justify-center py-3 sm:py-4 px-6 sm:px-8 rounded-full w-full sm:w-64 transition duration-300 ease-in-out shadow-lg hover:bg-blue-100 hover:text-blue-800 group"
-            >
-              <span className="text-lg mr-2 group-hover:mr-4 transition-all">
-                Login
-              </span>
-              <ChevronRight
-                size={24}
-                className="group-hover:translate-x-1 transition-transform"
-              />
-            </Link>
-          </motion.div>
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="w-full sm:w-auto"
-          >
+
+        <form onSubmit={handleSearch} className="w-full max-w-3xl mx-auto">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <input
+              type="text"
+              placeholder="Search for jobs, companies, or keywords..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="flex-grow px-4 py-3 rounded-lg text-blue-900 focus:outline-none focus:ring-2 focus:ring-yellow-300"
+            />
             <button
-              onClick={() => setIsModalOpen(true)}
-              className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-950 py-3 sm:py-4 px-6 sm:px-8 flex items-center justify-center rounded-full w-full sm:w-64 transition duration-300 ease-in-out shadow-lg hover:from-yellow-500 hover:to-yellow-600 group"
+              type="submit"
+              className="bg-yellow-300 text-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition-colors duration-300 flex items-center justify-center"
             >
-              <span className="text-lg mr-2 group-hover:mr-4 transition-all">
-                Register
-              </span>
-              <ChevronRight
-                size={24}
-                className="group-hover:translate-x-1 transition-transform"
-              />
+              <Search className="mr-2" size={20} />
+              Search
             </button>
-          </motion.div>
+          </div>
+        </form>
+
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-8">
+          {features.map((feature, index) => (
+            <div key={index} className="flex items-center">
+              <feature.icon className="text-yellow-300 mr-2" size={24} />
+              <span className="text-sm sm:text-base md:text-lg font-semibold">
+                {feature.text}
+              </span>
+            </div>
+          ))}
         </div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          className="mt-12 md:mt-16"
-        >
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             to="/jobs"
-            className="text-yellow-300 hover:text-yellow-400 flex items-center justify-center text-base sm:text-lg md:text-xl font-semibold group"
+            className="bg-transparent border-2 border-yellow-300 text-yellow-300 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-300 hover:text-blue-900 transition-colors duration-300 flex items-center justify-center"
           >
-            <span className="mr-2 group-hover:mr-4 transition-all">
-              Explore Open Positions
-            </span>
-            <ArrowRight
-              size={24}
-              className="group-hover:translate-x-2 transition-transform"
-            />
+            Explore Open Positions
+            <ChevronRight className="ml-2" size={20} />
           </Link>
-        </motion.div>
-      </motion.div>
+        </div>
 
-      <RegisterOptionModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSelect={handleSelect}
-      />
-
-      {/* Enhanced Background decoration */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-56 sm:w-64 lg:w-72 h-56 sm:h-64 lg:h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-        <div className="absolute top-3/4 right-1/4 w-56 sm:w-64 lg:w-72 h-56 sm:h-64 lg:h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-1/4 left-1/2 w-56 sm:w-64 lg:w-72 h-56 sm:h-64 lg:h-72 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
-        <div className="absolute top-1/2 right-1/3 w-48 sm:w-56 lg:w-64 h-48 sm:h-56 lg:h-64 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-3000"></div>
+        <p className="text-xs sm:text-sm text-gray-300 max-w-2xl mx-auto">
+          Join thousands of professionals who have found their dream careers
+          through Jobify. Our platform connects you with top employers and
+          provides the tools you need to succeed.
+        </p>
       </div>
     </div>
   );

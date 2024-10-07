@@ -186,24 +186,34 @@ const SingleJobViewPage = () => {
           />
         </div>
 
-        <div className="flex justify-center">
-          <button
-            onClick={
-              job.applicants.includes(auth?.userId)
-                ? handleRemoveApplication
-                : handleApplyJob
-            }
-            className={`px-6 py-2 rounded-md text-white font-medium transition-colors duration-300 ${
-              job.applicants.includes(auth?.userId)
-                ? "bg-red-500 hover:bg-red-600"
-                : "bg-blue-950 hover:bg-blue-900"
-            }`}
-          >
-            {job.applicants.includes(auth?.userId)
-              ? "Withdraw Application"
-              : "Apply Now"}
-          </button>
-        </div>
+        {auth.role === "employee" && (
+          <div className="flex justify-center">
+            <button
+              onClick={
+                job.applicants.includes(auth?.userId)
+                  ? handleRemoveApplication
+                  : handleApplyJob
+              }
+              className={`px-6 py-2 rounded-md text-white font-medium transition-colors duration-300 ${
+                job.applicants.includes(auth?.userId)
+                  ? "bg-red-500 hover:bg-red-600"
+                  : "bg-blue-950 hover:bg-blue-900"
+              }`}
+            >
+              {job.applicants.includes(auth?.userId)
+                ? "Withdraw Application"
+                : "Apply Now"}
+            </button>
+          </div>
+        )}
+
+        {!auth.role && (
+          <div className="flex items-center justify-center">
+            <span className="text-md opacity-50 text-center w-full">
+              Please login to apply for this job
+            </span>
+          </div>
+        )}
 
         {/* related jobs  */}
 
@@ -216,7 +226,7 @@ const SingleJobViewPage = () => {
             {relatedJobs.length > 0 &&
               relatedJobs
                 .filter((relatedJob) => relatedJob._id !== jobId)
-                .slice(0, 8)
+                .slice(0, 6)
                 .map((relatedJob) => (
                   <JobCards
                     key={relatedJob._id}

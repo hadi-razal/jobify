@@ -40,14 +40,7 @@ const App = () => {
           <Route path="*" element={<PageNotFound />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
-          <Route
-            path="/job/:jobId"
-            element={
-              <LoginRoute>
-                <SingleJobViewPage />
-              </LoginRoute>
-            }
-          />
+          <Route path="/job/:jobId" element={<SingleJobViewPage />} />
           <Route
             path="/edit-profile"
             element={
@@ -82,14 +75,9 @@ const App = () => {
           />
 
           {/* eployee pages */}
-          <Route
-            path="/jobs"
-            element={
-              <EmployeeRoute>
-                <JobsPage />
-              </EmployeeRoute>
-            }
-          />
+
+          <Route path="/jobs" element={<JobsPage />} />
+
           <Route
             path="/employee/profile/:profileId"
             element={

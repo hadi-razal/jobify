@@ -94,7 +94,7 @@ const JobsPage = () => {
             <div className="flex justify-center mt-8">
               <button
                 onClick={handleLoadMore}
-                className="px-6 py-2 bg-blue-950 text-white rounded-md hover:bg-blue-900 transition-colors duration-300"
+                className="px-6 py-4 bg-blue-950 text-white rounded-md hover:bg-blue-900 transition-colors duration-300"
               >
                 Load More
               </button>

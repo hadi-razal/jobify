@@ -3,7 +3,6 @@ import toast, { Toaster } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { categoryList } from "../../constant/jobcategory";
-import { workExperienceOptions } from "../../constant/workExperience";
 
 const EditJob = () => {
   const params = useParams();

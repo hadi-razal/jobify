@@ -1,84 +1,50 @@
 /* eslint-disable react/prop-types */
 import { GrLocation } from "react-icons/gr";
 import { BsFillBookmarkFill, BsBookmark } from "react-icons/bs";
+import { Users } from "lucide-react";
+import { BiSolidPencil } from "react-icons/bi";
 import { useAuth } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { BiSolidPencil } from "react-icons/bi";
-import { Users } from "lucide-react";
 import { timeAgo } from "../helpers/time";
 
-//this job card for both employee and company so it contain delete,edit job as an company and save,unsave as an employee
-
 const JobCards = ({ job, reloadJobs }) => {
-
-  
-
   const { auth } = useAuth();
   const navigate = useNavigate();
 
   const handleSave = async (id) => {
-    console.log(id);
     try {
       const res = await axios.put(
         `${import.meta.env.VITE_SERVER_URL}/employee/save-job/${id}`
       );
-      console.log(res);
-      if (res.data.success === true) {
+      if (res.data.success) {
         reloadJobs();
         toast.success(res.data.message);
-      }
-      if (res.data.success === false) {
+      } else {
         toast.error(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error("An error occurred while saving the job");
     }
   };
 
   const handleUnsave = async (id) => {
-    console.log(id);
     try {
       const res = await axios.put(
         `${import.meta.env.VITE_SERVER_URL}/employee/unsave-job/${id}`
       );
-      console.log(res);
-      if (res.data.success === true) {
+      if (res.data.success) {
         reloadJobs();
         toast.success(res.data.message);
-      }
-      if (res.data.success === false) {
+      } else {
         toast.error(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error("An error occurred while unsaving the job");
     }
-  };
-
-  const handleToast = () => {
-    toast((t) => (
-      <span className="flex flex-col items-center justify-center p-6 gap-4">
-        Are You Sure?
-        <div className="flex gap-3">
-          <button
-            className="bg-blue-800 rounded-lg p-2"
-            onClick={() => {
-              toast.dismiss(t.id);
-              handleDelete(job._id);
-            }}
-          >
-            Confirm
-          </button>
-          <button
-            className="bg-red-600 rounded-lg p-2"
-            onClick={() => toast.dismiss(t.id)}
-          >
-            Cancel
-          </button>
-        </div>
-      </span>
-    ));
   };
 
   const handleDelete = async (id) => {
@@ -86,16 +52,15 @@ const JobCards = ({ job, reloadJobs }) => {
       const res = await axios.delete(
         `${import.meta.env.VITE_SERVER_URL}/job/delete-job/${id}`
       );
-      console.log(res);
-      if (res.data.success === true) {
+      if (res.data.success) {
         reloadJobs();
         toast.success(res.data.message);
-      }
-      if (res.data.success === false) {
+      } else {
         toast.error(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error("An error occurred while deleting the job");
     }
   };
 
@@ -104,99 +69,85 @@ const JobCards = ({ job, reloadJobs }) => {
       const res = await axios.put(
         `${import.meta.env.VITE_SERVER_URL}/job/apply-for-job/${id}`
       );
-      console.log(res);
-      if (res.data.success === true) {
+      if (res.data.success) {
         reloadJobs();
         toast.success(res.data.message);
-      }
-      if (res.data.success === false) {
+      } else {
         toast.error(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error("An error occurred while applying for the job");
     }
-  };
-
-  const makeDescriptionVisible = (description) => {
-    if (description?.length > 30) {
-      return description.slice(0, 30) + "...";
-    } else {
-      return description;
-    }
-  };
-
-  const formatTextWithLineBreaks = (text) => {
-    if (!text) return "";
-
-    return text
-      .replace(/## (.+)/g, '<h2 class="text-lg font-semibold mt-2">$1</h2>')
-      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\n\n/g, "</p><p>")
-      .replace(/\n/g, "<br>");
   };
 
   const jobPostedTime = timeAgo(job?.createdAt);
 
   return (
-    <div className="relative border flex flex-col bg-slate-50 rounded-md px-4  sm:w-[300px] min-h-[230px] max-h-[280px] w-full  break-words justify-evenly ">
-      <div
-        className="cursor-pointer"
-        onClick={() => {
-          if (auth.role === "employee") navigate(`/job/${job._id}`);
-          if (auth.role === "company") navigate(`/company/jobs/${job._id}`);
-        }}
-      >
-        <div className="flex flex-col items-start justify-center gap-1 w-full">
-          <h3 className="text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap max-w-[250px] sm:max-w-[200px] w-full">
-            {job?.title}
+    <div
+      onClick={() => {
+        if (auth.role === "company") {
+          navigate(`/company/job/${job._id}`);
+        } else {
+          navigate(`/job/${job._id}`);
+        }
+      }}
+      className="relative border flex flex-col bg-slate-50 rounded-md p-4 w-full sm:w-[400px] h-[220px]"
+    >
+      <div className="cursor-pointer flex flex-col h-full">
+        <div className="flex-grow">
+          <h3 className="text-lg font-semibold truncate mb-1">
+            {job?.title || "Untitled Job"}
           </h3>
-          <span className="text-[12px] font-medium flex gap-1 items-center justify-center">
-            <GrLocation /> {job?.location}
+          <span className="text-xs font-medium flex items-center gap-1 mb-2">
+            <GrLocation className="inline-block" size={12} />{" "}
+            {job?.location || "No location specified"}
           </span>
-          <p className="text-sm overflow-auto">{}</p>
-          <p
-            className="text-gray-700 font-normal"
-            dangerouslySetInnerHTML={{
-              __html: formatTextWithLineBreaks(
-                makeDescriptionVisible(job?.description) ||
-                  "No description available"
-              ),
-            }}
-          ></p>
+          <p className="text-gray-700 text-sm mb-3 line-clamp-3">
+            {job?.description || "No description available"}
+          </p>
         </div>
 
-        <div className="flex items-center text-gray-600 text-sm ">
-          <img
-            className="w-10 h-10 rounded-full"
-            src="https://static.vecteezy.com/system/resources/previews/000/592/901/non_2x/vector-office-building-icon.jpg"
-            alt="Company"
-          />
-          <h1>{job?.companyName}</h1>
-        </div>
-        <div
-          className={`flex items-center justify-center${
-            job?.applicants?.length === 0 ? "text-gray-400" : "text-blue-950"
-          } text-xs`}
-        >
-          <Users className="w-4 h-4 mr-2 text-gray-400" />
-          <span>
-            {job?.applicants?.length}{" "}
-            {job?.applicants?.length === 1 ? "applicant" : "applicants"}
-          </span>
+        <div className="flex items-center justify-between text-gray-600 text-sm mb-2">
+          <div className="flex items-center">
+            <img
+              className="w-8 h-8 rounded-full mr-2"
+              src="https://static.vecteezy.com/system/resources/previews/000/592/901/non_2x/vector-office-building-icon.jpg"
+              alt="Company"
+            />
+            <h1 className="truncate max-w-[150px]">
+              {job?.companyName || "Unknown Company"}
+            </h1>
+          </div>
+          <div
+            className={`flex items-center text-xs ${
+              job?.applicants?.length === 0 ? "text-gray-400" : "text-blue-950"
+            }`}
+          >
+            <Users className="w-4 h-4 mr-1" />
+            <span>
+              {job?.applicants?.length || 0}{" "}
+              {job?.applicants?.length === 1 ? "applicant" : "applicants"}
+            </span>
+          </div>
         </div>
       </div>
-      <div className="flex justify-between items-center gap-2">
+
+      <div className="flex justify-between items-center mt-auto">
         <span className="text-xs text-gray-500">{jobPostedTime}</span>
 
         {auth.role === "employee" &&
           (job?.applicants?.includes(auth.userId) ? (
-            <button className="bg-gray-300 text-gray-600 font-semibold py-2 px-4 rounded-lg cursor-not-allowed transition-transform duration-300 ease-in-out transform">
+            <button className="bg-gray-300 text-gray-600 text-sm font-semibold py-1 px-3 rounded-lg cursor-not-allowed">
               Applied
             </button>
           ) : (
             <button
-              onClick={() => handleApplyJob(job._id)}
-              className="bg-blue-950 text-white py-2 px-4 rounded-lg font-semibold transition-transform duration-300 ease-in-out transform  hover:bg-blue-900 hover:shadow-lg"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleApplyJob(job._id);
+              }}
+              className="bg-blue-950 text-white text-sm py-1 px-3 rounded-lg font-semibold hover:bg-blue-900 transition-colors duration-200"
             >
               Apply
             </button>
@@ -204,29 +155,54 @@ const JobCards = ({ job, reloadJobs }) => {
 
         {auth.role === "company" && (
           <button
-            onClick={() => {
-              handleToast();
+            onClick={(e) => {
+              e.stopPropagation();
+              toast((t) => (
+                <span className="flex flex-col items-center justify-center p-4 gap-3">
+                  <p>Are you sure you want to delete this job?</p>
+                  <div className="flex gap-2">
+                    <button
+                      className="bg-red-600 text-white rounded-lg p-2 text-sm"
+                      onClick={() => {
+                        toast.dismiss(t.id);
+                        handleDelete(job._id);
+                      }}
+                    >
+                      Delete
+                    </button>
+                    <button
+                      className="bg-gray-300 text-gray-700 rounded-lg p-2 text-sm"
+                      onClick={() => toast.dismiss(t.id)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </span>
+              ));
             }}
-            className="bg-red-500 hover:bg-red-600 text-white font-bold rounded-md px-4 py-2"
+            className="bg-red-500 hover:bg-red-600 text-white text-sm font-bold rounded-md px-3 py-1 transition-colors duration-200"
           >
-            Delete Post
+            Delete
           </button>
         )}
 
-        <div className="absolute top-3 right-3 cursor-pointer">
+        <div className="absolute top-3 right-3">
           {auth.role === "employee" &&
             (job?.jobSavedUsers?.includes(auth.userId) ? (
               <BsFillBookmarkFill
-                size={22}
-                className="text-blue-950"
-                onClick={() => {
+                size={20}
+                className="text-blue-950 cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
                   handleUnsave(job._id);
                 }}
               />
             ) : (
               <BsBookmark
-                size={22}
-                onClick={() => {
+                size={20}
+                className="cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
                   handleSave(job._id);
                 }}
               />
@@ -234,10 +210,13 @@ const JobCards = ({ job, reloadJobs }) => {
 
           {auth.role === "company" && (
             <div
-              className="relative  group"
-              onClick={() => navigate(`/job-edit/${job._id}`)}
+              className="relative group"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/job-edit/${job._id}`);
+              }}
             >
-              <p className="hidden absolute text-[10px] z-10 rounded-lg transition-all duration-300 ease-in-out bg-gray-500 px-3 opacity-0 -mt-4 group-hover:opacity-70 group-hover:flex">
+              <p className="hidden absolute text-[10px] z-10 rounded-lg transition-all duration-300 ease-in-out bg-gray-500 px-2 py-1 -mt-8 -ml-6 group-hover:flex">
                 Edit
               </p>
               <BiSolidPencil className="text-[20px] cursor-pointer transition-all duration-100 ease-in-out group-hover:scale-110" />

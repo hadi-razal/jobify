@@ -30,7 +30,7 @@ router.put("/apply-for-job/:jobId", requireSignIn, applyForJobController);
 router.put("/remove-job-application/:jobId", requireSignIn, removeApplicationForJobController);
 
 // single job page
-router.get("/single-job/:jobId", requireSignIn, singleJobPageController);
+router.get("/single-job/:jobId", singleJobPageController);
 
 // jobs based on category (pass the category as slug from the client)
 router.get("/get-category/:category", requireSignIn, getJobCategoryBasedController)
