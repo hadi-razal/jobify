@@ -136,23 +136,6 @@ const JobCards = ({ job, reloadJobs }) => {
       <div className="flex justify-between items-center mt-auto">
         <span className="text-xs text-gray-500">{jobPostedTime}</span>
 
-        {auth.role === "employee" &&
-          (job?.applicants?.includes(auth.userId) ? (
-            <button className="bg-gray-300 text-gray-600 text-sm font-semibold py-1 px-3 rounded-lg cursor-not-allowed">
-              Applied
-            </button>
-          ) : (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleApplyJob(job._id);
-              }}
-              className="bg-blue-950 text-white text-sm py-1 px-3 rounded-lg font-semibold hover:bg-blue-900 transition-colors duration-200"
-            >
-              Apply
-            </button>
-          ))}
-
         {auth.role === "company" && (
           <button
             onClick={(e) => {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/authContext.jsx";
 import JobSearchBar from "../../components/jobSearchBar.jsx";
-import JobSortBy from "../../components/JobSortBy";
+import JobSortBy from "../../components/jobSortBy.jsx";
 import JobCards from "../../components/JobCards.jsx";
 import LoadingPage from "../../components/LoadingPage.jsx";
 
