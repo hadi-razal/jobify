@@ -1,134 +1,122 @@
-import axios from "axios";
 import { useState } from "react";
+
+import { Link, useNavigate } from "react-router-dom";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import axios from "axios";
 import { useAuth } from "../context/authContext";
-import { Link, Navigate, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
+  const { setAuth } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { auth, setAuth } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/auth/login`,
-        { email, password }
+        formData
       );
 
-      if (!res.data.success) {
-        toast.error(res.data.message);
-        setIsLoading(false);
-        return;
-      }
+      if (res.data.success) {
+        toast.success(res.data.message);
 
-      const { token, name, userId, email: userEmail, role } = res.data.user;
+        setAuth({
+          token: res.data.token,
+          userId: res.data.user_id,
+          role: res.data.role,
+        });
 
-      if (token) {
-        setAuth({ name, userId, token, email: userEmail, role });
         localStorage.setItem(
           "auth",
-          JSON.stringify({ name, userId, token, email: userEmail, role })
+          JSON.stringify({
+            token: res.data.token,
+            userId: res.data.user_id,
+            role: res.data.role,
+          })
         );
-        setEmail("");
-        setPassword("");
-
-        // Navigate based on user role
-        navigate(role === "company" ? "/dashboard" : "/jobs");
-        toast.success(res.data.message);
+        setTimeout(() => {
+          navigate(res.data.role === "company" ? "/dashboard" : "/");
+        }, 100);
+      } else {
+        toast.error(res.data.message);
       }
-      setIsLoading(false);
     } catch (error) {
-      console.error(error);
-      toast.error("An error occurred. Please try again.");
-      setIsLoading(false);
+      toast.error(error.response?.data?.message || "An error occurred");
+      console.error(error.message);
     }
   };
 
-  // Redirect if user is already authenticated
-  if (auth.token) {
-    return <Navigate to="/jobs" />;
-  }
-
   return (
-    <div className="relative h-[80vh] flex items-center justify-center">
+    <div className="min-h-[calc(100vh-80px)] w-full flex items-center justify-center p-4 bg-white text-black">
       <Toaster />
-
-      <div className="rounded-sm flex flex-col items-center justify-center gap-4 sm:w-[400px] w-full px-4 py-7">
-        <div className="flex flex-col items-start justify-center w-full">
-          <span className="text-[30px] font-semibold">
-            Login to your account
-          </span>
-          <span className="text-sm font-light">
-            Access your career opportunities
-          </span>
+      
+      <div className="w-full max-w-sm bg-white border-2 border-black p-6 sm:p-8 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+        <div className="mb-8 text-center border-b-2 border-black pb-4">
+          <h2 className="text-2xl font-black text-black mb-2 uppercase tracking-tighter">Welcome back</h2>
+          <p className="text-gray-600 text-xs font-bold tracking-wide uppercase">Please enter your details to sign in.</p>
         </div>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-full">
-          <div className="flex flex-col w-full">
-            <label htmlFor="email" className="text-sm font-medium">
-              Email:
-            </label>
+
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div className="space-y-1">
+            <label className="text-xs font-black uppercase tracking-widest text-black">Email</label>
             <input
               type="email"
-              autoComplete="off"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              id="email"
-              className="w-full border px-3 py-3 border-b rounded-sm focus:outline-none"
               placeholder="Enter your email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               required
+              className="w-full border-2 border-black p-3 bg-white text-black font-bold placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-200 transition-all rounded-none"
             />
           </div>
-          <div className="flex flex-col w-full">
-            <label htmlFor="password" className="text-sm font-medium">
-              Password:
-            </label>
-            <input
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              id="password"
-              className="w-full border px-3 py-3 border-b rounded-sm focus:outline-none"
-              placeholder="Enter your password"
-              required
-            />
+
+          <div className="space-y-1">
+            <label className="text-xs font-black uppercase tracking-widest text-black">Password</label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Enter your password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                className="w-full border-2 border-black p-3 bg-white text-black font-bold placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-200 transition-all rounded-none"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black transition-colors"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
+              </button>
+            </div>
           </div>
 
           <button
             type="submit"
-            className="px-5 py-3 h-[50px] w-full bg-blue-950 text-white rounded-sm"
-            disabled={isLoading}
+            className="w-full bg-black text-white p-3 font-black uppercase tracking-widest hover:bg-gray-800 transition-colors mt-4 rounded-none border-2 border-transparent focus:outline-none focus:ring-4 focus:ring-gray-300"
           >
-            {isLoading ? "Logging in..." : "Login"}
+            Sign in
           </button>
         </form>
 
-        <div className="flex flex-col items-center justify-center text-sm mt-4">
-          <span className="font-light">
-            Don&apos;t have an account yet?{" "}
-            <Link to="/register/employee" className="text-blue-950 underline">
-              create account
-            </Link>
-          </span>
-          <span className="font-light">
-            are you an employer?{" "}
-            <Link to="/register/company" className="text-blue-950 underline">
-              create account
-            </Link>
-          </span>
-          <span className="text-blue-950 underline cursor-pointer font-light mt-2">
-            <Link
-              to="/login/forgot-password"
-              className="text-blue-950 underline"
-            >
-              Forgot password?
-            </Link>
-          </span>
-        </div>
+        <p className="text-center text-xs font-bold text-gray-600 mt-6 pt-6 border-t-2 border-black">
+          Don&apos;t have an account?{" "}
+          <Link to="/registerOption" className="text-black font-black uppercase hover:underline">
+            Sign up
+          </Link>
+        </p>
       </div>
     </div>
   );

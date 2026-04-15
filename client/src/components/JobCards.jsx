@@ -64,23 +64,6 @@ const JobCards = ({ job, reloadJobs }) => {
     }
   };
 
-  const handleApplyJob = async (id) => {
-    try {
-      const res = await axios.put(
-        `${import.meta.env.VITE_SERVER_URL}/job/apply-for-job/${id}`
-      );
-      if (res.data.success) {
-        reloadJobs();
-        toast.success(res.data.message);
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("An error occurred while applying for the job");
-    }
-  };
-
   const jobPostedTime = timeAgo(job?.createdAt);
 
   return (
@@ -92,60 +75,57 @@ const JobCards = ({ job, reloadJobs }) => {
           navigate(`/job/${job._id}`);
         }
       }}
-      className="relative border flex flex-col bg-slate-50 rounded-md p-4 w-full sm:w-[400px] h-[220px]"
+      className="relative flex flex-col bg-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 rounded-none p-5 w-full sm:w-[350px] h-[280px] cursor-pointer group"
     >
-      <div className="cursor-pointer flex flex-col h-full">
+      <div className="flex flex-col h-full">
         <div className="flex-grow">
-          <h3 className="text-lg font-semibold truncate mb-1">
+          <h3 className="text-xl font-black uppercase tracking-tighter truncate mb-2">
             {job?.title || "Untitled Job"}
           </h3>
-          <span className="text-xs font-medium flex items-center gap-1 mb-2">
+          <span className="text-xs font-bold uppercase tracking-widest flex items-center gap-1 mb-2 text-black">
             <GrLocation className="inline-block" size={12} />{" "}
             {job?.location || "No location specified"}
           </span>
-          <p className="text-gray-700 text-sm mb-3 line-clamp-3">
+          <p className="text-gray-600 font-bold text-sm mb-4 line-clamp-2">
             {job?.description || "No description available"}
           </p>
         </div>
 
-        <div className="flex items-center justify-between text-gray-600 text-sm mb-2">
+        <div className="flex items-center justify-between text-black text-xs mb-4 border-t-2 border-black pt-3">
           <div className="flex items-center">
-            <img
-              className="w-8 h-8 rounded-full mr-2"
-              src="https://static.vecteezy.com/system/resources/previews/000/592/901/non_2x/vector-office-building-icon.jpg"
-              alt="Company"
-            />
-            <h1 className="truncate max-w-[150px]">
+            <div className="w-6 h-6 rounded-none mr-2 bg-black flex justify-center items-center">
+              <span className="text-white font-black text-[10px]">CO</span>
+            </div>
+            <h1 className="truncate max-w-[120px] font-black uppercase tracking-wider">
               {job?.companyName || "Unknown Company"}
             </h1>
           </div>
           <div
-            className={`flex items-center text-xs ${
-              job?.applicants?.length === 0 ? "text-gray-400" : "text-blue-950"
+            className={`flex items-center font-black uppercase tracking-widest ${
+              job?.applicants?.length === 0 ? "text-gray-400" : "text-black"
             }`}
           >
-            <Users className="w-4 h-4 mr-1" />
+            <Users className="w-3 h-3 mr-1" strokeWidth={3} />
             <span>
-              {job?.applicants?.length || 0}{" "}
-              {job?.applicants?.length === 1 ? "applicant" : "applicants"}
+              {job?.applicants?.length || 0}
             </span>
           </div>
         </div>
       </div>
 
       <div className="flex justify-between items-center mt-auto">
-        <span className="text-xs text-gray-500">{jobPostedTime}</span>
+        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{jobPostedTime}</span>
 
         {auth.role === "company" && (
           <button
             onClick={(e) => {
               e.stopPropagation();
               toast((t) => (
-                <span className="flex flex-col items-center justify-center p-4 gap-3">
-                  <p>Are you sure you want to delete this job?</p>
-                  <div className="flex gap-2">
+                <span className="flex flex-col items-center justify-center p-4 gap-3 bg-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <p className="font-bold text-sm">Are you sure you want to delete this job?</p>
+                  <div className="flex gap-2 w-full">
                     <button
-                      className="bg-red-600 text-white rounded-lg p-2 text-sm"
+                      className="flex-1 bg-black text-white font-black uppercase tracking-widest p-2 text-xs"
                       onClick={() => {
                         toast.dismiss(t.id);
                         handleDelete(job._id);
@@ -154,7 +134,7 @@ const JobCards = ({ job, reloadJobs }) => {
                       Delete
                     </button>
                     <button
-                      className="bg-gray-300 text-gray-700 rounded-lg p-2 text-sm"
+                      className="flex-1 border-2 border-black text-black font-black uppercase tracking-widest p-2 text-xs"
                       onClick={() => toast.dismiss(t.id)}
                     >
                       Cancel
@@ -163,18 +143,18 @@ const JobCards = ({ job, reloadJobs }) => {
                 </span>
               ));
             }}
-            className="bg-red-500 hover:bg-red-600 text-white text-sm font-bold rounded-md px-3 py-1 transition-colors duration-200"
+            className="border-2 border-black hover:bg-black hover:text-white text-black text-[10px] font-black uppercase tracking-widest rounded-none px-3 py-1.5 transition-colors duration-200"
           >
             Delete
           </button>
         )}
 
-        <div className="absolute top-3 right-3">
+        <div className="absolute top-4 right-4">
           {auth.role === "employee" &&
             (job?.jobSavedUsers?.includes(auth.userId) ? (
               <BsFillBookmarkFill
                 size={20}
-                className="text-blue-950 cursor-pointer"
+                className="text-black cursor-pointer hover:scale-110 transition-transform"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleUnsave(job._id);
@@ -183,7 +163,7 @@ const JobCards = ({ job, reloadJobs }) => {
             ) : (
               <BsBookmark
                 size={20}
-                className="cursor-pointer"
+                className="text-black cursor-pointer hover:scale-110 transition-transform"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleSave(job._id);
@@ -193,16 +173,13 @@ const JobCards = ({ job, reloadJobs }) => {
 
           {auth.role === "company" && (
             <div
-              className="relative group"
+              className="relative group bg-white border-2 border-black p-1.5 hover:bg-black transition-colors duration-200"
               onClick={(e) => {
                 e.stopPropagation();
                 navigate(`/job-edit/${job._id}`);
               }}
             >
-              <p className="hidden absolute text-[10px] z-10 rounded-lg transition-all duration-300 ease-in-out bg-gray-500 px-2 py-1 -mt-8 -ml-6 group-hover:flex">
-                Edit
-              </p>
-              <BiSolidPencil className="text-[20px] cursor-pointer transition-all duration-100 ease-in-out group-hover:scale-110" />
+              <BiSolidPencil className="text-[16px] text-black group-hover:text-white cursor-pointer" />
             </div>
           )}
         </div>

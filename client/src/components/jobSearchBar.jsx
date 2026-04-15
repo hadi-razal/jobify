@@ -33,8 +33,8 @@ const JobSearchBar = ({ setJobs }) => {
   };
 
   return (
-    <div className="bg-slate-100 py-4 px-2 rounded-md max-w-7xl w-full">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-2">
+    <div className="bg-white py-4 px-4 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none max-w-7xl w-full">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-3">
         {/* Search Input */}
         <div className="flex flex-col w-full ">
           <label htmlFor="jobSearch" className="sr-only">
@@ -46,7 +46,7 @@ const JobSearchBar = ({ setJobs }) => {
             value={keyword}
             placeholder="Search by job title or location"
             onChange={(e) => setKeyword(e.target.value)}
-            className="bg-white font-sans w-full  border-gray-300 p-3 rounded-md  focus:outline-none"
+            className="bg-white text-black font-bold border-2 border-black p-3 rounded-none focus:outline-none focus:ring-4 focus:ring-gray-200 transition-all placeholder:text-gray-500 w-full"
             aria-label="Job Search Input"
           />
         </div>
@@ -60,7 +60,7 @@ const JobSearchBar = ({ setJobs }) => {
             id="categorySelect"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="bg-white font-sans border   w-full p-3 rounded-md focus:outline-none"
+            className="bg-white text-black font-bold uppercase border-2 border-black p-3 rounded-none focus:outline-none focus:ring-4 focus:ring-gray-200 transition-all w-full cursor-pointer appearance-none text-sm tracking-wide"
             aria-label="Category Select"
           >
             <option value="all">All Categories</option>
@@ -76,10 +76,10 @@ const JobSearchBar = ({ setJobs }) => {
         <div className="flex flex-col w-full">
           <button
             onClick={handleSearch}
-            className="flex w-full items-center justify-center bg-blue-950 hover:bg-blue-900 text-white font-normal p-3 rounded-md transition-all  focus:outline-none"
+            className="flex w-full items-center justify-center bg-black hover:bg-gray-800 text-white font-black uppercase tracking-widest p-3 rounded-none transition-colors border-2 border-transparent focus:outline-none focus:ring-4 focus:ring-gray-500"
             aria-label="Search Button"
           >
-            <BiSearchAlt className="mr-2" />
+            <BiSearchAlt className="mr-2 w-5 h-5" />
             Search
           </button>
         </div>

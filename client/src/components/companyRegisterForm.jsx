@@ -6,23 +6,20 @@ import { useAuth } from "../context/authContext";
 
 const CompanyRegisterForm = () => {
   const { auth } = useAuth();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    companyEstablishedYear: 0,
+    companyEstablishedYear: "",
     location: "",
     role: "company",
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -46,87 +43,57 @@ const CompanyRegisterForm = () => {
     setIsLoading(false);
   };
 
-  // Redirect if user is already authenticated
   if (auth.token) {
-    return <Navigate to={"/dashboard"} />;
+    return <Navigate to="/dashboard" />;
   }
 
   return (
-    <div className="relative mb-10 flex items-center justify-center w-full">
+    <div className="min-h-[calc(100vh-80px)] w-full flex items-center justify-center p-4 bg-white text-black py-10">
       <Toaster />
-      <div className="p-4flex flex-col justify-center items-center sm:w-[400px] w-full px-4 py-7">
-        <div className="flex flex-col items-start justify-center w-full">
-          <span className="text-[30px] font-semibold">
-            Create Company Account
-          </span>
-          <span className="text-sm font-light">
-          </span>
+
+      <div className="w-full max-w-lg bg-white border-2 border-black p-6 sm:p-8 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+        <div className="mb-10 text-center border-b-2 border-black pb-6">
+          <h2 className="text-3xl font-black text-black mb-2 uppercase tracking-tighter">Register Company</h2>
+          <p className="text-gray-600 text-sm font-bold tracking-wide uppercase">Join Jobify and start hiring top talent today.</p>
         </div>
-        <form className="flex flex-col gap-2 w-full" onSubmit={handleSubmit}>
-          <label className="text-gray-700 font-bold">Company Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-            required
-          />
-          <label className="text-gray-700 font-bold">Email:</label>
-          <input
-            type="email"
-            name="email"
-            autoComplete="off"
-            value={formData.email}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none  mt-2"
-            required
-          />
-          <label className="text-gray-700 font-bold">Password:</label>
-          <input
-            type="password"
-            name="password"
-            autoComplete="off"
-            value={formData.password}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none  mt-2"
-            required
-          />
-          <label className="text-gray-700 font-bold">Location:</label>
-          <input
-            type="text"
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none  mt-2"
-            required
-          />
-          <label className="text-gray-700 font-bold">
-            Company Established Year:
-          </label>
-          <input
-            type="number"
-            name="companyEstablishedYear"
-            min="0"
-            value={formData.companyEstablishedYear}
-            onChange={handleChange}
-            className="border border-gray-400 rounded px-3 py-2 focus:outline-none mt-2"
-            required
-          />
-          <button
-            type="submit"
-            className="bg-blue-950 hover:bg-blue-900 text-white font-bold rounded-md px-4 py-2 mt-4"
-            disabled={isLoading}
-          >
-            {isLoading ? "Creating account..." : "Create Company Account"}
-          </button>
-          <div className="text-xs mt-2 flex items-center justify-center gap-1">
-            <p>Already have an account?</p>
-            <Link to={"/login"} className="text-blue-950 underline">
-              Login
-            </Link>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <label className="text-sm font-black uppercase tracking-wider text-black">Company Name</label>
+            <input type="text" name="name" required value={formData.name} onChange={handleChange} className="w-full border-2 border-black bg-white text-black rounded-none py-3 px-4 focus:outline-none focus:ring-4 focus:ring-gray-200 transition-all font-bold" placeholder="Acme Corp" />
           </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-black uppercase tracking-wider text-black">Work Email</label>
+            <input type="email" name="email" required value={formData.email} onChange={handleChange} className="w-full border-2 border-black bg-white text-black rounded-none py-3 px-4 focus:outline-none focus:ring-4 focus:ring-gray-200 transition-all font-bold" placeholder="hr@acme.com" />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-black uppercase tracking-wider text-black">Password</label>
+            <input type="password" name="password" required value={formData.password} onChange={handleChange} className="w-full border-2 border-black bg-white text-black rounded-none py-3 px-4 focus:outline-none focus:ring-4 focus:ring-gray-200 transition-all font-bold" placeholder="••••••••" />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="text-sm font-black uppercase tracking-wider text-black">Location</label>
+              <input type="text" name="location" required value={formData.location} onChange={handleChange} className="w-full border-2 border-black bg-white text-black rounded-none py-3 px-4 focus:outline-none focus:ring-4 focus:ring-gray-200 transition-all font-bold" placeholder="City, State" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-black uppercase tracking-wider text-black">Founded Year</label>
+              <input type="number" name="companyEstablishedYear" min="1800" required value={formData.companyEstablishedYear} onChange={handleChange} className="w-full border-2 border-black bg-white text-black rounded-none py-3 px-4 focus:outline-none focus:ring-4 focus:ring-gray-200 transition-all font-bold" placeholder="2010" />
+            </div>
+          </div>
+
+          <button type="submit" disabled={isLoading} className="w-full bg-black text-white font-black uppercase tracking-widest rounded-none py-4 mt-8 hover:bg-gray-800 transition-colors disabled:opacity-70">
+            {isLoading ? "Creating..." : "Register Company"}
+          </button>
         </form>
+
+        <div className="mt-10 pt-6 border-t-2 border-black text-center">
+          <p className="text-sm font-bold text-gray-500 uppercase tracking-wide">
+            Already have an account? <Link to="/login" className="text-black hover:underline uppercase transition">Sign in</Link>
+          </p>
+        </div>
       </div>
     </div>
   );

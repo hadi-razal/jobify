@@ -1,79 +1,47 @@
+import { Mail, MapPin, Phone } from "lucide-react";
 
 const Contact = () => {
   return (
-    <div className="flex flex-col justify-center items-center mt-10 px-4">
-      <h1 className="text-3xl text-blue-950 mb-4">Jobify</h1>
-      <div className="max-w-sm p-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold text-blue-950 mb-3">
-          Contact Us
-        </h2>
-        <p className="text-gray-600 mb-6 text-sm">
-          Got questions? Contact us using the details below.
-        </p>
-        <div className="space-y-3 text-gray-600 text-sm">
-          <div className="flex items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mr-3 text-gray-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-              />
-            </svg>
-            123 Main Street, City
+    <div className="min-h-screen bg-white text-black py-16 px-4 border-b-2 border-black">
+      <div className="max-w-4xl mx-auto flex flex-col items-center">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4 border-b-4 border-black pb-2 inline-block">
+            Get In Touch
+          </h1>
+          <p className="text-base md:text-lg text-gray-600 font-bold tracking-wide mt-4 max-w-2xl text-center">
+            Have questions? Want to partner with us? Reach out through any of the channels below and our team will respond with absolute velocity.
+          </p>
+        </div>
+
+        {/* Contact Info Grid */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <div className="flex flex-col items-center justify-center p-8 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-white hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
+            <MapPin className="w-8 h-8 mb-4 text-black" strokeWidth={2.5} />
+            <h2 className="text-lg font-black uppercase tracking-widest mb-1">Location</h2>
+            <p className="text-gray-600 font-bold text-center text-xs">
+              123 Main Street<br/>
+              Tech Valley, CA 94043
+            </p>
           </div>
-          <div className="flex items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mr-3 text-gray-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17.7 14.3a8 8 0 10-11.4 0"
-              />
-            </svg>
-            hadhirasal22@gmail.com
+
+          <div className="flex flex-col items-center justify-center p-8 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-black text-white hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(150,150,150,1)] transition-all">
+            <Mail className="w-8 h-8 mb-4 text-white" strokeWidth={2.5} />
+            <h2 className="text-lg font-black uppercase tracking-widest mb-1 border-b-2 border-white pb-1">Email</h2>
+            <a href="mailto:hadhirasal22@gmail.com" className="text-gray-300 font-bold hover:text-white transition-colors text-xs">
+              hadhirasal22@gmail.com
+            </a>
           </div>
-          <div className="flex items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mr-3 text-gray-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M22 11.08V12a10 10 0 11-5.93-9.14"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M22 4L12 14.01l-3-3"
-              />
-            </svg>
-            +123 456 7890
+
+          <div className="flex flex-col items-center justify-center p-8 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-white hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
+            <Phone className="w-8 h-8 mb-4 text-black" strokeWidth={2.5} />
+            <h2 className="text-lg font-black uppercase tracking-widest mb-1">Phone</h2>
+            <p className="text-gray-600 font-bold text-xs">
+              +1 (123) 456-7890
+            </p>
           </div>
+
         </div>
       </div>
     </div>
