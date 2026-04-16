@@ -36,7 +36,7 @@ router.get("/single-job/:jobId", singleJobPageController);
 router.get("/get-category/:category", requireSignIn, getJobCategoryBasedController)
 
 //job serach
-router.get("/search-jobs", requireSignIn, jobSearchController)
+router.get("/search-jobs", jobSearchController)
 
 // get all jobs from a single company
 router.get("/get-jobs-mycompany", requireSignIn, getCompanyJobsController)

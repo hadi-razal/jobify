@@ -1,8 +1,8 @@
 const stats = [
-  { label: "Active Jobs", value: "100K+" },
-  { label: "Top Companies", value: "50K+" },
-  { label: "Candidates Placed", value: "1M+" },
-  { label: "Daily Applications", value: "10K+" },
+  { label: "Active Jobs", value: "25K+" },
+  { label: "Top Companies", value: "8K+" },
+  { label: "Candidates Placed", value: "150K+" },
+  { label: "Daily Applications", value: "2K+" },
 ];
 
 export default function Stats() {

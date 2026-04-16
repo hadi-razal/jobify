@@ -55,7 +55,7 @@ const EmployeeCard = ({ employee, reloadEmployees }) => {
   };
 
   return (
-    <div className="bg-white shadow-md border rounded-lg p-4 w-full  min-h-[350px] max-h-[350px] sm:min-w-[300px] sm:max-w-[300px] transition-all hover:shadow-lg hover:border-gray-300 flex flex-col">
+    <div className="bg-white shadow-sm border rounded-lg p-4 w-full  min-h-[350px] max-h-[350px] sm:min-w-[300px] sm:max-w-[300px] transition-all hover:shadow-md hover:border-gray-300 flex flex-col">
       <div className="flex-grow">
         <div className="flex items-center gap-3 mb-4">
           <img
@@ -64,7 +64,7 @@ const EmployeeCard = ({ employee, reloadEmployees }) => {
               "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
             }
             alt={`${employee.name}'s profile`}
-            className="rounded-full shadow-md h-12 w-12 object-cover"
+            className="rounded-full shadow-sm h-12 w-12 object-cover"
           />
           <h1 className="text-lg font-semibold text-gray-800">
             {employee.name}

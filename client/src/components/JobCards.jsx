@@ -75,7 +75,7 @@ const JobCards = ({ job, reloadJobs }) => {
           navigate(`/job/${job._id}`);
         }
       }}
-      className="relative flex flex-col bg-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 rounded-none p-5 w-full sm:w-[350px] h-[280px] cursor-pointer group"
+      className="relative flex flex-col bg-white border-2 border-black shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-200 rounded-none p-5 w-full h-[280px] cursor-pointer group"
     >
       <div className="flex flex-col h-full">
         <div className="flex-grow">
@@ -121,7 +121,7 @@ const JobCards = ({ job, reloadJobs }) => {
             onClick={(e) => {
               e.stopPropagation();
               toast((t) => (
-                <span className="flex flex-col items-center justify-center p-4 gap-3 bg-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                <span className="flex flex-col items-center justify-center p-4 gap-3 bg-white border-2 border-black shadow-sm">
                   <p className="font-bold text-sm">Are you sure you want to delete this job?</p>
                   <div className="flex gap-2 w-full">
                     <button

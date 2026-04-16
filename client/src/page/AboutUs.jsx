@@ -35,15 +35,15 @@ const AboutUs = () => {
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-black uppercase tracking-tighter text-center mb-10">Core Values</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            <div className="p-6 border-2 border-black shadow-sm">
               <h3 className="text-xl font-black uppercase tracking-tighter mb-3 border-b-2 border-black pb-2">01. Integrity</h3>
               <p className="text-gray-600 font-bold text-sm">Every company is highly vetted. No phantom jobs, no ghosting protocols.</p>
             </div>
-            <div className="p-6 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-black text-white">
+            <div className="p-6 border-2 border-black shadow-sm bg-black text-white">
               <h3 className="text-xl font-black uppercase tracking-tighter mb-3 border-b-2 border-white pb-2">02. Velocity</h3>
               <p className="text-gray-300 font-bold text-sm">1-click apply. Massive distribution. We focus purely on moving fast.</p>
             </div>
-            <div className="p-6 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            <div className="p-6 border-2 border-black shadow-sm">
               <h3 className="text-xl font-black uppercase tracking-tighter mb-3 border-b-2 border-black pb-2">03. Impact</h3>
               <p className="text-gray-600 font-bold text-sm">Connecting the right talent to the right mission drastically changes the world.</p>
             </div>

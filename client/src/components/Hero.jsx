@@ -1,13 +1,18 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 
 const Hero = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log("Searching for:", searchQuery);
+    if (searchQuery.trim()) {
+      navigate(`/jobs?search=${encodeURIComponent(searchQuery)}`);
+    } else {
+      navigate("/jobs");
+    }
   };
 
   return (
@@ -46,7 +51,9 @@ const Hero = () => {
           <p className="text-xs text-gray-500 font-bold uppercase tracking-wide">Popular:</p>
           <div className="flex gap-2 flex-wrap justify-center">
              {["Remote", "Software Engineer", "Marketing", "Design"].map(term => (
-               <Link key={term} to="/jobs" className="px-3 py-1 border border-gray-300 rounded-none bg-white text-black text-[10px] font-bold uppercase tracking-wider hover:bg-gray-100 transition-colors">{term}</Link>
+               <span key={term} className="px-3 py-1 border border-gray-300 rounded-none bg-white text-black text-[10px] font-bold uppercase tracking-wider">
+                 {term}
+               </span>
              ))}
           </div>
         </div>

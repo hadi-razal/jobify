@@ -18,7 +18,7 @@ import {
 const DashboardCard = ({ title, description, icon: Icon, onClick }) => (
   <div
     onClick={onClick}
-    className="bg-white sm:min-w-[270px] sm:max-w-[270px] h-[180px] w-full gap-1  rounded-md p-6 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-xl  cursor-pointer"
+    className="bg-white sm:min-w-[270px] sm:max-w-[270px] h-[180px] w-full gap-1  rounded-md p-6 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-md  cursor-pointer"
   >
     <Icon size={48} className="text-blue-950 " />
     <h3 className="text-xl font-semibold text-gray-800">{title}</h3>

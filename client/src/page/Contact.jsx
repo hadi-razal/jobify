@@ -17,7 +17,7 @@ const Contact = () => {
         {/* Contact Info Grid */}
         <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6">
           
-          <div className="flex flex-col items-center justify-center p-8 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-white hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
+          <div className="flex flex-col items-center justify-center p-8 border-2 border-black shadow-sm bg-white hover:-translate-y-1 hover:shadow-md transition-all">
             <MapPin className="w-8 h-8 mb-4 text-black" strokeWidth={2.5} />
             <h2 className="text-lg font-black uppercase tracking-widest mb-1">Location</h2>
             <p className="text-gray-600 font-bold text-center text-xs">
@@ -26,7 +26,7 @@ const Contact = () => {
             </p>
           </div>
 
-          <div className="flex flex-col items-center justify-center p-8 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-black text-white hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(150,150,150,1)] transition-all">
+          <div className="flex flex-col items-center justify-center p-8 border-2 border-black shadow-sm bg-black text-white hover:-translate-y-1 hover:shadow-md transition-all">
             <Mail className="w-8 h-8 mb-4 text-white" strokeWidth={2.5} />
             <h2 className="text-lg font-black uppercase tracking-widest mb-1 border-b-2 border-white pb-1">Email</h2>
             <a href="mailto:hadhirasal22@gmail.com" className="text-gray-300 font-bold hover:text-white transition-colors text-xs">
@@ -34,7 +34,7 @@ const Contact = () => {
             </a>
           </div>
 
-          <div className="flex flex-col items-center justify-center p-8 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-white hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
+          <div className="flex flex-col items-center justify-center p-8 border-2 border-black shadow-sm bg-white hover:-translate-y-1 hover:shadow-md transition-all">
             <Phone className="w-8 h-8 mb-4 text-black" strokeWidth={2.5} />
             <h2 className="text-lg font-black uppercase tracking-widest mb-1">Phone</h2>
             <p className="text-gray-600 font-bold text-xs">

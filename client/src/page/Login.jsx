@@ -61,7 +61,7 @@ const Login = () => {
     <div className="min-h-[calc(100vh-80px)] w-full flex items-center justify-center p-4 bg-white text-black">
       <Toaster />
       
-      <div className="w-full max-w-sm bg-white border-2 border-black p-6 sm:p-8 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+      <div className="w-full max-w-sm bg-white border-2 border-black p-6 sm:p-8 shadow-sm">
         <div className="mb-8 text-center border-b-2 border-black pb-4">
           <h2 className="text-2xl font-black text-black mb-2 uppercase tracking-tighter">Welcome back</h2>
           <p className="text-gray-600 text-xs font-bold tracking-wide uppercase">Please enter your details to sign in.</p>
@@ -113,7 +113,7 @@ const Login = () => {
 
         <p className="text-center text-xs font-bold text-gray-600 mt-6 pt-6 border-t-2 border-black">
           Don&apos;t have an account?{" "}
-          <Link to="/registerOption" className="text-black font-black uppercase hover:underline">
+          <Link to="/register/employee" className="text-black font-black uppercase hover:underline">
             Sign up
           </Link>
         </p>

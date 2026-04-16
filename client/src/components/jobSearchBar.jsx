@@ -1,39 +1,37 @@
-/* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { categoryList } from "../constant/jobcategory";
 import { BiSearchAlt } from "react-icons/bi";
-import axios from "axios";
 
-const JobSearchBar = ({ setJobs }) => {
-  const [keyword, setKeyword] = useState("");
-  const [category, setCategory] = useState("all");
+const JobSearchBar = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [keyword, setKeyword] = useState(searchParams.get("search") || "");
+  const [category, setCategory] = useState(searchParams.get("category") || "all");
 
-  const handleSearch = async () => {
-    try {
-      const categoryParam = category === "all" ? undefined : category;
+  useEffect(() => {
+    setKeyword(searchParams.get("search") || "");
+    setCategory(searchParams.get("category") || "all");
+  }, [searchParams]);
 
-      const res = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/job/search-jobs`,
-        {
-          params: {
-            keyword,
-            category: categoryParam,
-          },
-        }
-      );
+  const handleSearch = () => {
+    const trimmedKeyword = keyword.trim();
+    const hasCategory = category && category !== "all";
 
-      if (res.data.success) {
-        setJobs(res.data.searchResults);
-      } else {
-        console.error(res.data.message);
-      }
-    } catch (error) {
-      console.error("Error fetching jobs:", error);
+    const query = new URLSearchParams();
+    if (trimmedKeyword) {
+      query.set("search", trimmedKeyword);
     }
+    if (hasCategory) {
+      query.set("category", category);
+    }
+
+    const queryString = query.toString();
+    navigate(queryString ? `/jobs?${queryString}` : "/jobs");
   };
 
   return (
-    <div className="bg-white py-4 px-4 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none max-w-7xl w-full">
+    <div className="bg-white py-4 px-4 border-2 border-black shadow-sm rounded-none max-w-7xl w-full">
       <div className="flex flex-col md:flex-row items-center justify-between gap-3">
         {/* Search Input */}
         <div className="flex flex-col w-full ">

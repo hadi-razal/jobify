@@ -32,7 +32,7 @@ const CompanyStats = () => {
   }, []);
 
   return (
-    <div className="bg-gray-500  rounded-lg h-[250px] w-full flex flex-col items-center justify-center shadow-2xl">
+    <div className="bg-gray-500  rounded-lg h-[250px] w-full flex flex-col items-center justify-center shadow-md">
       <h2 className="font-bold"> 
         Total Jobs Posted : <span> {totalJobs}</span>
       </h2>

@@ -207,22 +207,28 @@ export const singleJobPageController = async (req, res) => {
 export const jobSearchController = async (req, res) => {
     const { keyword, category } = req.query;
     try {
-        // Build the search query based on provided criteria
+        const normalizedKeyword = keyword?.trim();
+        const normalizedCategory = category?.trim();
         const matchQuery = {};
 
-        if (keyword) {
+        if (normalizedKeyword) {
+            const escapedKeyword = normalizedKeyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
             matchQuery.$or = [
-                { title: { $regex: keyword, $options: "i" } },
-                { description: { $regex: keyword, $options: "i" } },
-                { location: { $regex: keyword, $options: "i" } }
+                { title: { $regex: escapedKeyword, $options: "i" } },
+                { description: { $regex: escapedKeyword, $options: "i" } },
+                { location: { $regex: escapedKeyword, $options: "i" } },
+                { companyName: { $regex: escapedKeyword, $options: "i" } }
             ];
         }
-        if (category && category !== "all") {
-            matchQuery.category = category;
+
+        if (normalizedCategory && normalizedCategory !== "all") {
+            matchQuery.category = {
+                $regex: `^${normalizedCategory.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`,
+                $options: "i"
+            };
         }
-        const searchResults = await Job.aggregate([
-            { $match: matchQuery }
-        ]);
+
+        const searchResults = await Job.find(matchQuery).sort({ createdAt: -1 });
         res.send({ success: true, searchResults });
     } catch (error) {
         console.log(error);

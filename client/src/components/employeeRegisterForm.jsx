@@ -49,7 +49,7 @@ const EmployeeRegisterForm = () => {
     <div className="min-h-[calc(100vh-80px)] w-full flex items-center justify-center p-4 bg-white text-black py-10">
       <Toaster />
 
-      <div className="w-full max-w-lg bg-white border-2 border-black p-6 sm:p-8 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+      <div className="w-full max-w-lg bg-white border-2 border-black p-6 sm:p-8 shadow-sm">
         <div className="mb-10 text-center border-b-2 border-black pb-6">
           <h2 className="text-3xl font-black text-black mb-2 uppercase tracking-tighter">Join as Applicant</h2>
           <p className="text-gray-600 text-sm font-bold tracking-wide uppercase">Create an account to track applications.</p>
@@ -81,9 +81,12 @@ const EmployeeRegisterForm = () => {
           </button>
         </form>
 
-        <div className="mt-10 pt-6 border-t-2 border-black text-center">
+        <div className="mt-10 pt-6 border-t-2 border-black text-center flex flex-col gap-3">
           <p className="text-sm font-bold text-gray-500 uppercase tracking-wide">
             Already have an account? <Link to="/login" className="text-black hover:underline uppercase transition">Sign in</Link>
+          </p>
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-wide">
+            Looking to hire? <Link to="/register/company" className="text-gray-600 hover:text-black hover:underline uppercase transition">Register as Employer</Link>
           </p>
         </div>
       </div>
