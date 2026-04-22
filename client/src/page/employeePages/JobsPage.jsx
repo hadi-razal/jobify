@@ -121,7 +121,7 @@ const JobsPage = () => {
                   onClick={handleLoadMore}
                   className="px-8 py-4 bg-white border-2 border-black text-black font-black text-sm uppercase tracking-widest hover:bg-black hover:text-white transition-all shadow-sm hover:-translate-y-1 hover:shadow-md rounded-none"
                 >
-                  Load More Outcomes
+                  Load More
                 </button>
               </div>
             )}
